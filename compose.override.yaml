@@ -1,19 +1,15 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
+  mysql:
+    image: mysql:latest
     ports:
-      - "5432"
-###< doctrine/doctrine-bundle ###
-
-###> symfony/mailer ###
-  mailer:
-    image: axllent/mailpit
-    ports:
-      - "1025"
-      - "8025"
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     environment:
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-###< symfony/mailer ###
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: schulbuchaktion
+
+volumes:
+  mysql_data:
