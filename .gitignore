@@ -140,3 +140,11 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/phpstorm
+
+# Additional custom Composer requirements:
+composer.json
+composer.lock
+assets/controllers.json
+.idea/codeception.xml
+.idea/phpspec.xml
+.idea/schulbuchaktion.iml
