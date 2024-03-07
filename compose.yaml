@@ -12,5 +12,6 @@ services:
       MYSQL_DATABASE: schulbuchaktion
 
 
+
 volumes:
   mysql_data:
