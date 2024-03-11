@@ -13,7 +13,8 @@ To run the project, make sure the following prerequisites are met:
 - PHP is installed
   
 - Docker is installed
-  - **Symfony Framework is installed? Otherwise use this Windows PowerShell Commands**
+
+- **Symfony Framework is installed? Otherwise use this Windows PowerShell Commands**
     - Download Scoop - Step 1:
         ```bash
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
