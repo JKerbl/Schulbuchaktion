@@ -11,14 +11,35 @@
 To run the project, make sure the following prerequisites are met:
 
 - PHP is installed
+  
 - Docker is installed
+  - **Symfony Framework is installed? Otherwise use this Windows PowerShell Commands**
+    - Download Scoop - Step 1:
+        ```bash
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+        ```
+    - Download Scoop - Step 2:
+        ```bash
+        Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+        ```
+    - Download Symfony with Scoop:
+        ```bash
+        scoop install symfony-cli
+        ```
+    - Check if symfony is working:
+        ```bash
+        symfony check:requirements
+        ```
 - Docker Image generieren zur Datenbankvirtualisierung:
-  ```bash
-  docker compose up -d
+    ```bash
+    docker compose up -d
+    ```
 - Run the following command in your terminal in your project directory:
-  ```bash
-  composer require symfony/runtime
+    ```bash
+    composer require symfony/runtime
+    ```
 - Starten des Servers (Eingabe in der Windows Power-Shell):
     ```bash
-  symfony server:start
+    symfony server:start
+    ```
 - Nun ist es möglich, das Projekt im Browser aufzurufen.
