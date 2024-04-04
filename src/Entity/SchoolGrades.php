@@ -16,12 +16,18 @@ class SchoolGrades
     #[ORM\Column]
     private ?string $grade = null;
 
-    #[ORM\Column]
-    private ?int $bookId = null;
+    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "schoolGrades")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Book $book = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getGrade(): ?string
@@ -29,22 +35,19 @@ class SchoolGrades
         return $this->grade;
     }
 
-    public function setGrade(string $grade): static
+    public function setGrade(?string $grade): void
     {
         $this->grade = $grade;
-
-        return $this;
     }
 
-    public function getBookId(): ?int
+    public function getBook(): ?Book
     {
-        return $this->bookId;
+        return $this->book;
     }
 
-    public function setBookId(int $bookId): static
+    public function setBook(?Book $book): void
     {
-        $this->bookId = $bookId;
-
-        return $this;
+        $this->book = $book;
     }
+
 }

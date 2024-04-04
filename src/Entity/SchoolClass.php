@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SchoolClassRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SchoolClassRepository::class)]
@@ -34,8 +35,11 @@ class SchoolClass
     #[ORM\Column]
     private ?int $year = null;
 
-    #[ORM\Column]
-    private ?int $departmentId = null;
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: "schoolclass")]
+    private ?Department $department = null;
+
+    #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "schoolclass")]
+    private Collection $bookOrder;
 
     public function getId(): ?int
     {
@@ -47,11 +51,9 @@ class SchoolClass
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     public function getGrade(): ?int
@@ -59,11 +61,9 @@ class SchoolClass
         return $this->grade;
     }
 
-    public function setGrade(int $grade): static
+    public function setGrade(?int $grade): void
     {
         $this->grade = $grade;
-
-        return $this;
     }
 
     public function getStudentsAmount(): ?int
@@ -71,11 +71,9 @@ class SchoolClass
         return $this->studentsAmount;
     }
 
-    public function setStudentsAmount(int $studentsAmount): static
+    public function setStudentsAmount(?int $studentsAmount): void
     {
         $this->studentsAmount = $studentsAmount;
-
-        return $this;
     }
 
     public function getRepAmount(): ?int
@@ -83,11 +81,9 @@ class SchoolClass
         return $this->repAmount;
     }
 
-    public function setRepAmount(?int $repAmount): static
+    public function setRepAmount(?int $repAmount): void
     {
         $this->repAmount = $repAmount;
-
-        return $this;
     }
 
     public function getUsedBudget(): ?float
@@ -95,11 +91,9 @@ class SchoolClass
         return $this->usedBudget;
     }
 
-    public function setUsedBudget(float $usedBudget): static
+    public function setUsedBudget(?float $usedBudget): void
     {
         $this->usedBudget = $usedBudget;
-
-        return $this;
     }
 
     public function getBudget(): ?float
@@ -107,11 +101,9 @@ class SchoolClass
         return $this->budget;
     }
 
-    public function setBudget(float $budget): static
+    public function setBudget(?float $budget): void
     {
         $this->budget = $budget;
-
-        return $this;
     }
 
     public function getYear(): ?int
@@ -119,22 +111,29 @@ class SchoolClass
         return $this->year;
     }
 
-    public function setYear(int $year): static
+    public function setYear(?int $year): void
     {
         $this->year = $year;
-
-        return $this;
     }
 
-    public function getDepartmentId(): ?int
+    public function getDepartment(): ?Department
     {
-        return $this->departmentId;
+        return $this->department;
     }
 
-    public function setDepartmentId(int $departmentId): static
+    public function setDepartment(?Department $department): void
     {
-        $this->departmentId = $departmentId;
-
-        return $this;
+        $this->department = $department;
     }
+
+    public function getBookOrder(): Collection
+    {
+        return $this->bookOrder;
+    }
+
+    public function setBookOrder(Collection $bookOrder): void
+    {
+        $this->bookOrder = $bookOrder;
+    }
+
 }
