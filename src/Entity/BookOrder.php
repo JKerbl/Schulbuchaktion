@@ -25,15 +25,20 @@ class BookOrder
     #[ORM\Column(nullable: true)]
     private ?bool $eBookPlus = null;
 
-    #[ORM\Column]
-    private ?int $schoolclassId = null;
+    #[ORM\ManyToOne(targetEntity: SchoolClass::class, inversedBy: "bookOrder")]
+    private ?SchoolClass $schoolclass = null;
 
-    #[ORM\Column]
-    private ?int $bookId = null;
+    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "bookOrder")]
+    private ?Book $book = null;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getCount(): ?int
@@ -41,70 +46,59 @@ class BookOrder
         return $this->count;
     }
 
-    public function setCount(int $count): static
+    public function setCount(?int $count): void
     {
         $this->count = $count;
-
-        return $this;
     }
 
-    public function isTeacherCopy(): ?bool
+    public function getTeacherCopy(): ?bool
     {
         return $this->teacherCopy;
     }
 
-    public function setTeacherCopy(?bool $teacherCopy): static
+    public function setTeacherCopy(?bool $teacherCopy): void
     {
         $this->teacherCopy = $teacherCopy;
-
-        return $this;
     }
 
-    public function isEBook(): ?bool
+    public function getEBook(): ?bool
     {
         return $this->eBook;
     }
 
-    public function setEBook(?bool $eBook): static
+    public function setEBook(?bool $eBook): void
     {
         $this->eBook = $eBook;
-
-        return $this;
     }
 
-    public function isEBookPlus(): ?bool
+    public function getEBookPlus(): ?bool
     {
         return $this->eBookPlus;
     }
 
-    public function setEBookPlus(?bool $eBookPlus): static
+    public function setEBookPlus(?bool $eBookPlus): void
     {
         $this->eBookPlus = $eBookPlus;
-
-        return $this;
     }
 
-    public function getSchoolclassId(): ?int
+    public function getSchoolclass(): ?SchoolClass
     {
-        return $this->schoolclassId;
+        return $this->schoolclass;
     }
 
-    public function setSchoolclassId(int $schoolclassId): static
+    public function setSchoolclass(?SchoolClass $schoolclass): void
     {
-        $this->schoolclassId = $schoolclassId;
-
-        return $this;
+        $this->schoolclass = $schoolclass;
     }
 
-    public function getBookId(): ?int
+    public function getBook(): ?Book
     {
-        return $this->bookId;
+        return $this->book;
     }
 
-    public function setBookId(int $bookId): static
+    public function setBook(?Book $book): void
     {
-        $this->bookId = $bookId;
-
-        return $this;
+        $this->book = $book;
     }
+
 }
