@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -40,15 +41,27 @@ class Book
     #[ORM\Column(nullable: true)]
     private ?int $mainBookId = null;
 
-    #[ORM\Column]
-    private ?int $bookPriceId = null;
+    #[ORM\OneToOne(targetEntity: BookPrice::class, inversedBy: "book")]
+    private BookPrice $bookPrice;
 
-    #[ORM\Column]
-    private ?int $subjectId = null;
+    #[ORM\ManyToOne(targetEntity: Subject::class, inversedBy: "book")]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Subject $subject = null;
+
+    #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "book")]
+    private Collection $bookOrder;
+
+    #[ORM\OneToMany(targetEntity: SchoolGrades::class, mappedBy: "book")]
+    private Collection $schoolGrades;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getBnr(): ?int
@@ -56,11 +69,9 @@ class Book
         return $this->bnr;
     }
 
-    public function setBnr(int $bnr): static
+    public function setBnr(?int $bnr): void
     {
         $this->bnr = $bnr;
-
-        return $this;
     }
 
     public function getShortTitle(): ?string
@@ -68,11 +79,9 @@ class Book
         return $this->shortTitle;
     }
 
-    public function setShortTitle(string $shortTitle): static
+    public function setShortTitle(?string $shortTitle): void
     {
         $this->shortTitle = $shortTitle;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -80,11 +89,9 @@ class Book
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
-
-        return $this;
     }
 
     public function getListtype(): ?int
@@ -92,11 +99,9 @@ class Book
         return $this->listtype;
     }
 
-    public function setListtype(?int $listtype): static
+    public function setListtype(?int $listtype): void
     {
         $this->listtype = $listtype;
-
-        return $this;
     }
 
     public function getSchoolForm(): ?int
@@ -104,11 +109,9 @@ class Book
         return $this->schoolForm;
     }
 
-    public function setSchoolForm(int $schoolForm): static
+    public function setSchoolForm(?int $schoolForm): void
     {
         $this->schoolForm = $schoolForm;
-
-        return $this;
     }
 
     public function getInfo(): ?string
@@ -116,35 +119,29 @@ class Book
         return $this->info;
     }
 
-    public function setInfo(?string $info): static
+    public function setInfo(?string $info): void
     {
         $this->info = $info;
-
-        return $this;
     }
 
-    public function isEBook(): ?bool
+    public function getEBook(): ?bool
     {
         return $this->eBook;
     }
 
-    public function setEBook(bool $eBook): static
+    public function setEBook(?bool $eBook): void
     {
         $this->eBook = $eBook;
-
-        return $this;
     }
 
-    public function isEBookPlus(): ?bool
+    public function getEBookPlus(): ?bool
     {
         return $this->eBookPlus;
     }
 
-    public function setEBookPlus(bool $eBookPlus): static
+    public function setEBookPlus(?bool $eBookPlus): void
     {
         $this->eBookPlus = $eBookPlus;
-
-        return $this;
     }
 
     public function getMainBookId(): ?int
@@ -152,23 +149,19 @@ class Book
         return $this->mainBookId;
     }
 
-    public function setMainBookId(?int $mainBookId): static
+    public function setMainBookId(?int $mainBookId): void
     {
         $this->mainBookId = $mainBookId;
-
-        return $this;
     }
 
-    public function getBookPrice(): ?int
+    public function getBookPrice(): ?BookPrice
     {
         return $this->bookPrice;
     }
 
-    public function setBookPrice(int $bookPrice): static
+    public function setBookPrice(?BookPrice $bookPrice): void
     {
         $this->bookPrice = $bookPrice;
-
-        return $this;
     }
 
     public function getSubjectId(): ?int
@@ -176,22 +169,52 @@ class Book
         return $this->subjectId;
     }
 
-    public function setSubjectId(int $subjectId): static
+    public function setSubjectId(?int $subjectId): void
     {
         $this->subjectId = $subjectId;
+    }
+
+    public function isEBook(): ?bool
+    {
+        return $this->eBook;
+    }
+
+    public function isEBookPlus(): ?bool
+    {
+        return $this->eBookPlus;
+    }
+
+    public function getSubject(): ?Subject
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(?Subject $subject): static
+    {
+        $this->subject = $subject;
 
         return $this;
     }
 
-    public function getBookPriceId(): ?int
+    public function getBookOrder(): Collection
     {
-        return $this->bookPriceId;
+        return $this->bookOrder;
     }
 
-    public function setBookPriceId(int $bookPriceId): static
+    public function setBookOrder(Collection $bookOrder): void
     {
-        $this->bookPriceId = $bookPriceId;
-
-        return $this;
+        $this->bookOrder = $bookOrder;
     }
+
+    public function getSchoolGrades(): Collection
+    {
+        return $this->schoolGrades;
+    }
+
+    public function setSchoolGrades(Collection $schoolGrades): void
+    {
+        $this->schoolGrades = $schoolGrades;
+    }
+
+
 }
