@@ -8,9 +8,6 @@
 
 
 {% block body %}
-
-
-
     <div class="form-div-outer">
         <div class="headline-form">
             Login
@@ -31,53 +28,33 @@
 
             <div class="username">
                 <label class="username-label" for="inputUsername">Benutzername</label>
-                <input type="text" onfocus="setBlueBorder('line-usr')" value="{{ last_username }}" name="username" id="inputUsername"
-                       class="form-control" autocomplete="username" required autofocus>
+                <input type="text" onfocus="setBlueBorder('line-usr')" value="{{ last_username }}" name="username" class="inputUsername"
+                      {# class="form-control"#} autocomplete="username" required autofocus>
                 <div id="line-usr">
-
                 </div>
             </div>
 
             <div class="password">
                 <label class="password-label" for="inputPassword">Passwort</label>
-                <input type="password"  onfocus="setBlueBorder('line-pw')" name="password" id="inputPassword" class="form-control"
+                <input type="password"  onfocus="setBlueBorder('line-pw')" name="password" class="inputPassword" {#class="form-control"#}
                        autocomplete="current-password" required>
                 <div id="line-pw">
-
                 </div>
             </div>
 
             <div class="login-btn-submit">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <button class="submit-btn" type="submit">
-                    Sign in
+                    Anmelden
                 </button>
             </div>
 
             <div class="not-member-register">
-                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>
+{#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
+                <div>Noch kein Mitglied? <a href="{{ path('registration') }}"><button  class="register-btn-in-login">Registrieren</button></a></div>
             </div>
         </form>
     </div>
-
-    <script>
-
-        function setBlueBorder(elementId) {
-            var elementFocus = document.getElementById(elementId);
-            var elementNotFocus;
-
-            if (elementId === 'line-usr') {
-                elementNotFocus = document.getElementById('line-pw');
-            } else if (elementId === 'line-pw') {
-                elementNotFocus = document.getElementById('line-usr');
-            }
-
-            elementFocus.classList.add('line-blue');
-            if (elementNotFocus) {
-                elementNotFocus.classList.remove('line-blue');
-            }
-        }
-    </script>
 
 
 {% endblock %}

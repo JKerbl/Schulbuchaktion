@@ -21,7 +21,7 @@ body {
     padding: 0.3em;
 }
 
-#line-login {
+#line-login, #line-register {
     border-top: 1px solid #676767; /* Dicke und Farbe der Linie festlegen */
 }
 
@@ -41,15 +41,15 @@ body {
     padding-top: 0.5em;
 }
 
-.username, #inputUsername {
+.username, .inputUsername {
     width: 100%;
 }
 
-.password, #inputPassword {
+.password, .inputPassword {
     width: 100%;
 }
 
-#inputPassword, #inputUsername {
+.inputPassword, .inputUsername {
     padding-left: 0.2em;
 }
 
@@ -87,13 +87,15 @@ body {
     background-color: #087ea4;
 }
 
-#inputPassword:focus, #inputUsername:focus {
+.inputPassword:focus, .inputUsername:focus {
     outline: none;
 }
 
-#line-usr, #line-pw{
+#line-usr, #line-pw, #line-pw-repeat{
     border: 1px solid darkslategrey;
 }
+
+
 
 .not-member-register {
     margin-top: 1em;
@@ -101,4 +103,17 @@ body {
 
 .line-blue {
     border-color: #20c3e0 !important;
+}
+
+
+.register-btn-submit {
+    /* äußeres div von register-btn */
+}
+
+.login-btn-submit {
+    /* äußeres div von login-btn */
+}
+
+.input-pw-register {
+
 }
