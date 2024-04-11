@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload Excel{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#upload-form').on('submit', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url : $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    success: function(data){
+                        // Clear the old table
+                        $('#output').empty();
+
+                        // Append the new table
+                        var table = $('<table>').appendTo('#output');
+                        data.forEach(function(item) {
+                            var row = $('<tr>').appendTo(table);
+                            Object.values(item).forEach(function(value) {
+                                $('<td>').text(value).appendTo(row);
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

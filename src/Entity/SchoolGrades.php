@@ -16,7 +16,7 @@ class SchoolGrades
     #[ORM\Column]
     private ?string $grade = null;
 
-    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "schoolGrades")]
+    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "schoolGrades")] //TODO
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
