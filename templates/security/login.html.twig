@@ -2,30 +2,59 @@
 
 {% block title %}Log in!{% endblock %}
 
+    {% block stylesheets %}
+        <link href="{{ asset('/style/stylingLoginRegisterPages.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="form-div-outer">
+        <div class="headline-form">
+            Login
+            <hr id="line-login">
         </div>
-    {% endif %}
+        <form class="form-inner" method="post">
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a
+                            href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+            <div class="username">
+                <label class="username-label" for="inputUsername">Benutzername</label>
+                <input type="text" onfocus="setBlueBorder('line-usr')" value="{{ last_username }}" name="username" class="inputUsername"
+                      {# class="form-control"#} autocomplete="username" required autofocus>
+                <div id="line-usr">
+                </div>
+            </div>
+
+            <div class="password">
+                <label class="password-label" for="inputPassword">Passwort</label>
+                <input type="password"  onfocus="setBlueBorder('line-pw')" name="password" class="inputPassword" {#class="form-control"#}
+                       autocomplete="current-password" required>
+                <div id="line-pw">
+                </div>
+            </div>
+
+            <div class="login-btn-submit">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button class="submit-btn" type="submit">
+                    Anmelden
+                </button>
+            </div>
+
+            <div class="not-member-register">
+{#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
+                <div>Noch kein Mitglied? <a href="{{ path('registration') }}"><button  class="register-btn-in-login">Registrieren</button></a></div>
+            </div>
+        </form>
+    </div>
+
+
 {% endblock %}
