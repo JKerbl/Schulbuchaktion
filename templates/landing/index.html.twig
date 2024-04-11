@@ -31,10 +31,14 @@
                 <button class="login-button">Team</button>
             </div>
             <div class="nav-bar-item" id="login-btn">
-                <a href="{{ path('app_login') }}"><button>Login</button></a>
+                <a href="{{ path('app_login') }}">
+                    <button>Login</button>
+                </a>
             </div>
             <div class="nav-bar-item" id="register-btn">
-                <button>Registrieren</button>
+                <a href="{{ path('registration') }}">
+                    <button>Registrieren</button>
+                </a>
             </div>
         </div>
     </nav>
