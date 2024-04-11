@@ -4,8 +4,6 @@ body {
 }
 
 .form-div-outer {
-
-    height: 25em;
     width: 25em;
     margin: 0 auto;
     margin-top: 8em;
@@ -14,15 +12,31 @@ body {
     border-radius: 10px;
 }
 
-.headline-form {
+#form-div-outer-register {
+    height: 28em;
+}
+
+#form-div-outer-login {
+    height: 25em;
+}
+
+.headline-form-login {
     font-size: 2.5em;
     font-weight: 600;
     text-align: center;
     padding: 0.3em;
 }
 
+.headline-form-register {
+    font-size: 2.3em;
+    font-weight: 600;
+    text-align: center;
+    padding: 0.5em;
+}
+
 #line-login, #line-register {
-    border-top: 1px solid #676767; /* Dicke und Farbe der Linie festlegen */
+    padding-top: 0.3em;
+    border-bottom: 1px solid #676767; /* Dicke und Farbe der Linie festlegen */
 }
 
 .form-inner {
@@ -95,8 +109,6 @@ body {
     border: 1px solid darkslategrey;
 }
 
-
-
 .not-member-register {
     margin-top: 1em;
 }
@@ -106,12 +118,8 @@ body {
 }
 
 
-.register-btn-submit {
-    /* äußeres div von register-btn */
-}
-
-.login-btn-submit {
-    /* äußeres div von login-btn */
+.register-btn-submit,.login-btn-submit {
+    margin-top: 1em;
 }
 
 .input-pw-register {
