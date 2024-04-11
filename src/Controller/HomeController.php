@@ -16,7 +16,7 @@ class HomeController extends AbstractController
             "Best Shots, 3.-5. Klasse, AHS",
             "Recht für Techniker, 4. Klasse, HTL",
             "Z",
-            "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS"
+            "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS");
   
         return $this->render('home/index.html.twig', [
             'results' => $results,
