@@ -148,3 +148,4 @@ assets/controllers.json
 .idea/codeception.xml
 .idea/phpspec.xml
 .idea/schulbuchaktion.iml
+/.idea/dataSources.xml
