@@ -43,4 +43,7 @@ To run the project, make sure the following prerequisites are met:
     ```bash
     symfony server:start
     ```
+
+  composer require phpoffice/phpspreadsheet
+  
 - Everything should be working
