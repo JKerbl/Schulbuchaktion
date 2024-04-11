@@ -1,20 +1,151 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Schulbuchaktion{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation:
+                    typing 3.5s steps(40, end),
+                    blink-caret .75s step-end infinite;
+        }
 
-<div class="example-wrapper">
-    <h1>Welcome to our HOME</h1>
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/david/PhpstormProjects/SchulbuchaktionDocker/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/david/PhpstormProjects/SchulbuchaktionDocker/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #505050; }
+        }
+
+        .result-bar {
+            border-left: 1px solid grey;
+            border-right: 1px solid grey;
+            border-bottom: 1px solid grey;
+            padding: 1rem;
+            font-size: 1.25em;
+            width: 32rem;
+            word-wrap: break-word;
+        }
+
+        .inputBar {
+            background-color:#ECECEC;
+            width: 28.4rem; /*TEMPORARY*/
+        }
+
+        .inputBar:focus {
+            outline:none;
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            //Searchbar
+            let words = ['Büchern', 'Autoren', 'Klassen'];
+            let wordIndex = 0;
+
+            function typeNextWord() {
+                if (wordIndex < words.length) {
+                    let word = words[wordIndex++];
+                    let text = '';
+                    let textIndex = 0;
+
+                    function typeNextCharacter() {
+                        if (textIndex < word.length) {
+                            text += word.charAt(textIndex++);
+                            document.getElementById('animated-text').textContent = text;
+                            setTimeout(typeNextCharacter, 300);
+                        } else {
+                            setTimeout(typeNextWord, 3000);
+                        }
+                    }
+
+                    typeNextCharacter();
+                } else {
+                    wordIndex = 0;
+                    typeNextWord();
+                }
+            }
+
+            typeNextWord();
+
+            //Search function
+            let input = document.getElementById('search-input');
+            let resultsContainer = document.getElementById('results-container');
+            let results = {{ results|json_encode|raw }};
+
+            input.addEventListener('keyup', function() {
+                let query = this.value.toLowerCase();
+
+                let filteredResults = results.filter(function(result) {
+                    return result.toLowerCase().includes(query);
+                });
+
+                resultsContainer.innerHTML = '';
+                filteredResults.forEach(function(result) {
+                    let resultDiv = document.createElement('div');
+                    resultDiv.textContent = result;
+                    resultDiv.className = 'result-bar';
+                    resultsContainer.appendChild(resultDiv);
+                });
+            });
+        });
+    </script>
+
+    <div>
+        <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
+            <div class="flex items-center space-x-2">
+                <img class="w-12 h-12" src="/images/logo.png">
+                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
+            </div>
+            <div class="hidden lg:flex space-x-4">
+                <div>
+                    <p class="hidden md:block">Bestellen</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Bestellübersicht</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Klassenübersicht</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Banane</p>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <div class="flex items-center space-x-2 py-2">
+                    <p class="text-md">Willkommen Markus!</p>
+                    <img class="w-8 h-8" src="/images/logout.png">
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center mt-24">
+            <div class="text-4xl">
+                <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
+            </div>
+            <div class="mt-6">
+                <div class="border border-gray-700 p-2 flex">
+                    <img class="w-8 h-8 mr-2" src="/images/search.png">
+                    <input id="search-input" class="text-xl w-96 p-1 inputBar">
+                </div>
+                <div id="results-container">
+                    {% for result in results %}
+                        <div class="result-bar border-x border-b border-gray-700">
+                            <p class="text-xl">{{ result }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
