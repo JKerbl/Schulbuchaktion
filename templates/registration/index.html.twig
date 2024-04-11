@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block body %}
-    <div class="form-div-outer">
-        <div class="headline-form">
+    <div class="form-div-outer" id="form-div-outer-register">
+        <div class="headline-form-register">
             Registrierung
-            <hr id="line-register">
+            <div id="line-register"></div>
         </div>
         <form class="form-inner" method="post">
             {{ form_start(regform) }}
@@ -51,7 +51,10 @@
                     Registrieren
                 </button>
             </div>
-
+            <div class="not-member-register">
+                {#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
+                <div>Schon Mitglied? <a href="{{ path('app_login') }}"><button  class="register-btn-in-login">Login</button></a></div>
+            </div>
             {{ form_end(regform) }}
         </form>
     </div>
