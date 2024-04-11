@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'home')]
+    #[Route('/home', name: 'home')]
     public function index(): Response{
         $results = array(
             "Ingenieur-Mathematik 4.-5. Klasse, HTL",
@@ -17,9 +17,7 @@ class HomeController extends AbstractController
             "Recht für Techniker, 4. Klasse, HTL",
             "Z",
             "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS"
-        );
-
-
+  
         return $this->render('home/index.html.twig', [
             'results' => $results,
         ]);

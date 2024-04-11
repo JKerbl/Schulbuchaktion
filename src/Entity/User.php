@@ -32,6 +32,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255,  nullable: true)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255,  nullable: true)]
+    private ?string $lastName = null;
+
+    #[ORM\OneToOne(targetEntity: Subject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Subject $headSubject = null;
+
+    #[ORM\OneToOne(targetEntity: Department::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Department $headDepartment = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -106,4 +119,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getHeadSubject(): ?Subject
+    {
+        return $this->headSubject;
+    }
+
+    public function setHeadSubject(?Subject $headSubject): void
+    {
+        $this->headSubject = $headSubject;
+    }
+
+    public function getHeadDepartment(): ?Department
+    {
+        return $this->headDepartment;
+    }
+
+    public function setHeadDepartment(?Department $headDepartment): void
+    {
+        $this->headDepartment = $headDepartment;
+    }
+
 }

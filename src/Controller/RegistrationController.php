@@ -27,7 +27,6 @@ class RegistrationController extends AbstractController
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password']
             ])
-            ->add('register', SubmitType::class)
             ->getForm();
 
         $regform->handleRequest($request);

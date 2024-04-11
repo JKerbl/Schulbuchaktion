@@ -43,4 +43,4 @@ To run the project, make sure the following prerequisites are met:
     ```bash
     symfony server:start
     ```
-- Now all should be working
+- Everything should be working

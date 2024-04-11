@@ -1,0 +1,136 @@
+.header-landing-page {
+    text-align: center;
+    margin: 2.5em
+}
+
+.headline-landing-page {
+    color: #17A2B8;
+    font-weight: 750;
+    font-size: clamp(1.8rem, 3vw, 3.5rem);
+}
+
+.nav-bar-outer {
+    width: 100%;
+    min-width: 650px;
+    height: 5em;
+    background-color: #ECECEC;
+    box-shadow: 0 5px 10px rgb(138, 146, 147);
+    background-clip: padding-box;
+    display: flex;
+}
+
+.company-name {
+    margin-left: 0.5em;
+    font-weight: 800;
+    font-size: 2em;
+    display: flex;
+    align-content: center;
+}
+
+.logo {
+    height: 60px;
+}
+
+.logo-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-page-image {
+    width: 50%;
+    max-width: 650px;
+    border-radius: 10px;
+}
+
+.nav-bar-elements {
+    font-size: 1.1em;
+    margin-left: auto;
+    margin-right: 3em;
+    display: flex;
+    align-items: center;
+}
+
+#home {
+    color: #17A2B8;
+    font-weight: bolder;
+    margin-right: 0.6em;
+}
+
+.nav-bar-company-name-and-icon {
+    display: flex;
+    align-items: center;
+}
+
+.logo-nav-bar {
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-bar-item {
+    padding: 0.3em 0.5em;
+    border-radius: 5px;
+    /*border: black solid;*/
+}
+
+@media only screen and (max-width: 790px) {
+    .nav-bar-elements {
+        width: 100%;
+        position: absolute;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4.5em;
+        padding: 1em;
+        background-color: #ECECEC;
+    }
+
+    .header-landing-page {
+        margin-top: 20%;
+    }
+}
+
+/* Basis-Styling für den Button */
+#login-btn {
+    border: 2px solid #17a2b8; /* Info-Farbe */
+    color: #17a2b8; /* Info-Farbe */
+    background-color: transparent; /* Transparenter Hintergrund */
+    padding: 0.3rem 1rem; /* Größe L */
+    border-radius: 0.25rem; /* Abgerundete Ecken */
+    font-weight: 550;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+/* Hover-Effekt */
+#login-btn:hover {
+    background-color: #17a2b8; /* Hintergrundfarbe bei Hover */
+    color: #fff; /* Textfarbe bei Hover */
+}
+
+/* Aktiver Zustand */
+#login-btn:active {
+    background-color: #138496; /* Hintergrundfarbe im aktiven Zustand */
+    border-color: #138496; /* Rahmenfarbe im aktiven Zustand */
+    color: #fff; /* Textfarbe im aktiven Zustand */
+
+}
+
+/* Basis-Styling für den Button */
+#register-btn {
+    background-color: #17a2b8; /* Info-Farbe */
+    color: #fff; /* Textfarbe */
+    border: 2px solid transparent; /* Info-Farbe */
+    padding: 0.3rem 1rem; /* Größe L */
+    border-radius: 0.25rem; /* Abgerundete Ecken */
+    font-weight: 550;
+}
+
+/* Hover-Effekt */
+#register-btn:hover {
+    background-color: #138496; /* Hintergrundfarbe bei Hover */
+}
+
+/* Aktiver Zustand */
+#register-btn:active {
+    background-color: #0a6b7c; /* Hintergrundfarbe im aktiven Zustand */
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,11 +11,37 @@
         {% block stylesheets %}
         {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="https://cdn.tailwindcss.com"></script>
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+
+        <script>
+            function setBlueBorder(elementId) {
+                var elementFocus = document.getElementById(elementId);
+                var elementNotFocus;
+                var elementNotFocus2;
+
+                if (elementId === 'line-usr') {
+                    elementNotFocus = document.getElementById('line-pw');
+                    elementNotFocus2 = document.getElementById('line-pw-repeat');
+                } else if (elementId === 'line-pw') {
+                    elementNotFocus = document.getElementById('line-usr');
+                    elementNotFocus2 = document.getElementById('line-pw-repeat');
+                } else if (elementId === 'line-pw-repeat') {
+                    elementNotFocus = document.getElementById('line-usr');
+                    elementNotFocus2 = document.getElementById('line-pw');
+                }
+                elementFocus.classList.add('line-blue');
+                elementNotFocus.classList.remove('line-blue');
+                elementNotFocus2.classList.remove('line-blue');
+            }
+        </script>
+    {% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
 </html>

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schulbuchaktion{% endblock %}
+
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+{% block body %}
+
+    {#
+    styling header tailwind: mb-4 text-4xl font-bold leading-none tracking-tight text-cyan-700 md:text-5xl lg:text-6xl text-center
+        styling under header: mb-6 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-center
+    #}
+
+    <nav class="nav-bar-outer">
+        <div class="nav-bar-company-name-and-icon">
+            <div class="logo-nav-bar">
+                <img class="logo" src="/images/library_logo.png" alt="logo">
+            </div>
+            <div class="company-name">
+                Schulbuchaktion
+            </div>
+        </div>
+        <div class="nav-bar-elements">
+            <div id="home" class="nav-bar-item">
+                Home
+            </div>
+            <div class="nav-bar-item">
+                <button class="login-button">Team</button>
+            </div>
+            <div class="nav-bar-item" id="login-btn">
+                <a href="{{ path('app_login') }}">
+                    <button>Login</button>
+                </a>
+            </div>
+            <div class="nav-bar-item" id="register-btn">
+                <a href="{{ path('registration') }}">
+                    <button>Registrieren</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header-landing-page">
+        <div class="headline-landing-page">
+            Willkommen im Schulbuch Portal.
+        </div>
+    </header>
+
+    <div class="logo-div">
+        <img class="landing-page-image" src="/images/lading_page_image_2.jpeg" alt="our-logo">
+    </div>
+
+{% endblock %}
