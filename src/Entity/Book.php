@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BookRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
@@ -51,8 +52,32 @@ class Book
     #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "book")]
     private Collection $bookOrder;
 
-    #[ORM\OneToMany(targetEntity: SchoolGrades::class, mappedBy: "book")]
+    #[ORM\ManyToMany(targetEntity: SchoolGrades::class, mappedBy: "books")]
     private Collection $schoolGrades;
+
+    public function __construct()
+    {
+        $this->schoolGrades = new ArrayCollection();
+    }
+
+    public function addSchoolGrade(SchoolGrades $schoolGrade): self
+    {
+        if (!$this->schoolGrades->contains($schoolGrade)) {
+            $this->schoolGrades[] = $schoolGrade;
+            $schoolGrade->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchoolGrade(SchoolGrades $schoolGrade): self
+    {
+        if ($this->schoolGrades->removeElement($schoolGrade)) {
+            $schoolGrade->removeBook($this);
+        }
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
