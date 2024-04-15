@@ -70,6 +70,8 @@ class ImportController extends AbstractController
             }
         }
 
+        
+
         return new JsonResponse($output);
         //return $this->json('excel scanned', 200);
         //return $this->redirectToRoute('home');
