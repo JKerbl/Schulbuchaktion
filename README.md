@@ -43,7 +43,8 @@ To run the project, make sure the following prerequisites are met:
     ```bash
     symfony server:start
     ```
-
+- This command is required for uploading MS Excel files:
+  ```bash
   composer require phpoffice/phpspreadsheet
   
 - Everything should be working
