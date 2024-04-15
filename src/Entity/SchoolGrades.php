@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SchoolGradesRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SchoolGradesRepository::class)]
@@ -16,9 +18,13 @@ class SchoolGrades
     #[ORM\Column]
     private ?string $grade = null;
 
-    #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "schoolGrades")] //TODO
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Book $book = null;
+    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: "schoolGrades")]
+    private Collection $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -40,14 +46,28 @@ class SchoolGrades
         $this->grade = $grade;
     }
 
-    public function getBook(): ?Book
+    public function getBooks(): Collection
     {
-        return $this->book;
+        return $this->books;
     }
 
-    public function setBook(?Book $book): void
+    public function addBook(Book $book): self
     {
-        $this->book = $book;
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+            $book->addSchoolGrade($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            $book->removeSchoolGrade($this);
+        }
+
+        return $this;
     }
 
 }
