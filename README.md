@@ -43,6 +43,10 @@ To run the project, make sure the following prerequisites are met:
     ```bash
     symfony server:start
     ```
+- For uploading MS Excel files the php.ini needs to be updated:
+  ```bash
+  ;extension=zip --> extension=zip
+  ```
 - This command is required for uploading MS Excel files:
   ```bash
   composer require phpoffice/phpspreadsheet
