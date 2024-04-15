@@ -1,14 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Registrierung{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/style/stylingLoginRegisterPages.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
+    <div class="form-div-outer" id="form-div-outer-register">
+        <div class="headline-form-register">
+            Registrierung
+            <div id="line-register"></div>
+        </div>
+        <form class="form-inner" method="post">
+            {{ form_start(regform) }}
+            <div class="username">
+                <label class="username-label" for="inputUsername">Benutzername</label>
+                <div class="inputUsername">
+                    {{ form_widget(regform.username, {'attr': {'class': 'inputUsername', 'onfocus': 'setBlueBorder("line-usr")'}}) }}
+                    {{ form_errors(regform.username) }}
+                </div>
+                <div id="line-usr">
+                </div>
+            </div>
 
-    <div class="example-wrapper">
-        {{ form(regform) }}
+            <div class="password">
+                <label class="password-label" for="inputPassword">Passwort</label>
+                <div class="inputPassword">
+                    {{ form_widget(regform.password.first, {'attr': {'class': 'inputPassword', 'onfocus': 'setBlueBorder("line-pw")'}}) }}
+                    {{ form_errors(regform.password.first) }}
+                </div>
+                <div id="line-pw">
+                </div>
+            </div>
+
+            <div class="password">
+                <label class="password-label" for="inputPasswordRepeat">Passwort wiederholen</label>
+{#                <div class="inputPassword">#}
+{#                    {{ form_widget(regform.password.second) }}#}
+                {{ form_widget(regform.password.second, {'attr': {'class': 'inputPassword', 'onfocus': 'setBlueBorder("line-pw-repeat")'}}) }}
+                    {{ form_errors(regform.password.second) }}
+{#                </div>#}
+                <div class="line" id="line-password-repeat"></div>
+                <div id="line-pw-repeat">
+                </div>
+            </div>
+
+            <div class="register-btn-submit">
+                <button class="submit-btn" type="submit">
+                    Registrieren
+                </button>
+            </div>
+            <div class="not-member-register">
+                {#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
+                <div>Schon Mitglied? <a href="{{ path('app_login') }}"><button  class="register-btn-in-login">Login</button></a></div>
+            </div>
+            {{ form_end(regform) }}
+        </form>
     </div>
 {% endblock %}
