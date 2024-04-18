@@ -70,10 +70,16 @@ class ImportController extends AbstractController
             }
         }
 
-        
-
         return new JsonResponse($output);
         //return $this->json('excel scanned', 200);
         //return $this->redirectToRoute('home');
     }
+
+    #[Route('/save', name: 'save')]
+    public function saveData()
+    {
+
+
+        $url = $this->generateUrl('app_import');
+        return new JsonResponse(['url' => $url]);    }
 }
