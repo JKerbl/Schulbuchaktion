@@ -14,7 +14,7 @@
         styling under header: mb-6 text-lg font-normal lg:text-xl sm:px-16 xl:px-48 text-center
     #}
 
-    <nav class="nav-bar-outer" id="form-div-outer-login">
+    <nav class="nav-bar-outer">
         <div class="nav-bar-company-name-and-icon">
             <div class="logo-nav-bar">
                 <img class="logo" src="/images/library_logo.png" alt="logo">
@@ -30,16 +30,24 @@
             <div class="nav-bar-item">
                 <button class="login-button">Team</button>
             </div>
-            <div class="nav-bar-item" id="login-btn">
-                <a href="{{ path('app_login') }}">
-                    <button>Login</button>
-                </a>
-            </div>
-            <div class="nav-bar-item" id="register-btn">
-                <a href="{{ path('registration') }}">
-                    <button>Registrieren</button>
-                </a>
-            </div>
+            {% if app.user %}
+                <div class="nav-bar-item" id="login-btn">
+                    <a href="{{ path('app_logout') }}">
+                        <button>Logout</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="nav-bar-item" id="login-btn">
+                    <a href="{{ path('app_login') }}">
+                        <button>Login</button>
+                    </a>
+                </div>
+                <div class="nav-bar-item" id="register-btn">
+                    <a href="{{ path('registration') }}">
+                        <button>Registrieren</button>
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </nav>
 
@@ -52,5 +60,13 @@
     <div class="logo-div">
         <img class="landing-page-image" src="/images/lading_page_image_2.jpeg" alt="our-logo">
     </div>
+
+    {% if app.user %}
+        <div class="link-to-home">
+            <button id="btn-to-home">
+                <a href="{{ path('home') }}">-> Bestellen Sie nun Ihre Bücher</a>
+            </button>
+        </div>
+    {% endif %}
 
 {% endblock %}
