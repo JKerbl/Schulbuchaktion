@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TeamController!{% endblock %}
+
+{% block body %}
+
+
+
+
+{# /*    .profile-item { #}
+{#        background-color: #f9f9f9; #}
+{#        border-radius: 8px; #}
+{#        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); #}
+{#        padding: 20px; #}
+{#        width: 100%; #}
+{#    } #}
+
+{#    .profile-item img { #}
+{#        border-radius: 50%; #}
+{#        width: 100px; #}
+{#        height: 100px; #}
+{#        object-fit: cover; #}
+{#    } #}
+
+{#    .profile-item h2 { #}
+{#        font-size: 18px; #}
+{#        margin: 10px 0; #}
+{#    } #}
+
+{#    .profile-item p { #}
+{#        font-size: 14px; #}
+{#        color: #666; #}
+{#    }*/ #}
+
+<style>
+
+    .profile-frame {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 35px;
+    }
+
+    .profile-frame-outer {
+        justify-content: center;
+        text-align: center;
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .profile-item {
+        padding: 0.5em;
+        text-align: center;
+        background-color: lightgrey;
+    }
+
+    .header-profile {
+        margin: 1em;
+        padding: 1em;
+        font-size: 35px;
+        text-align: center;
+    }
+
+    .profile-img {
+        height: 50px;
+        margin: 0 auto;
+    }
+
+    .profile-item h2 {
+        font-size: 18px;
+        font-weight: 650;
+    }
+
+</style>
+
+<body>
+
+<div class="header-profile">
+    Unsere Team Mitglieder
+</div>
+
+<div class="profile-frame-outer">
+    <div class="profile-frame">
+        <div class="profile-item">
+            <img class="profile-img" src="/images/person.png" alt="Profilbild 1">
+            <h2>Felix Gärtner</h2>
+            <p>Team Backend</p>
+        </div>
+        <div class="profile-item">
+            <img class="profile-img" src="/images/person.png" alt="Profilbild 2">
+            <h2>David Restea</h2>
+            <p>Team Backend</p>
+        </div>
+        <div class="profile-item">
+            <img class="profile-img" src="/images/person.png" alt="Profilbild 3">
+            <h2>Johannes Kerbl</h2>
+            <p>Team Frontend</p>
+        </div>
+        <div class="profile-item">
+            <img class="profile-img" src="/images/person.png" alt="Profilbild 4">
+            <h2>Samed Karaman</h2>
+            <p>Team Frontend</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
