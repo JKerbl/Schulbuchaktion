@@ -13,6 +13,7 @@
             <input type="file" name="file">
             <button type="submit">Upload</button>
         </form>
+
         <div id="output"></div>
     </div>
 
@@ -30,7 +31,23 @@
                         // Clear the old table
                         $('#output').empty();
 
-                        $('<h3>').text('Importierte Daten:').appendTo('#output');
+                        $('<button>')
+                            .text('Import bestätigen')
+                            .click(function() {
+                                // Call the save function when the button is clicked
+                                $.ajax({
+                                    url: '/save',
+                                    type: 'POST',
+                                    success: function(response) {
+                                        // Redirect to the returned URL
+                                        alert('Daten gespeichert!')
+                                        window.location.href = response.url;
+                                    }
+                                });
+                            })
+                            .appendTo('#output');
+
+                        $('<h3>').text('Folgende Daten werden importiert:').appendTo('#output');
 
                         // Append the new table
                         var table = $('<table>').appendTo('#output');
@@ -45,5 +62,6 @@
             });
         });
     </script>
+
 
 {% endblock %}
