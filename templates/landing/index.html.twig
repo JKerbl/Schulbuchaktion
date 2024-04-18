@@ -28,7 +28,9 @@
                 Home
             </div>
             <div class="nav-bar-item">
-                <button class="login-button">Team</button>
+                <a href="{{ path('app_team') }}">
+                    <button class="login-button">Team</button>
+                </a>
             </div>
             {% if app.user %}
                 <div class="nav-bar-item" id="login-btn">
