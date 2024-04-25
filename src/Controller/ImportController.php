@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -36,20 +37,22 @@ class ImportController extends AbstractController
 
         $fileFolder = 'uploads/';
 
-        $filePathName = md5(uniqid()) . $file->getClientOriginalName();
-        // apply md5 function to generate an unique identifier for the file and concat it with the file extension
+        $filePathName = 'excelUploadFile.xlsx';
         try {
             $file->move($fileFolder, $filePathName);
         } catch (FileException $e) {
             dd($e);
         }
-        $spreadsheet = IOFactory::load($fileFolder . $filePathName); // Here we are able to read from the excel file
+        $output = $this->getExcelData($fileFolder . $filePathName);
 
+        return new JsonResponse($output);
+    }
 
-        //$row = $spreadsheet->getActiveSheet()->removeRow(1);
-        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
-        //dd($sheetData);
-        $entityManager = $doctrine->getManager();
+    public function getExcelData($filePathName): array
+    {
+        $spreadsheet = IOFactory::load($filePathName);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
         $output = [];
         foreach ($sheetData as $Row) {
             if ($Row['A'] !== null) {
@@ -70,16 +73,45 @@ class ImportController extends AbstractController
             }
         }
 
-        return new JsonResponse($output);
-        //return $this->json('excel scanned', 200);
-        //return $this->redirectToRoute('home');
+        return $output;
     }
 
     #[Route('/save', name: 'save')]
-    public function saveData()
+    public function saveData(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
+        $filePathName = 'uploads/excelUploadFile.xlsx';
 
+        $data = $this->getExcelData($filePathName);
+
+        /*
+        $entityManager = $doctrine->getManager();
+
+        foreach ($data as $row) {
+            $entity = new YourEntity();
+            $entity->setBnr($row['bnr']);
+            $entity->setShortTitle($row['shortTitle']);
+            $entity->setTitle($row['title']);
+            $entity->setListType($row['listType']);
+            $entity->setSchoolForm($row['schoolForm']);
+            $entity->setFullName($row['fullName']);
+            $entity->setSchoolGrade($row['schoolGrade']);
+            $entity->setInfo($row['info']);
+            $entity->setPrice($row['price']);
+            $entity->setEbookPlusPrice($row['ebookPlusPrice']);
+            $entity->setEbook($row['ebook']);
+            $entity->setEbookPlus($row['ebookPlus']);
+
+            $entityManager->persist($entity);
+        }
+
+        $entityManager->flush();
+        */
+
+        if (file_exists($filePathName)) {
+            unlink($filePathName);
+        }
 
         $url = $this->generateUrl('app_import');
-        return new JsonResponse(['url' => $url]);    }
+        return new JsonResponse(['url' => $url]);
+    }
 }
