@@ -40,64 +40,17 @@
             width: 28.4rem; /*TEMPORARY*/
         }
 
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            -webkit-appearance:none;
+        }
+
         .inputBar:focus {
             outline:none;
         }
     </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            //Searchbar
-            let words = ['Büchern', 'Autoren', 'Klassen'];
-            let wordIndex = 0;
-
-            function typeNextWord() {
-                if (wordIndex < words.length) {
-                    let word = words[wordIndex++];
-                    let text = '';
-                    let textIndex = 0;
-
-                    function typeNextCharacter() {
-                        if (textIndex < word.length) {
-                            text += word.charAt(textIndex++);
-                            document.getElementById('animated-text').textContent = text;
-                            setTimeout(typeNextCharacter, 300);
-                        } else {
-                            setTimeout(typeNextWord, 3000);
-                        }
-                    }
-
-                    typeNextCharacter();
-                } else {
-                    wordIndex = 0;
-                    typeNextWord();
-                }
-            }
-
-            typeNextWord();
-
-            //Search function
-            let input = document.getElementById('search-input');
-            let resultsContainer = document.getElementById('results-container');
-            let results = {{ results|json_encode|raw }};
-
-            input.addEventListener('keyup', function() {
-                let query = this.value.toLowerCase();
-
-                let filteredResults = results.filter(function(result) {
-                    return result.toLowerCase().includes(query);
-                });
-
-                resultsContainer.innerHTML = '';
-                filteredResults.forEach(function(result) {
-                    let resultDiv = document.createElement('div');
-                    resultDiv.textContent = result;
-                    resultDiv.className = 'result-bar';
-                    resultsContainer.appendChild(resultDiv);
-                });
-            });
-        });
-    </script>
 
     <div>
         <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
@@ -110,10 +63,6 @@
 
             <div class="hidden lg:flex space-x-4">
                 <div>
-                    <p class="hidden md:block">Bestellen</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
                     <p class="hidden md:block">Bestellübersicht</p>
                 </div>
                 <div class="border border-gray-300"></div>
@@ -122,7 +71,11 @@
                 </div>
                 <div class="border border-gray-300"></div>
                 <div>
-                    <p class="hidden md:block">Banane</p>
+                    <p class="hidden md:block">Exportieren</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Importieren</p>
                 </div>
             </div>
             <div class="flex space-x-4">
