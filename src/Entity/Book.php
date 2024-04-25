@@ -21,7 +21,7 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $shortTitle = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     #[ORM\Column(nullable: true)]
@@ -30,7 +30,7 @@ class Book
     #[ORM\Column]
     private ?int $schoolForm = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 500, nullable: true)]
     private ?string $info = null;
 
     #[ORM\Column]
