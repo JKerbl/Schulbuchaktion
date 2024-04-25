@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Schulbuchaktion{% endblock %}
+{% block title %}Homepage{% endblock %}
 
 {% block body %}
     <style>
@@ -101,10 +101,13 @@
 
     <div>
         <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
-            <div class="flex items-center space-x-2">
-                <img class="w-12 h-12" src="/images/logo.png">
-                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
-            </div>
+            <a href="{{ path('landing_page') }}">
+                <div class="flex items-center space-x-2">
+                    <img class="w-12 h-12" src="/images/logo.png">
+                    <h1 class="text-xl font-bold">Schulbuchaktion</h1>
+                </div>
+            </a>
+
             <div class="hidden lg:flex space-x-4">
                 <div>
                     <p class="hidden md:block">Bestellen</p>
@@ -124,8 +127,14 @@
             </div>
             <div class="flex space-x-4">
                 <div class="flex items-center space-x-2 py-2">
-                    <p class="text-md">Willkommen Markus!</p>
-                    <img class="w-8 h-8" src="/images/logout.png">
+                    {% if(is_granted("IS_AUTHENTICATED_FULLY")) %}
+                        <p class="text-md">Willkommen {{ user.username }}!</p>
+                        <a href="{{ path('app_logout') }}">
+                            <img class="w-8 h-8 mr-2" src="/images/logout.png">
+                        </a>
+                    {% else %}
+                        <p class="text-md mr-2">Willkommen auf der Homepage!</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -153,4 +162,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            //Searchbar
+            let words = ['Büchern', 'Autoren', 'Klassen'];
+            let wordIndex = 0;
+
+            function typeNextWord() {
+                if (wordIndex < words.length) {
+                    let word = words[wordIndex++];
+                    let text = '';
+                    let textIndex = 0;
+
+                    function typeNextCharacter() {
+                        if (textIndex < word.length) {
+                            text += word.charAt(textIndex++);
+                            document.getElementById('animated-text').textContent = text;
+                            setTimeout(typeNextCharacter, 300);
+                        } else {
+                            setTimeout(typeNextWord, 3000);
+                        }
+                    }
+
+                    typeNextCharacter();
+                } else {
+                    wordIndex = 0;
+                    typeNextWord();
+                }
+            }
+
+            typeNextWord();
+        });
+    </script>
 {% endblock %}
