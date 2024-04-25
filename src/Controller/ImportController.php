@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Book;
+use App\Entity\Subject;
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,9 +12,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use function Symfony\Component\String\u;
 
 class ImportController extends AbstractController
 {
@@ -64,8 +65,10 @@ class ImportController extends AbstractController
                     'schoolForm' => $Row['E'],
                     'fullName' => $Row['F'],
                     'schoolGrade' => $Row['G'],
+                    'teacherVersion' => $Row['H'],
                     'info' => $Row['I'],
-                    'price' => $Row['N'] == null ? $Row['M'] : $Row['N'],
+                    'price' => $Row['M'],
+                    'priceBase' => $Row['N'],
                     'ebookPlusPrice' => $Row['O'],
                     'ebook' => $Row['P'],
                     'ebookPlus' => $Row['Q'],
@@ -83,29 +86,74 @@ class ImportController extends AbstractController
 
         $data = $this->getExcelData($filePathName);
 
-        /*
+        // Remove the first row of the data
+        array_shift($data);
+
         $entityManager = $doctrine->getManager();
 
         foreach ($data as $row) {
-            $entity = new YourEntity();
-            $entity->setBnr($row['bnr']);
-            $entity->setShortTitle($row['shortTitle']);
-            $entity->setTitle($row['title']);
-            $entity->setListType($row['listType']);
-            $entity->setSchoolForm($row['schoolForm']);
-            $entity->setFullName($row['fullName']);
-            $entity->setSchoolGrade($row['schoolGrade']);
-            $entity->setInfo($row['info']);
-            $entity->setPrice($row['price']);
-            $entity->setEbookPlusPrice($row['ebookPlusPrice']);
-            $entity->setEbook($row['ebook']);
-            $entity->setEbookPlus($row['ebookPlus']);
+            $bookRepository = $doctrine->getRepository(Book::class);
+            $existingBook = $bookRepository->findOneBy(['bnr' => intval($row['bnr'])]);
 
-            $entityManager->persist($entity);
+            if ($existingBook) {
+                $book = $existingBook;
+            } else {
+                $book = new Book();
+                $book->setBnr(intval($row['bnr']));
+            }
+
+            $subjectRepository = $doctrine->getRepository(Subject::class);
+            $existingSubject = $subjectRepository->findOneBy(['fullName' => $row['fullName']]);
+
+            if ($existingSubject){
+                $subject=$existingSubject;
+            } else{
+                $subject = new Subject();
+                $subject->setFullName($row['fullName']);
+
+                $entityManager->persist($subject);
+
+            }
+
+            // Convert string to integer
+            $book->setListType(intval($row['listType']));
+            $book->setSchoolForm(intval($row['schoolForm']));
+
+            // Convert string to float
+            $book->setPriceBase(floatval($row['priceBase']));
+            $book->setEbookPlusPrice(floatval($row['ebookPlusPrice']));
+            $book->setPrice(floatval($row['price']));
+
+            $book->setShortTitle($row['shortTitle']);
+            $book->setTitle($row['title']);
+            $book->setInfo($row['info']);
+            $book->setSubject($subject);
+            $book->setSchoolGrades($row['schoolGrade']);
+
+            if ($row['teacherVersion']!= null){
+                $book->setTeacherVersion(true);
+            } else {
+                $book->setTeacherVersion(false);
+            }
+
+            if ($row['ebook']!= null){
+                $book->setEbook(true);
+            } else {
+                $book->setEbook(false);
+            }
+
+            if ($row['ebookPlus']!= null){
+                $book->setEbookPlus(true);
+            } else {
+                $book->setEbookPlus(false);
+            }
+
+            if (!$existingBook){
+                $entityManager->persist($book);
+            }
+            $entityManager->flush();
         }
 
-        $entityManager->flush();
-        */
 
         if (file_exists($filePathName)) {
             unlink($filePathName);

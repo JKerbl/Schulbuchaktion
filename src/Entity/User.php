@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,13 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255,  nullable: true)]
     private ?string $lastName = null;
 
-    #[ORM\OneToOne(targetEntity: Subject::class)]
+    #[ORM\OneToMany(targetEntity: Subject::class, mappedBy: "headOfSubject")]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Subject $headSubject = null;
+    private ?Collection $subject = null;
 
-    #[ORM\OneToOne(targetEntity: Department::class)]
+    #[ORM\OneToMany(targetEntity: Department::class, mappedBy: "headOfDepartment")]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Department $headDepartment = null;
+    private ?Collection $department = null;
     public function getId(): ?int
     {
         return $this->id;
@@ -140,24 +141,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = $lastName;
     }
 
-    public function getHeadSubject(): ?Subject
+    public function getSubject(): ?Collection
     {
-        return $this->headSubject;
+        return $this->subject;
     }
 
-    public function setHeadSubject(?Subject $headSubject): void
+    public function setSubject(?Collection $subject): void
     {
-        $this->headSubject = $headSubject;
+        $this->subject = $subject;
     }
 
-    public function getHeadDepartment(): ?Department
+    public function getDepartment(): ?Collection
     {
-        return $this->headDepartment;
+        return $this->department;
     }
 
-    public function setHeadDepartment(?Department $headDepartment): void
+    public function setDepartment(?Collection $department): void
     {
-        $this->headDepartment = $headDepartment;
+        $this->department = $department;
     }
 
 }

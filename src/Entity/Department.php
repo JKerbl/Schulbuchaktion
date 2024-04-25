@@ -26,7 +26,7 @@ class Department
     #[ORM\Column(nullable: true)]
     private ?int $umew = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "headDepartment")]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "department")]
     private ?User $headOfDepartment = null;
 
     #[ORM\OneToMany(targetEntity: SchoolClass::class, mappedBy: "department")]
@@ -101,6 +101,5 @@ class Department
     {
         $this->schoolclass = $schoolclass;
     }
-
 
 }

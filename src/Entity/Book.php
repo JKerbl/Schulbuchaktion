@@ -21,7 +21,7 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $shortTitle = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
     #[ORM\Column(nullable: true)]
@@ -39,11 +39,8 @@ class Book
     #[ORM\Column]
     private ?bool $eBookPlus = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $mainBookId = null;
-
-    #[ORM\OneToOne(targetEntity: BookPrice::class, inversedBy: "book")]
-    private BookPrice $bookPrice;
+    #[ORM\Column]
+    private string $schoolGrades;
 
     #[ORM\ManyToOne(targetEntity: Subject::class, inversedBy: "book")]
     #[ORM\JoinColumn(nullable: true)]
@@ -52,31 +49,22 @@ class Book
     #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "book")]
     private Collection $bookOrder;
 
-    #[ORM\ManyToMany(targetEntity: SchoolGrades::class, mappedBy: "books")]
-    private Collection $schoolGrades;
+
+    #[ORM\Column]
+    private ?float $price = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $priceBase = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $eBookPlusPrice = null;
+
+    #[ORM\Column]
+    private ?bool $teacherVersion = null;
 
     public function __construct()
     {
         $this->schoolGrades = new ArrayCollection();
-    }
-
-    public function addSchoolGrade(SchoolGrades $schoolGrade): self
-    {
-        if (!$this->schoolGrades->contains($schoolGrade)) {
-            $this->schoolGrades[] = $schoolGrade;
-            $schoolGrade->addBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSchoolGrade(SchoolGrades $schoolGrade): self
-    {
-        if ($this->schoolGrades->removeElement($schoolGrade)) {
-            $schoolGrade->removeBook($this);
-        }
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -169,56 +157,14 @@ class Book
         $this->eBookPlus = $eBookPlus;
     }
 
-    public function getMainBookId(): ?int
-    {
-        return $this->mainBookId;
-    }
-
-    public function setMainBookId(?int $mainBookId): void
-    {
-        $this->mainBookId = $mainBookId;
-    }
-
-    public function getBookPrice(): ?BookPrice
-    {
-        return $this->bookPrice;
-    }
-
-    public function setBookPrice(?BookPrice $bookPrice): void
-    {
-        $this->bookPrice = $bookPrice;
-    }
-
-    public function getSubjectId(): ?int
-    {
-        return $this->subjectId;
-    }
-
-    public function setSubjectId(?int $subjectId): void
-    {
-        $this->subjectId = $subjectId;
-    }
-
-    public function isEBook(): ?bool
-    {
-        return $this->eBook;
-    }
-
-    public function isEBookPlus(): ?bool
-    {
-        return $this->eBookPlus;
-    }
-
     public function getSubject(): ?Subject
     {
         return $this->subject;
     }
 
-    public function setSubject(?Subject $subject): static
+    public function setSubject(?Subject $subject): void
     {
         $this->subject = $subject;
-
-        return $this;
     }
 
     public function getBookOrder(): Collection
@@ -231,14 +177,56 @@ class Book
         $this->bookOrder = $bookOrder;
     }
 
-    public function getSchoolGrades(): Collection
+    public function getSchoolGrades(): string
     {
         return $this->schoolGrades;
     }
 
-    public function setSchoolGrades(Collection $schoolGrades): void
+    public function setSchoolGrades(string $schoolGrades): void
     {
         $this->schoolGrades = $schoolGrades;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): void
+    {
+        $this->price = $price;
+    }
+
+    public function getPriceBase(): ?float
+    {
+        return $this->priceBase;
+    }
+
+    public function setPriceBase(?float $priceBase): void
+    {
+        $this->priceBase = $priceBase;
+    }
+
+    public function getEBookPlusPrice(): ?float
+    {
+        return $this->eBookPlusPrice;
+    }
+
+    public function setEBookPlusPrice(?float $eBookPlusPrice): void
+    {
+        $this->eBookPlusPrice = $eBookPlusPrice;
+    }
+
+    public function isTeacherVersion(): ?bool
+    {
+        return $this->teacherVersion;
+    }
+
+    public function setTeacherVersion(bool $teacherVersion): static
+    {
+        $this->teacherVersion = $teacherVersion;
+
+        return $this;
     }
 
 
