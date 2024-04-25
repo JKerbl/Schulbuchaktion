@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class HomeController extends AbstractController
-{
-    #[Route('/home', name: 'home')]
-    public function index(): Response{
+#[Route('/home', name: 'home.')]
+class HomeController extends AbstractController {
+    #[Route('/', name: '')]
+    public function index(): Response {
         $results = array(
             "Ingenieur-Mathematik 4.-5. Klasse, HTL",
             "Blattwerk Deutsch - Texte III-V, 3.-4. Klasse, HTL",
@@ -18,9 +18,10 @@ class HomeController extends AbstractController
             "Recht für Techniker, 4. Klasse, HTL",
             "Z",
             "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS");
-  
+
+            $user = $this->getUser();
         return $this->render('home/index.html.twig', [
-            'results' => $results,
+            'results' => $results, 'user' => $user
         ]);
     }
 
