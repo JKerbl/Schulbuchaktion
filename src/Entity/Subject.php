@@ -16,12 +16,9 @@ class Subject
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $shortName = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $fullName = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: "headSubject")]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "subject")]
     private ?User $headOfSubject = null;
 
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'subject')]
@@ -40,16 +37,6 @@ class Subject
     public function setId(?int $id): void
     {
         $this->id = $id;
-    }
-
-    public function getShortName(): ?string
-    {
-        return $this->shortName;
-    }
-
-    public function setShortName(?string $shortName): void
-    {
-        $this->shortName = $shortName;
     }
 
     public function getFullName(): ?string
@@ -81,6 +68,5 @@ class Subject
     {
         $this->book = $book;
     }
-
 
 }
