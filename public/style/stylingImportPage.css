@@ -1,0 +1,31 @@
+.import-outside-table {
+    width: 100%;
+    padding: 1em;
+}
+
+#upload-form {
+    width: 80%;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.headline-import {
+    font-size: xx-large;
+    text-align: center;
+    margin-bottom: 2.5em;
+}
+
+#input-import-file {
+    font-size: 20px;
+    background-color: #bbdbe0;
+    text-align: center;
+}
+
+.submit-btn-profile {
+    font-weight: bold;
+    font-size: 20px;
+    border-color: #1ec3e0;
+    padding: 1em;
+
+}
