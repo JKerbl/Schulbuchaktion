@@ -1,20 +1,171 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!{% endblock %}
+{% block title %}Bestellen{% endblock %}
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .customColorBG {
+        background-color: #17A2B8;
+        transition: 0.3s;
+    }
+
+    .customColorBG:hover {
+        background-color: #118c9f;
+    }
+
+    .customColorText {
+        color: #17A2B8;
+    }
+
+    .customColorNumber {
+        color: #17A2B8;
+        transition: 0.3s;
+    }
+
+    .customColorNumber:hover {
+        color: #118c9f;
+    }
+
+    .customColorBorder {
+        border-color: #17A2B8;
+        transition: 0.3s;
+    }
+
+    .customColorBorder:hover {
+        border-color: #118c9f;
+    }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div>
+    <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
+        <a href="{{ path('landing_page') }}">
+            <div class="flex items-center space-x-2">
+                <img class="w-12 h-12" src="/images/logo.png">
+                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
+            </div>
+        </a>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Besitzer/Documents/HTL/ITP2/Schulbuchaktion/src/Controller/OrderController.php</code></li>
-        <li>Your template at <code>C:/Users/Besitzer/Documents/HTL/ITP2/Schulbuchaktion/templates/order/index.html.twig</code></li>
-    </ul>
+        <div class="hidden lg:flex space-x-4">
+            <div>
+                <p class="hidden md:block">Bestellübersicht</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Klassenübersicht</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Exportieren</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Importieren</p>
+            </div>
+        </div>
+        <div class="flex space-x-4">
+            <div class="flex items-center space-x-2 py-2">
+                <p class="text-md">Willkommen {{ user.username }}!</p>
+                <a href="{{ path('app_logout') }}">
+                    <img class="w-8 h-8 mr-2" src="/images/logout.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex items-center justify-center mt-16 text-xl">
+        <div class="w-1/2 text-center space-y-4 text-2xl">
+            <p>AT-390302030</p>
+            <p>4-5. Klasse, AHS</p>
+            <h1>Titel</h1>
+            <p>Beschreibung</p>
+        </div>
+        <div class="w-1/2">
+            <div>
+                <div>
+                    <h3 class="font-semibold text-3xl">Klasse wählen:</h3>
+                </div>
+                <div class="flex mt-4">
+                    <div class="w-1/2 space-y-4">
+                        <p>Schulklasse</p>
+                        <p>Anzahl der Schüler</p>
+                        <p>Davon Repetenten</p>
+                        <p>Aktuelles Budget (€)</p>
+                    </div>
+                    <div class="w-1/2 space-y-4 text-center mr-8">
+                        <select class="mx-auto rounded-sm p-0.5">
+                            <option>1AHITN</option>
+                            <option>2AHITN</option>
+                            <option>3AHITN</option>
+                            <option>4AHITN</option>
+                            <option>5AHITN</option>
+                        </select>
+                        <p>19</p>
+                        <p>2</p>
+                        <p>10.042,30 / 30.000,00</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20">
+                <div>
+                    <h3 class="font-semibold text-3xl">Bestelldetails wählen:</h3>
+                </div>
+                <div class="flex mt-4">
+                    <div class="w-1/2 space-y-4">
+                        <p>Anzahl der Buchmenge:</p>
+                        <p>Kopie für Lehrer:</p>
+                        <p>E-Book:</p>
+                        <p>E-Book+:</p>
+                    </div>
+                    <div class="w-1/2 space-y-4 text-center mr-8">
+                        <div class="inline-block">
+                            <button
+                                class="border customColorBorder customColorNumber rounded-md mr-1 px-1.5"
+                                onclick="updateBookAmount(1)"
+                            >+</button>
+                            <p class="inline-block w-8" id="bookAmount">4</p>
+                            <button
+                                class="border customColorBorder customColorNumber rounded-md ml-1 px-2"
+                                onclick="updateBookAmount(-1)"
+                            >-</button>
+                        </div>
+                        <div>
+                            <input type="checkbox" class="h-4 w-4">
+                            <label class="text-xs customColorText">J/N</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" class="h-4 w-4">
+                            <label class="text-xs customColorText">J/N</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" class="h-4 w-4">
+                            <label class="text-xs customColorText">J/N</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 flex justify-center mr-32">
+                <button
+                    class="customColorBG p-4 rounded-md text-white font-semibold tracking-wider"
+                >
+                    Zur Bestellliste hinzufügen
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function updateBookAmount(amount) {
+        let bookAmount = document.getElementById('bookAmount')
+        let currentAmount = parseInt(bookAmount.innerText) + amount
+        if(currentAmount < 1) {
+            currentAmount = 1
+        }
+
+        bookAmount.innerText = currentAmount.toString()
+    }
+</script>
+
 {% endblock %}

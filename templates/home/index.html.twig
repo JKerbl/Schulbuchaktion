@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Schulbuchaktion{% endblock %}
+{% block title %}Homepage{% endblock %}
 
 {% block body %}
     <style>
@@ -37,13 +37,84 @@
 
         .inputBar {
             background-color:#ECECEC;
-            width: 28.4rem; /*TEMPORARY*/
+            width: 25.4rem;
+        }
+
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            -webkit-appearance:none;
         }
 
         .inputBar:focus {
             outline:none;
         }
     </style>
+
+    <div>
+        <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
+            <a href="{{ path('landing_page') }}">
+                <div class="flex items-center space-x-2">
+                    <img class="w-12 h-12" src="/images/logo.png">
+                    <h1 class="text-xl font-bold">Schulbuchaktion</h1>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex space-x-4">
+                <div>
+                    <p class="hidden md:block">Bestellübersicht</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Klassenübersicht</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Exportieren</p>
+                </div>
+                <div class="border border-gray-300"></div>
+                <div>
+                    <p class="hidden md:block">Importieren</p>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <div class="flex items-center space-x-2 py-2">
+                    {% if(is_granted("IS_AUTHENTICATED_FULLY")) %}
+                        <p class="text-md">Willkommen {{ user.username }}!</p>
+                        <a href="{{ path('app_logout') }}">
+                            <img class="w-8 h-8 mr-2" src="/images/logout.png">
+                        </a>
+                    {% else %}
+                        <p class="text-md mr-2">Willkommen auf der Homepage!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col items-center justify-center mt-24">
+            <div class="text-4xl">
+                <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
+            </div>
+            <div class="mt-6">
+                <div class="border border-gray-700 p-2 flex justify-between items-center">
+                    <form class="flex items-center" role="search" action="{{ path('home.search') }}">
+                        <input type="image" class="w-10 h-10 " src="/images/search.png" alt="Input Button">
+                        <input type="search" class="text-xl p-1 inputBar" name="query" alt="Input Search">
+                    </form>
+                </div>
+
+                <div id="results-container">
+                    {% for result in results %}
+                        <div class="result-bar border-x border-b border-gray-700">
+                            <a href="{{ path('order', {'id': result}) }}">
+                                <p class="text-xl">{{ result }}</p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", (event) => {
@@ -75,77 +146,6 @@
             }
 
             typeNextWord();
-
-            //Search function
-            let input = document.getElementById('search-input');
-            let resultsContainer = document.getElementById('results-container');
-            let results = {{ results|json_encode|raw }};
-
-            input.addEventListener('keyup', function() {
-                let query = this.value.toLowerCase();
-
-                let filteredResults = results.filter(function(result) {
-                    return result.toLowerCase().includes(query);
-                });
-
-                resultsContainer.innerHTML = '';
-                filteredResults.forEach(function(result) {
-                    let resultDiv = document.createElement('div');
-                    resultDiv.textContent = result;
-                    resultDiv.className = 'result-bar';
-                    resultsContainer.appendChild(resultDiv);
-                });
-            });
         });
     </script>
-
-    <div>
-        <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
-            <div class="flex items-center space-x-2">
-                <img class="w-12 h-12" src="/images/logo.png">
-                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
-            </div>
-            <div class="hidden lg:flex space-x-4">
-                <div>
-                    <p class="hidden md:block">Bestellen</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Bestellübersicht</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Klassenübersicht</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Banane</p>
-                </div>
-            </div>
-            <div class="flex space-x-4">
-                <div class="flex items-center space-x-2 py-2">
-                    <p class="text-md">Willkommen Markus!</p>
-                    <img class="w-8 h-8" src="/images/logout.png">
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col items-center justify-center mt-24">
-            <div class="text-4xl">
-                <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
-            </div>
-            <div class="mt-6">
-                <div class="border border-gray-700 p-2 flex">
-                    <img class="w-8 h-8 mr-2" src="/images/search.png">
-                    <input id="search-input" class="text-xl w-96 p-1 inputBar">
-                </div>
-                <div id="results-container">
-                    {% for result in results %}
-                        <div class="result-bar border-x border-b border-gray-700">
-                            <p class="text-xl">{{ result }}</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}

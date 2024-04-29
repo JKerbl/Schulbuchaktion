@@ -9,10 +9,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class OrderController extends AbstractController
 {
     #[Route('/order', name: 'order')]
-    public function index(): Response
-    {
+    public function index(): Response {
+        $user = $this->getUser();
+
         return $this->render('order/index.html.twig', [
-            'controller_name' => 'OrderController',
+            'user' => $user,
         ]);
     }
 }
