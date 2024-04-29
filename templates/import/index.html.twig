@@ -1,66 +1,126 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Upload Excel{% endblock %}
-
+{% block title %}Dateien Import{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('style/stylingImportPage.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
 
-    <div class="example-wrapper">
-        <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <button type="submit">Upload</button>
-        </form>
+    <div class="import-outside-table">
+        <div class="headline-import">
+            Bitte wählen Sie ihre Import-Datei
+        </div>
+        <div class="form-div-outside">
+            <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
+                <label id="label-text" for="input-import-file" class="file-upload">Datei auswählen</label>
+                <input id="input-import-file" type="file" name="file" onchange="updateFileName()">
+                <button class="submit-btn-form" type="submit">Upload</button>
+            </form>
+        </div>
+        <div id="submit-upload">
 
-        <div id="output"></div>
+        </div>
+        <div id="output">
+            <div id="output-import">
+
+            </div>
+            <div id="output-text">
+
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead id="output-head">
+
+                </thead>
+                <tbody id="output-body">
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        $(document).ready(function(){
-            $('#upload-form').on('submit', function(e){
+        $(document).ready(function () {
+            $('#upload-form').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url : $(this).attr('action'),
+                    url: $(this).attr('action'),
                     type: $(this).attr('method'),
                     data: new FormData(this),
                     processData: false,
                     contentType: false,
-                    success: function(data){
+                    success: function (data) {
                         // Clear the old table
-                        $('#output').empty();
+                        $('#output-head').empty();
+                        $('#output-body').empty();
+
+                        let divElement = document.getElementById("submit-upload");
+                        divElement.classList.add("submit-upload-btn");
+
+                        let uploadElement = document.getElementsByClassName("form-div-outside");
+                        if (uploadElement.length > 0) {
+                            uploadElement[0].style.display = "none";
+                        }
+
+                        $('<a href="{{ path('app_import') }}">')
+                            .text('Falsche Daten - Neuer Import!')
+                            .addClass('back-to-import-btn')
+                            .appendTo('#output-import');
+
+                        $('<h3>').text('Folgende Daten werden bei Ihrer Bestätigung importiert:').appendTo('#output-text');
 
                         $('<button>')
                             .text('Import bestätigen')
-                            .click(function() {
+                            .click(function () {
                                 // Call the save function when the button is clicked
                                 $.ajax({
                                     url: '/save',
                                     type: 'POST',
-                                    success: function(response) {
+                                    success: function (response) {
                                         // Redirect to the returned URL
                                         alert('Daten gespeichert!')
                                         window.location.href = response.url;
                                     }
                                 });
-                            })
-                            .appendTo('#output');
-
-                        $('<h3>').text('Folgende Daten werden importiert:').appendTo('#output');
-
+                            }).appendTo('#submit-upload');
                         // Append the new table
-                        var table = $('<table>').appendTo('#output');
-                        data.forEach(function(item) {
-                            var row = $('<tr>').appendTo(table);
-                            Object.values(item).forEach(function(value) {
-                                $('<td>').text(value).appendTo(row);
+                        let count = 0;
+                        //var table = $('<table class="table">').appendTo('#output');
+                        let row;
+                        data.forEach(function (item) {
+                            if (count === 0) {
+                                row = $('<tr>').appendTo('#output-head');
+                            } else {
+                                row = $('<tr>').appendTo('#output-body');
+                            }
+                            Object.values(item).forEach(function (value, index) {
+                                if (count === 0) {
+                                    $('<th style="width: 150px;">').text(value).appendTo(row);
+                                } else {
+                                    $('<td>').text(value).appendTo(row);
+                                }
                             });
+                            if (count === 0) {
+                                count++;
+                            }
                         });
                     }
                 });
             });
         });
+
+        function updateFileName() {
+            let input = document.getElementById('input-import-file');
+            let label = document.getElementById('label-text');
+            if (input.files && input.files.length > 0) {
+                label.textContent = "Datei ausgewählt!"
+                label.style.color = '#17a1b7'
+                    // input.files[0].name;
+            } else {
+                label.textContent = "Datei auswählen";
+
+            }
+        }
+
     </script>
 
 

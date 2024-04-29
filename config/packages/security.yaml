@@ -40,6 +40,12 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/home, roles: ROLE_USER}
+        - { path: ^/app_import, roles: ROLE_USER}
+        - { path: ^/order, roles: ROLE_USER}
+        - { path: ^/landing_page, roles: PUBLIC_ACCESS}
+        - { path: ^/registration, roles: PUBLIC_ACCESS}
+        - { path: ^/app_login, roles: PUBLIC_ACCESS}
+        - { path: ^/app_team, roles: PUBLIC_ACCESS}
 
 when@test:
     security:
