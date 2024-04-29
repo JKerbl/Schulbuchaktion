@@ -8,14 +8,34 @@
 
     <div class="import-outside-table">
         <div class="headline-import">
-            Bitte wählen Sie ihre Import-Datei.
+            Bitte wählen Sie ihre Import-Datei
         </div>
-        <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
-            <input id="input-import-file" type="file" name="file">
-            <br>
-            <button class="submit-btn-profile" type="submit">Upload</button>
-        </form>
-        <div id="output"></div>
+        <div class="form-div-outside">
+            <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
+                <label id="label-text" for="input-import-file" class="file-upload">Datei auswählen</label>
+                <input id="input-import-file" type="file" name="file" onchange="updateFileName()">
+                <button class="submit-btn-form" type="submit">Upload</button>
+            </form>
+        </div>
+        <div id="submit-upload">
+
+        </div>
+        <div id="output">
+            <div id="output-import">
+
+            </div>
+            <div id="output-text">
+
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead id="output-head">
+
+                </thead>
+                <tbody id="output-body">
+
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
@@ -30,7 +50,23 @@
                     contentType: false,
                     success: function (data) {
                         // Clear the old table
-                        $('#output').empty();
+                        $('#output-head').empty();
+                        $('#output-body').empty();
+
+                        let divElement = document.getElementById("submit-upload");
+                        divElement.classList.add("submit-upload-btn");
+
+                        let uploadElement = document.getElementsByClassName("form-div-outside");
+                        if (uploadElement.length > 0) {
+                            uploadElement[0].style.display = "none";
+                        }
+
+                        $('<a href="{{ path('app_import') }}">')
+                            .text('Falsche Daten - Neuer Import!')
+                            .addClass('back-to-import-btn')
+                            .appendTo('#output-import');
+
+                        $('<h3>').text('Folgende Daten werden bei Ihrer Bestätigung importiert:').appendTo('#output-text');
 
                         $('<button>')
                             .text('Import bestätigen')
@@ -45,23 +81,46 @@
                                         window.location.href = response.url;
                                     }
                                 });
-                            })
-                            .appendTo('#output');
-
-                        $('<h3>').text('Folgende Daten werden importiert:').appendTo('#output');
-
+                            }).appendTo('#submit-upload');
                         // Append the new table
-                        var table = $('<table>').appendTo('#output');
+                        let count = 0;
+                        //var table = $('<table class="table">').appendTo('#output');
+                        let row;
                         data.forEach(function (item) {
-                            var row = $('<tr>').appendTo(table);
-                            Object.values(item).forEach(function (value) {
-                                $('<td>').text(value).appendTo(row);
+                            if (count === 0) {
+                                row = $('<tr>').appendTo('#output-head');
+                            } else {
+                                row = $('<tr>').appendTo('#output-body');
+                            }
+                            Object.values(item).forEach(function (value, index) {
+                                if (count === 0) {
+                                    $('<th style="width: 150px;">').text(value).appendTo(row);
+                                } else {
+                                    $('<td>').text(value).appendTo(row);
+                                }
                             });
+                            if (count === 0) {
+                                count++;
+                            }
                         });
                     }
                 });
             });
         });
+
+        function updateFileName() {
+            let input = document.getElementById('input-import-file');
+            let label = document.getElementById('label-text');
+            if (input.files && input.files.length > 0) {
+                label.textContent = "Datei ausgewählt!"
+                label.style.color = '#17a1b7'
+                    // input.files[0].name;
+            } else {
+                label.textContent = "Datei auswählen";
+
+            }
+        }
+
     </script>
 
 

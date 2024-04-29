@@ -13,7 +13,8 @@
 .headline-import {
     font-size: xx-large;
     text-align: center;
-    margin-bottom: 2.5em;
+    margin-bottom: 1.2em;
+    margin-top: 0.5em;
 }
 
 #input-import-file {
@@ -22,10 +23,106 @@
     text-align: center;
 }
 
-.submit-btn-profile {
-    font-weight: bold;
-    font-size: 20px;
-    border-color: #1ec3e0;
-    padding: 1em;
-
+.submit-btn-form {
+    border: #17a1b7 solid 1px;
+    border-radius: 5px;
+    margin-left: 1em;
+    padding: 0.5em;
+    color: #17a1b7;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
 }
+
+.submit-btn-form:hover {
+    background-color: #17a1b7;
+    color: #fff;
+}
+
+#input-import-file {
+    display: none;
+}
+
+
+.file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1.2em;
+    border-radius: 4px;
+}
+
+.file-upload:hover {
+    background-color: #f0f0f0;
+}
+
+.form-div-outside {
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1em;
+    border: #17a1b7 solid 3px;
+    border-radius: 5px;
+    width: 40%;
+}
+
+#label-text {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+th {
+    min-width: 150px;
+}
+
+.submit-upload-btn {
+    margin: 1em auto; /* oben/unten 1em, horizontal auto */
+    border: 3px solid #17a0b6;
+    padding: 0.5em;
+    width: 12em;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 1em;
+    color: #17a1b7;
+}
+
+
+.submit-upload-btn:hover {
+    margin: 1em auto; /* oben/unten 1em, horizontal auto */
+    background-color: #17a0b6;
+    border-color: #17a0b6;
+    color: white;
+}
+
+.back-to-import-btn {
+    margin: 1em auto; /* oben/unten 1em, horizontal auto */
+    border: 3px solid #17a0b6;
+    padding: 0.5em;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 1em;
+    color: #17a1b7;
+}
+
+.back-to-import-btn:hover {
+    margin: 1em auto; /* oben/unten 1em, horizontal auto */
+    background-color: #17a0b6;
+    border-color: #17a0b6;
+    color: white;
+}
+
+#output-text {
+    font-size: 1.1em;
+    font-weight: 650;
+    padding: 0.5em;
+    padding-left: 0;
+}
+
+
+#output-import {
+    text-align: center;
+    margin: 0 auto;
+    margin-bottom: 2em!important;
+    padding: 0.5em;
+}
+
