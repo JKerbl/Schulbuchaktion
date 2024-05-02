@@ -73,11 +73,11 @@
     </div>
 
     <div class="flex items-center justify-center mt-16 text-xl">
-        <div class="w-1/2 text-center space-y-4 text-2xl">
-            <p>AT-390302030</p>
-            <p>4-5. Klasse, AHS</p>
-            <h1>Titel</h1>
-            <p>Beschreibung</p>
+        <div class="w-1/2 text-center space-y-4 text-xl mb-24">
+            <p class="font-semibold">Titel: {{ book.shortTitle }}</p>
+            <p>Info: {{ book.info }}</p>
+            <p>Buchnummer: {{ book.bnr }}</p>
+            <p>Preis: {{ book.price }}€</p>
         </div>
         <div class="w-1/2">
             <div>
@@ -93,11 +93,35 @@
                     </div>
                     <div class="w-1/2 space-y-4 text-center mr-8">
                         <select class="mx-auto rounded-sm p-0.5">
+                            {% for class in classes %}
+                                <option>{{ class.name }}</option>
+                            {% endfor %}
                             <option>1AHITN</option>
                             <option>2AHITN</option>
                             <option>3AHITN</option>
                             <option>4AHITN</option>
                             <option>5AHITN</option>
+                            <option>1AHEL</option>
+                            <option>2AHEL</option>
+                            <option>3AHEL</option>
+                            <option>4AHEL</option>
+                            <option>5AHEL</option>
+                            <option>1AHEL</option>
+                            <option>2AHEL</option>
+                            <option>3AHEL</option>
+                            <option>4AHEL</option>
+                            <option>5AHEL</option>
+                            <option>1AHMBZ</option>
+                            <option>2AHMBZ</option>
+                            <option>3AHMBZ</option>
+                            <option>4AHMBZ</option>
+                            <option>5AHMBZ</option>
+                            <option>1BHMBZ</option>
+                            <option>2BHMBZ</option>
+                            <option>3BHMBZ</option>
+                            <option>4BHMBZ</option>
+                            <option>5BHMBZ</option>
+
                         </select>
                         <p>19</p>
                         <p>2</p>
@@ -123,7 +147,7 @@
                                 class="border customColorBorder customColorNumber rounded-md mr-1 px-1.5"
                                 onclick="updateBookAmount(1)"
                             >+</button>
-                            <p class="inline-block w-8" id="bookAmount">4</p>
+                            <p class="inline-block w-8" id="bookAmount">3</p>
                             <button
                                 class="border customColorBorder customColorNumber rounded-md ml-1 px-2"
                                 onclick="updateBookAmount(-1)"
@@ -134,18 +158,27 @@
                             <label class="text-xs customColorText">J/N</label>
                         </div>
                         <div>
-                            <input type="checkbox" class="h-4 w-4">
+
+                            <input type="checkbox" disabled class="h-4 w-4"
+                                {% if book.ebookplus %}
+                                    checked
+                                {% endif %}
+                            >
                             <label class="text-xs customColorText">J/N</label>
                         </div>
                         <div>
-                            <input type="checkbox" class="h-4 w-4">
+                            <input type="checkbox" disabled class="h-4 w-4"
+                                {% if book.ebook %}
+                                    checked
+                                {% endif %}
+                            >
                             <label class="text-xs customColorText">J/N</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12 flex justify-center mr-32">
+            <div class="mt-12 flex justify-center mr-32 mb-8">
                 <button
                     class="customColorBG p-4 rounded-md text-white font-semibold tracking-wider"
                 >
