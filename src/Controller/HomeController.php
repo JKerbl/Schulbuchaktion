@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\BookRepository;
+use App\Entity\Book;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,34 +12,32 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/home', name: 'home.')]
 class HomeController extends AbstractController {
     #[Route('/', name: '')]
-    public function index(): Response {
-        $results = array(
-            "Ingenieur-Mathematik 4.-5. Klasse, HTL",
-            "Blattwerk Deutsch - Texte III-V, 3.-4. Klasse, HTL",
-            "Best Shots, 3.-5. Klasse, AHS",
-            "Recht für Techniker, 4. Klasse, HTL",
-            "Z",
-            "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS");
+    public function index(BookRepository $br): Response {
+        $res = array();
+        $books = $br->findAll();
 
-            $user = $this->getUser();
+        foreach ($books as $key => $book) {
+            $res[] = $book->getShortTitle();
+        }
+
+        $user = $this->getUser();
         return $this->render('home/index.html.twig', [
-            'results' => $results, 'user' => $user
+            'results' => $res, 'user' => $user
         ]);
     }
 
     #[Route('/search', name: 'search')]
-    public function search(Request $request): Response {
+    public function search(Request $request, BookRepository $br): Response {
         $query = $request->get('query', '');
 
-        $results = array(
-            "Ingenieur-Mathematik 4.-5. Klasse, HTL",
-            "Blattwerk Deutsch - Texte III-V, 3.-4. Klasse, HTL",
-            "Best Shots, 3.-5. Klasse, AHS",
-            "Recht für Techniker, 4. Klasse, HTL",
-            "Z",
-            "FKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKSFKS");
+        $res = array();
+        $books = $br->findAll();
 
-        $filteredResults = array_filter($results, function($item) use ($query) {
+        foreach ($books as $key => $book) {
+            $res[] = $book->getShortTitle();
+        }
+
+        $filteredResults = array_filter($res, function($item) use ($query) {
             return strpos($item, $query) !== false;
         });
 
