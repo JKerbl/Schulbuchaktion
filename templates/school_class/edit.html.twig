@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schulklasse Bearbeiten{% endblock %}
+
+{% block body %}
+    <h1>Schulklasse Bearbeiten</h1>
+
+    {{ include('school_class/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
+
+    {{ include('school_class/_delete_form.html.twig') }}
+{% endblock %}
