@@ -12,7 +12,7 @@
             letter-spacing: .15em;
             animation:
                     typing 3.5s steps(40, end),
-                    blink-caret .75s step-end infinite;
+                    blink-caret 1s step-end infinite;
         }
 
         @keyframes typing {
@@ -49,6 +49,10 @@
 
         .inputBar:focus {
             outline:none;
+        }
+
+        .borderBox {
+            border: 1px solid grey;
         }
     </style>
 
@@ -96,7 +100,7 @@
                 <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
             </div>
             <div class="mt-6">
-                <div class="border border-gray-700 p-2 flex justify-between items-center">
+                <div class="p-2 flex justify-between items-center borderBox">
                     <form class="flex items-center" role="search" action="{{ path('home.search') }}">
                         <input type="image" class="w-10 h-10 " src="/images/search.png" alt="Input Button">
                         <input placeholder="{{ searchInput }}" type="search" class="text-xl p-1 inputBar" name="query" alt="Input Search">
