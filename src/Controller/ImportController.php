@@ -86,7 +86,17 @@ class ImportController extends AbstractController
 
         $data = $this->getExcelData($filePathName);
 
-        // Remove the first row of the data
+        //Erste Reihe holen
+        $firstRow = reset($data);
+
+        // z.B. Preis 2024
+        $yearString = $firstRow['price'];
+
+        if (preg_match('/(\d{4})$/', $yearString, $matches)) {
+            $year = $matches[1];
+        }
+
+        // Erste Reihe entfernen
         array_shift($data);
 
         $entityManager = $doctrine->getManager();
@@ -118,6 +128,7 @@ class ImportController extends AbstractController
             // Convert string to integer
             $book->setListType(intval($row['listType']));
             $book->setSchoolForm(intval($row['schoolForm']));
+            $book->setYear(intval($year));
 
             // Convert string to float
             $book->setPriceBase(floatval($row['priceBase']));
