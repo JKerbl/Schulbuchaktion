@@ -131,9 +131,9 @@ class ImportController extends AbstractController
             $book->setYear(intval($year));
 
             // Convert string to float
-            $book->setPriceBase(floatval($row['priceBase']));
-            $book->setEbookPlusPrice(floatval($row['ebookPlusPrice']));
-            $book->setPrice(floatval($row['price']));
+            $book->setPriceBase(floatval(str_replace(',', '.', $row['priceBase'])));
+            $book->setEbookPlusPrice(floatval(str_replace(',', '.', $row['ebookPlusPrice'])));
+            $book->setPrice(floatval(str_replace(',', '.', $row['price'])));
 
             $book->setShortTitle($row['shortTitle']);
             $book->setTitle($row['title']);
