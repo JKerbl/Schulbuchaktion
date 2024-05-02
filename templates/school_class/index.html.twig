@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schulklasse Übersicht{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('/style/stylingSchoolClass.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <nav class="nav-bar-outer">
+        <div class="nav-bar-company-name-and-icon">
+            <div class="logo-nav-bar">
+                <img class="logo" src="/images/library_logo.png" alt="logo">
+            </div>
+            <div class="company-name">
+                Schulbuchaktion
+            </div>
+        </div>
+        <div class="nav-bar-elements">
+            <div id="home" class="nav-bar-item">
+                Home
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_team') }}">
+                    <button class="login-button">Team</button>
+                </a>
+            </div>
+            {% if app.user %}
+                <div class="nav-bar-item" id="login-btn">
+                    <a href="{{ path('app_logout') }}">
+                        <button>Logout</button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="nav-bar-item" id="login-btn">
+                    <a href="{{ path('app_login') }}">
+                        <button>Login</button>
+                    </a>
+                </div>
+                <div class="nav-bar-item" id="register-btn">
+                    <a href="{{ path('registration') }}">
+                        <button>Registrieren</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+    <br>
+    <div class="text-4xl">
+        <h1>Schulklassen</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Schulstufe</th>
+                <th>Studenten Anzahl</th>
+                <th>Repetenten Anzahl</th>
+                <th>Benutztes Budget</th>
+                <th>Gesamt Budget</th>
+                <th>Jahr</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for school_class in school_classes %}
+            <tr>
+                <td>{{ school_class.id }}</td>
+                <td>{{ school_class.name }}</td>
+                <td>{{ school_class.grade }}</td>
+                <td>{{ school_class.studentsAmount }}</td>
+                <td>{{ school_class.repAmount }}</td>
+                <td>{{ school_class.usedBudget }}</td>
+                <td>{{ school_class.budget }}</td>
+                <td>{{ school_class.year }}</td>
+                <td>
+                    <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}">Anzeigen</a>
+                    <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}">Bearbeiten</a>
+                    <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}">Duplizieren</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Keine Einträge gefunden!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="create-new" href="{{ path('app_school_class_new') }}">Neu Anlegen</a>
+{% endblock %}
