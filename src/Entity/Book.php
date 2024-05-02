@@ -62,6 +62,9 @@ class Book
     #[ORM\Column]
     private ?bool $teacherVersion = null;
 
+    #[ORM\Column]
+    private ?int $year = null;
+
     public function __construct()
     {
         $this->schoolGrades = new ArrayCollection();
@@ -225,6 +228,18 @@ class Book
     public function setTeacherVersion(bool $teacherVersion): static
     {
         $this->teacherVersion = $teacherVersion;
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): static
+    {
+        $this->year = $year;
 
         return $this;
     }
