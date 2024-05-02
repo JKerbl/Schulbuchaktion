@@ -17,12 +17,16 @@ class HomeController extends AbstractController {
         $books = $br->findAll();
 
         foreach ($books as $key => $book) {
-            $res[] = $book->getShortTitle();
+            $res[] = array(
+                'id' => $book->getId(),
+                'shortTitle' => $book->getShortTitle()
+            );
         }
 
         $user = $this->getUser();
         return $this->render('home/index.html.twig', [
-            'results' => $res, 'user' => $user
+            'results' => $res, 'user' => $user,
+            'searchInput' => ""
         ]);
     }
 
@@ -34,7 +38,10 @@ class HomeController extends AbstractController {
         $books = $br->findAll();
 
         foreach ($books as $key => $book) {
-            $res[] = $book->getShortTitle();
+            $res[] = array(
+                'id' => $book->getId(),
+                'shortTitle' => $book->getShortTitle()
+            );
         }
 
         $filteredResults = array_filter($res, function($item) use ($query) {
@@ -43,7 +50,8 @@ class HomeController extends AbstractController {
 
         $user = $this->getUser();
         return $this->render('home/index.html.twig', [
-            'results' => $filteredResults, 'user' => $user
+            'results' => $filteredResults, 'user' => $user,
+            'searchInput' => $query
         ]);
     }
 }
