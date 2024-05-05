@@ -102,4 +102,10 @@ class Department
         $this->schoolclass = $schoolclass;
     }
 
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+
 }

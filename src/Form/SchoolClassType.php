@@ -23,10 +23,8 @@ class SchoolClassType extends AbstractType
             ->add('year', null, ['label' => 'Jahr'])
             ->add('department', EntityType::class, [
                 'class' => Department::class,
-                'choice_label' => 'id',
                 'label' => 'Abteilung'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

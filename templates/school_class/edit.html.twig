@@ -2,12 +2,27 @@
 
 {% block title %}Schulklasse Bearbeiten{% endblock %}
 
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+        <link href="{{ asset('/style/stylingSchoolClass.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
 {% block body %}
-    <h1>Schulklasse Bearbeiten</h1>
+    {% include "includes/_navbar.html.twig" %}
 
-    {{ include('school_class/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="text-4xl">
+        <h1>Schulklasse Anlegen</h1>
+    </div>
 
-    <a href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
+    <div class="content-form">
+        {{ include('school_class/_form.html.twig') }}
+        <div class="btn-links-under-form">
+            <button class="save-update-btn-form">{{ button_label|default('Anlegen') }}</button>
+            <div class="back-to-list-btn">
+                <a class="anchor-back-to-list" href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
+            </div>
+        </div>
+    </div>
 
-    {{ include('school_class/_delete_form.html.twig') }}
 {% endblock %}
