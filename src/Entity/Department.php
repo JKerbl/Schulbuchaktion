@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Collection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 class Department

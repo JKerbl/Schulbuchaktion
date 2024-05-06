@@ -16,13 +16,17 @@
     </div>
 
     <div class="content-form">
-        {{ include('school_class/_form.html.twig') }}
-        <div class="btn-links-under-form">
-            <button class="save-update-btn-form">{{ button_label|default('Anlegen') }}</button>
-            <div class="back-to-list-btn">
-                <a class="anchor-back-to-list" href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
+        <form method="post">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="btn-links-under-form">
+                <button class="save-update-btn-form" type="submit">{{ button_label|default('Anlegen') }}</button>
+                <div class="back-to-list-btn">
+                    <a class="anchor-back-to-list" href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
+                </div>
             </div>
-        </div>
+            {{ form_end(form) }}
+        </form>
     </div>
 
 {% endblock %}
