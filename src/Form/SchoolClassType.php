@@ -16,17 +16,15 @@ class SchoolClassType extends AbstractType
         $builder
             ->add('name', null, ['label' => 'Name'])
             ->add('grade', null, ['label' => 'Schulstufe'])
-            ->add('studentsAmount', null, ['label' => 'Studenten Anzahl'])
+            ->add('studentsAmount', null, ['label' => 'Schüler Anzahl'])
             ->add('repAmount', null, ['label' => 'Repetenten Anzahl'])
             ->add('usedBudget', null, ['label' => 'Benutztes Budget'])
             ->add('budget', null, ['label' => 'Gesamt Budget'])
             ->add('year', null, ['label' => 'Jahr'])
             ->add('department', EntityType::class, [
                 'class' => Department::class,
-                'choice_label' => 'id',
                 'label' => 'Abteilung'
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

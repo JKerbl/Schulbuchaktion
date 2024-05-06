@@ -22,7 +22,7 @@
 .company-name {
     margin-left: 0.5em;
     font-weight: 800;
-    font-size: 2em;
+    font-size: 1.8em;
     display: flex;
     align-content: center;
 }
@@ -60,21 +60,6 @@
     color: white;
     font-family: "Inter", serif;
     font-weight: 400;
-    font-size: 1.2rem;
-    height: 3rem;
-}
-
-
-.btn-to-home.hollow {
-    margin: 1rem 1rem;
-    width: 14rem;
-    background-color: #f5f5f5;
-    border-radius: 1.4rem;
-    border: 2px solid #057efc;
-    padding-right: 1rem;
-    color: #057efc;
-    font-weight: 400;
-    font-family: "Inter", serif;
     font-size: 1.2rem;
     height: 3rem;
 }

@@ -8,45 +8,7 @@
 {% endblock %}
 
 {% block body %}
-    <nav class="nav-bar-outer">
-        <div class="nav-bar-company-name-and-icon">
-            <div class="logo-nav-bar">
-                <img class="logo" src="/images/library_logo.png" alt="logo">
-            </div>
-            <div class="company-name">
-                Schulbuchaktion
-            </div>
-        </div>
-        <div class="nav-bar-elements">
-            <div id="home" class="nav-bar-item">
-                Home
-            </div>
-            <div class="nav-bar-item">
-                <a href="{{ path('app_team') }}">
-                    <button class="login-button">Team</button>
-                </a>
-            </div>
-            {% if app.user %}
-                <div class="nav-bar-item" id="login-btn">
-                    <a href="{{ path('app_logout') }}">
-                        <button>Logout</button>
-                    </a>
-                </div>
-            {% else %}
-                <div class="nav-bar-item" id="login-btn">
-                    <a href="{{ path('app_login') }}">
-                        <button>Login</button>
-                    </a>
-                </div>
-                <div class="nav-bar-item" id="register-btn">
-                    <a href="{{ path('registration') }}">
-                        <button>Registrieren</button>
-                    </a>
-                </div>
-            {% endif %}
-        </div>
-    </nav>
-    <br>
+    {% include "includes/_navbar.html.twig" %}
     <div class="text-4xl">
         <h1>Schulklassen</h1>
     </div>
@@ -57,7 +19,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Schulstufe</th>
-                <th>Studenten Anzahl</th>
+                <th>Schüler Anzahl</th>
                 <th>Repetenten Anzahl</th>
                 <th>Benutztes Budget</th>
                 <th>Gesamt Budget</th>
