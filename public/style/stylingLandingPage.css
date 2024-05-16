@@ -104,17 +104,17 @@
     /*border: black solid;*/
 }
 
-@media only screen and (max-width: 790px) {
-    .nav-bar-elements {
-        width: 100%;
-        position: absolute;
-        justify-content: center;
-        align-items: center;
-        margin-top: 4.5em;
-        padding: 1em;
-        background-color: #ECECEC;
-    }
-}
+/*@media only screen and (max-width: 790px) {*/
+/*    .nav-bar-elements {*/
+/*        width: 100%;*/
+/*        position: absolute;*/
+/*        justify-content: center;*/
+/*        align-items: center;*/
+/*        margin-top: 4.5em;*/
+/*        padding: 1em;*/
+/*        background-color: #ECECEC;*/
+/*    }*/
+/*}*/
 
 /* Basis-Styling für den Button */
 #login-btn {
@@ -159,4 +159,8 @@
 /* Aktiver Zustand */
 #register-btn:active {
     background-color: #0a6b7c; /* Hintergrundfarbe im aktiven Zustand */
+}
+
+.navbar-button:focus {
+    font-weight: 650;
 }
