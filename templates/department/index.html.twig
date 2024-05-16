@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abteilung Übersicht{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    {% include "includes/_navbar.html.twig" %}
+    <div class="text-4xl">
+        <h1>Abteilungen</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Budget</th>
+                <th>Benutztes Budget</th>
+                <th>Prozentuale Budget Nutzung</th>
+                <th>Umew</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for department in departments %}
+            <tr>
+                <td>{{ department.id }}</td>
+                <td>{{ department.name }}</td>
+                <td>{{ department.budget }}</td>
+                <td>{{ department.usedBudget }}</td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ department.usedBudget / department.budget * 100 }}%" aria-valuenow="{{ department.usedBudget / department.budget * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {{ department.usedBudget / department.budget * 100 }}%
+                </td>
+                <td>{{ department.umew }}</td>
+                <td>
+                    <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>
+                    <a href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Keine Einträge gefunden!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="create-new" href="{{ path('app_department_new') }}">Neu Anlegen</a>
+{% endblock %}
