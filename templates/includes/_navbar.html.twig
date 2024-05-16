@@ -9,8 +9,32 @@
     </div>
     <div class="nav-bar-elements">
         <div id="home" class="nav-bar-item">
-            Home
+            <a href="{{ path('landing_page') }}">
+                <button class="login-button">Home</button>
+            </a>
         </div>
+        {% if (app.request.get('_route') != 'landing_page' and app.user) %}
+            <div class="nav-bar-item">
+                <a href="{{ path('home.') }}">
+                    <button class="login-button">Bestellen</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_orders') }}">
+                    <button class="login-button">Bestellungen</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_import') }}">
+                    <button class="login-button">Importieren</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_school_class_index') }}">
+                    <button class="login-button">Klassenübersicht</button>
+                </a>
+            </div>
+        {% endif %}
         <div class="nav-bar-item">
             <a href="{{ path('app_team') }}">
                 <button class="login-button">Team</button>

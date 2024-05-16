@@ -36,4 +36,11 @@ class OrderController extends AbstractController {
             'classes' => $classes,
         ]);
     }
+
+
+    #[Route('/orders', name: 'app_orders')]
+    public function showOrders()
+    {
+        return $this->render('order/index.html.twig');
+    }
 }
