@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Schulklasse{% endblock %}
+{% block title %}Abteilung{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
 
 {% block body %}
-    <h1>Schulklasse</h1>
+    <h1 class="text-4xl">Abteilung</h1>
 
     <table class="table">
         <tbody>
@@ -29,10 +33,9 @@
             </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('app_department_index') }}">Zurück zur Liste</a>
-
-    <a href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
-
-    {{ include('department/_delete_form.html.twig') }}
+    <div style="display: block; justify-content: center">
+        <a class="create-new" href="{{ path('app_department_index') }}">Zurück zur Liste</a>
+        <a class="create-new" href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
+        {{ include('department/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
