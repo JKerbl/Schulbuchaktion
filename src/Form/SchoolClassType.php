@@ -14,16 +14,38 @@ class SchoolClassType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', null, ['label' => 'Name'])
-            ->add('grade', null, ['label' => 'Schulstufe'])
-            ->add('studentsAmount', null, ['label' => 'Schüler Anzahl'])
-            ->add('repAmount', null, ['label' => 'Repetenten Anzahl'])
-            ->add('usedBudget', null, ['label' => 'Benutztes Budget'])
-            ->add('budget', null, ['label' => 'Gesamt Budget'])
-            ->add('year', null, ['label' => 'Jahr'])
+            ->add('name', null, [
+                'label' => 'Name',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('grade', null, [
+                'label' => 'Schulstufe',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('studentsAmount', null, [
+                'label' => 'Schüler Anzahl',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('repAmount', null, [
+                'label' => 'Repetenten Anzahl',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('usedBudget', null, [
+                'label' => 'Benutztes Budget',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('budget', null, [
+                'label' => 'Gesamt Budget',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('year', null, [
+                'label' => 'Jahr',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
             ->add('department', EntityType::class, [
                 'class' => Department::class,
-                'label' => 'Abteilung'
+                'label' => 'Abteilung',
+                'attr' => ['class' => 'form-input mb-3']
             ]);
     }
 

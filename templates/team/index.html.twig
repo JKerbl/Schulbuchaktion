@@ -32,6 +32,10 @@
 {#        color: #666; #}
 {#    }*/ #}
 
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
 <style>
 
     .profile-frame {
