@@ -3,13 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Department;
-use App\Entity\SchoolClass;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SchoolClassType extends AbstractType
+class DepartmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -18,33 +18,22 @@ class SchoolClassType extends AbstractType
                 'label' => 'Name',
                 'attr' => ['class' => 'form-input mb-3']
             ])
-            ->add('grade', null, [
-                'label' => 'Schulstufe',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('studentsAmount', null, [
-                'label' => 'Schüler Anzahl',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('repAmount', null, [
-                'label' => 'Repetenten Anzahl',
+            ->add('budget', null, [
+                'label' => 'Budget',
                 'attr' => ['class' => 'form-input mb-3']
             ])
             ->add('usedBudget', null, [
                 'label' => 'Benutztes Budget',
                 'attr' => ['class' => 'form-input mb-3']
             ])
-            ->add('budget', null, [
-                'label' => 'Gesamt Budget',
+            ->add('umew', null, [
+                'label' => 'Umew',
                 'attr' => ['class' => 'form-input mb-3']
             ])
-            ->add('year', null, [
-                'label' => 'Jahr',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('department', EntityType::class, [
-                'class' => Department::class,
-                'label' => 'Abteilung',
+            ->add('headOfDepartment', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'id',
+                'label' => 'Abteilungsleiter',
                 'attr' => ['class' => 'form-input mb-3']
             ]);
     }
@@ -52,7 +41,7 @@ class SchoolClassType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SchoolClass::class,
+            'data_class' => Department::class,
         ]);
     }
 }

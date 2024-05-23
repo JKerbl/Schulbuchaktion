@@ -62,5 +62,11 @@ class OrderController extends AbstractController {
         $usedBudget = $department->getUsedBudget();
 
         return new JsonResponse(['orders' => $orders, 'budget' => $budget, 'usedBudget' => $usedBudget]);
+
+    #[Route('/orders', name: 'app_orders')]
+    public function showOrders()
+    {
+        return $this->render('order/index.html.twig');
+
     }
 }
