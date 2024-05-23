@@ -1,6 +1,6 @@
 .header-landing-page {
     text-align: center;
-    margin: 2.5em
+    margin: 2em 2em 1em;
 }
 
 .headline-landing-page {
@@ -35,11 +35,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 2em;
     margin-bottom: 1.5em;
 }
 
 .landing-page-image {
-    width: 30%;
+    width: 37%;
     max-width: 650px;
     border-radius: 10px;
 }
@@ -103,21 +104,17 @@
     /*border: black solid;*/
 }
 
-@media only screen and (max-width: 790px) {
-    .nav-bar-elements {
-        width: 100%;
-        position: absolute;
-        justify-content: center;
-        align-items: center;
-        margin-top: 4.5em;
-        padding: 1em;
-        background-color: #ECECEC;
-    }
-
-    .header-landing-page {
-        margin-top: 20%;
-    }
-}
+/*@media only screen and (max-width: 790px) {*/
+/*    .nav-bar-elements {*/
+/*        width: 100%;*/
+/*        position: absolute;*/
+/*        justify-content: center;*/
+/*        align-items: center;*/
+/*        margin-top: 4.5em;*/
+/*        padding: 1em;*/
+/*        background-color: #ECECEC;*/
+/*    }*/
+/*}*/
 
 /* Basis-Styling für den Button */
 #login-btn {
@@ -162,4 +159,8 @@
 /* Aktiver Zustand */
 #register-btn:active {
     background-color: #0a6b7c; /* Hintergrundfarbe im aktiven Zustand */
+}
+
+.navbar-button:focus {
+    font-weight: 650;
 }
