@@ -30,7 +30,7 @@
                 <td>{{ department.name }}</td>
                 <td>{{ department.budget }}</td>
                 <td>{{ department.usedBudget }}</td>
-                <td>
+                <td> {# Progressbar #}
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: {{ department.usedBudget / department.budget * 100 }}%" aria-valuenow="{{ department.usedBudget / department.budget * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
