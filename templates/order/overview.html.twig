@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bestellen{% endblock %}
+
+{% block body %}
+<style>
+    .progress-bar {
+        background-color: #f3f3f3;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .progress-bar-inner {
+        height: 20px;
+        background-color: #4caf50;
+        width: 0;
+    }
+</style>
+
+<div>
+    <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
+        <a href="{{ path('landing_page') }}">
+            <div class="flex items-center space-x-2">
+                <img class="w-12 h-12" src="/images/logo.png">
+                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
+            </div>
+        </a>
+
+        <div class="hidden lg:flex space-x-4">
+            <div>
+                <p class="hidden md:block">Bestellübersicht</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Klassenübersicht</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Exportieren</p>
+            </div>
+            <div class="border border-gray-300"></div>
+            <div>
+                <p class="hidden md:block">Importieren</p>
+            </div>
+        </div>
+        <div class="flex space-x-4">
+            <div class="flex items-center space-x-2 py-2">
+                <p class="text-md">Willkommen {{ user.username }}!</p>
+                <a href="{{ path('app_logout') }}">
+                    <img class="w-8 h-8 mr-2" src="/images/logout.png">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <!-- Dropdown-Filter für Abteilungen -->
+        <div class="mb-4">
+            <label for="departmentFilter">Abteilung filtern:</label>
+            <select id="departmentFilter" name="departmentId">
+                <option value="">Alle Abteilungen</option>
+                {% for department in departments %}
+                    <option value="{{ department.id }}" data-budget="{{ department.budget }}" data-used-budget="{{ department.usedBudget }}">{{ department.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="progress">
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        <table>
+            <thead>
+            <tr>
+                <th>Bestellnummer</th>
+                <th>Anzahl</th>
+                <th>Lehrerexemplar</th>
+                <th>eBook</th>
+                <th>eBook Plus</th>
+                <th>Schulklasse</th>
+                <th>Buch</th>
+            </tr>
+            </thead>
+            <tbody id="orderTable">
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.count }}</td>
+                    <td>{{ order.teacherCopy ? 'Ja' : 'Nein' }}</td>
+                    <td>{{ order.eBook ? 'Ja' : 'Nein' }}</td>
+                    <td>{{ order.eBookPlus ? 'Ja' : 'Nein' }}</td>
+                    <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
+                    <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#departmentFilter').change(function() {
+                var departmentId = $(this).val();
+                $.ajax({
+                    url: '/orderbooks/getDepartment/' + departmentId,
+                    type: 'GET',
+                    success: function(response) {
+                        var orders = response.orders;
+                        var budget = response.budget;
+                        var usedBudget = response.usedBudget;
+                        var progressBar = $('#progressBar');
+                        var orderTable = $('#orderTable');
+                        var budgetDisplay = $('#budgetDisplay');
+
+                        // Hier wird das Budget aktualisiert
+                        budgetDisplay.text('Budget: ' + budget);
+
+                        // Hier wird der Fortschrittsbalken auf das bereits verwendete Budget des ausgewählten Departments gesetzt
+                        progressBar.css('width', (usedBudget / budget * 100) + '%');
+                        progressBar.attr('aria-valuenow', usedBudget / budget * 100);
+
+                        orderTable.html('');
+
+                        for (var i = 0; i < orders.length; i++) {
+                            var row = $('<tr></tr>');
+                            row.append('<td>' + orders[i].id + '</td>');
+                            row.append('<td>' + orders[i].count + '</td>');
+                            row.append('<td>' + (orders[i].teacherCopy ? 'Ja' : 'Nein') + '</td>');
+                            row.append('<td>' + (orders[i].eBook ? 'Ja' : 'Nein') + '</td>');
+                            row.append('<td>' + (orders[i].eBookPlus ? 'Ja' : 'Nein') + '</td>');
+                            row.append('<td>' + (orders[i].schoolclass ? orders[i].schoolclass.name : 'Nicht zugewiesen') + '</td>');
+                            row.append('<td>' + (orders[i].book ? orders[i].book.title : 'Nicht zugewiesen') + '</td>');
+                            orderTable.append(row);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
