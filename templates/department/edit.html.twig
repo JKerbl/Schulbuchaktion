@@ -2,12 +2,29 @@
 
 {% block title %}Abteilung Bearbeiten{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}
+
 {% block body %}
-    <h1>Abteilung Bearbeiten</h1>
+    <div class="text-4xl">
+        <h1>Abteilung Bearbeiten</h1>
+    </div>
 
-    {{ include('department/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="content-form">
+        <form method="post">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="btn-links-under-form">
+                <button class="save-update-btn-form" type="submit">{{ button_label|default('Update') }}</button>
+                <div class="back-to-list-btn">
+                    <a class="anchor-back-to-list" href="{{ path('app_department_index') }}">Zurück zur Liste</a>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </form>
 
-    <a href="{{ path('app_department_index') }}">Zurück zur Liste</a>
-
-    {{ include('department/_delete_form.html.twig') }}
+        {{ include('department/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
