@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -46,6 +47,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Department::class, mappedBy: "headOfDepartment")]
     #[ORM\JoinColumn(nullable: true)]
     private ?Collection $department = null;
+
+    public function __construct()
+    {
+        $this->subject = new ArrayCollection();
+        $this->department = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -159,6 +166,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDepartment(?Collection $department): void
     {
         $this->department = $department;
+    }
+
+    public function addSubject(Subject $subject): static
+    {
+        if (!$this->subject->contains($subject)) {
+            $this->subject->add($subject);
+            $subject->setHeadOfSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubject(Subject $subject): static
+    {
+        if ($this->subject->removeElement($subject)) {
+            // set the owning side to null (unless already changed)
+            if ($subject->getHeadOfSubject() === $this) {
+                $subject->setHeadOfSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addDepartment(Department $department): static
+    {
+        if (!$this->department->contains($department)) {
+            $this->department->add($department);
+            $department->setHeadOfDepartment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepartment(Department $department): static
+    {
+        if ($this->department->removeElement($department)) {
+            // set the owning side to null (unless already changed)
+            if ($department->getHeadOfDepartment() === $this) {
+                $department->setHeadOfDepartment(null);
+            }
+        }
+
+        return $this;
     }
 
 }

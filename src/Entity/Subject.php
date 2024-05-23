@@ -69,4 +69,26 @@ class Subject
         $this->book = $book;
     }
 
+    public function addBook(Book $book): static
+    {
+        if (!$this->book->contains($book)) {
+            $this->book->add($book);
+            $book->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): static
+    {
+        if ($this->book->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getSubject() === $this) {
+                $book->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

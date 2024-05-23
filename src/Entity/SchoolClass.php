@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SchoolClassRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +41,11 @@ class SchoolClass
 
     #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "schoolclass")]
     private Collection $bookOrder;
+
+    public function __construct()
+    {
+        $this->bookOrder = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +140,28 @@ class SchoolClass
     public function setBookOrder(Collection $bookOrder): void
     {
         $this->bookOrder = $bookOrder;
+    }
+
+    public function addBookOrder(BookOrder $bookOrder): static
+    {
+        if (!$this->bookOrder->contains($bookOrder)) {
+            $this->bookOrder->add($bookOrder);
+            $bookOrder->setSchoolclass($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookOrder(BookOrder $bookOrder): static
+    {
+        if ($this->bookOrder->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getSchoolclass() === $this) {
+                $bookOrder->setSchoolclass(null);
+            }
+        }
+
+        return $this;
     }
 
 }
