@@ -9,6 +9,19 @@
 
 {% block body %}
     {% include "includes/_navbar.html.twig" %}
+    <style>
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #378fbe;
+            border-radius: 5px;
+        }
+    </style>
     <div class="text-4xl">
         <h1>Abteilungen</h1>
     </div>
@@ -32,9 +45,9 @@
                 <td>{{ department.name }}</td>
                 <td>{{ department.budget }}</td>
                 <td>{{ department.usedBudget }}</td>
-                <td> {# Progressbar #}
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {{ department.usedBudget / department.budget * 100 }}%" aria-valuenow="{{ department.usedBudget / department.budget * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                <td>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: {{ department.usedBudget / department.budget * 100 }}%"></div>
                     </div>
                     {{ department.usedBudget / department.budget * 100 }}%
                 </td>
