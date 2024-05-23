@@ -14,15 +14,28 @@ class DepartmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('budget')
-            ->add('usedBudget')
-            ->add('umew')
+            ->add('name', null, [
+                'label' => 'Name',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('budget', null, [
+                'label' => 'Budget',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('usedBudget', null, [
+                'label' => 'Benutztes Budget',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
+            ->add('umew', null, [
+                'label' => 'Umew',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
             ->add('headOfDepartment', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
-            ])
-        ;
+                'label' => 'Abteilungsleiter',
+                'attr' => ['class' => 'form-input mb-3']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

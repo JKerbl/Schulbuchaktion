@@ -1,6 +1,6 @@
 .header-landing-page {
     text-align: center;
-    margin: 2.5em
+    margin: 2em 2em 1em;
 }
 
 .headline-landing-page {
@@ -22,24 +22,25 @@
 .company-name {
     margin-left: 0.5em;
     font-weight: 800;
-    font-size: 1.8em;
+    font-size: 1.5em;
     display: flex;
     align-content: center;
 }
 
 .logo {
-    height: 60px;
+    height: 50px;
 }
 
 .logo-div {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 2em;
     margin-bottom: 1.5em;
 }
 
 .landing-page-image {
-    width: 40%;
+    width: 37%;
     max-width: 650px;
     border-radius: 10px;
 }
@@ -75,7 +76,7 @@
 .nav-bar-elements {
     font-size: 1.1em;
     margin-left: auto;
-    margin-right: 3em;
+    margin-right: 2em;
     display: flex;
     align-items: center;
 }
@@ -87,6 +88,7 @@
 }
 
 .nav-bar-company-name-and-icon {
+    margin-left: 1em;
     display: flex;
     align-items: center;
 }
@@ -102,21 +104,17 @@
     /*border: black solid;*/
 }
 
-@media only screen and (max-width: 790px) {
-    .nav-bar-elements {
-        width: 100%;
-        position: absolute;
-        justify-content: center;
-        align-items: center;
-        margin-top: 4.5em;
-        padding: 1em;
-        background-color: #ECECEC;
-    }
-
-    .header-landing-page {
-        margin-top: 20%;
-    }
-}
+/*@media only screen and (max-width: 790px) {*/
+/*    .nav-bar-elements {*/
+/*        width: 100%;*/
+/*        position: absolute;*/
+/*        justify-content: center;*/
+/*        align-items: center;*/
+/*        margin-top: 4.5em;*/
+/*        padding: 1em;*/
+/*        background-color: #ECECEC;*/
+/*    }*/
+/*}*/
 
 /* Basis-Styling für den Button */
 #login-btn {
@@ -141,7 +139,6 @@
     background-color: #138496; /* Hintergrundfarbe im aktiven Zustand */
     border-color: #138496; /* Rahmenfarbe im aktiven Zustand */
     color: #fff; /* Textfarbe im aktiven Zustand */
-
 }
 
 /* Basis-Styling für den Button */
@@ -162,4 +159,8 @@
 /* Aktiver Zustand */
 #register-btn:active {
     background-color: #0a6b7c; /* Hintergrundfarbe im aktiven Zustand */
+}
+
+.navbar-button:focus {
+    font-weight: 650;
 }

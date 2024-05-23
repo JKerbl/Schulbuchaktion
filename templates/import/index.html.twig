@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dateien Import{% endblock %}
 {% block stylesheets %}
     <link href="{{ asset('style/stylingImportPage.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block body %}
-
     <div class="import-outside-table">
         <div class="headline-import">
             Bitte wählen Sie ihre Import-Datei
@@ -114,7 +112,7 @@
             if (input.files && input.files.length > 0) {
                 label.textContent = "Datei ausgewählt!"
                 label.style.color = '#17a1b7'
-                    // input.files[0].name;
+                // input.files[0].name;
             } else {
                 label.textContent = "Datei auswählen";
 
@@ -122,6 +120,4 @@
         }
 
     </script>
-
-
 {% endblock %}

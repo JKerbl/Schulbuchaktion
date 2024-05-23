@@ -3,17 +3,48 @@
         <div class="logo-nav-bar">
             <img class="logo" src="/images/library_logo.png" alt="logo">
         </div>
-        <div class="company-name">
-            Schulbuchaktion
-        </div>
+        <a href="{{ path('landing_page') }}">
+            <div class="company-name">
+                Schulbuchaktion
+            </div>
+        </a>
     </div>
     <div class="nav-bar-elements">
         <div id="home" class="nav-bar-item">
-            Home
+            <a href="{{ path('landing_page') }}">
+                <button class="navbar-button">Home</button>
+            </a>
         </div>
+        {% if (app.user) %}
+            <div class="nav-bar-item">
+                <a href="{{ path('home.') }}">
+                    <button class="navbar-button">Bestellen</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_orders') }}">
+                    <button class="navbar-button">Bestellungen</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_import') }}">
+                    <button class="navbar-button">Importieren</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_school_class_index') }}">
+                    <button class="navbar-button">Klassen</button>
+                </a>
+            </div>
+            <div class="nav-bar-item">
+                <a href="{{ path('app_department_index') }}">
+                    <button class="navbar-button">Abteilungen</button>
+                </a>
+            </div>
+        {% endif %}
         <div class="nav-bar-item">
             <a href="{{ path('app_team') }}">
-                <button class="login-button">Team</button>
+                <button class="navbar-button">Team</button>
             </a>
         </div>
         {% if app.user %}
