@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-    {% include "includes/_navbar.html.twig" %}
     <style>
         .progress-bar-container {
             width: 100%;
@@ -55,6 +54,7 @@
                 <td>
                     <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>
                     <a href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
+{#                    <a href="{{ path('app_depar', {'id': school_class.id}) }}">Duplizieren</a>#}
                 </td>
             </tr>
         {% else %}
