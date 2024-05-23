@@ -2,24 +2,17 @@
 
 {% block title %}Schulbuchaktion{% endblock %}
 
-
     {% block stylesheets %}
         <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
     {% endblock %}
 
 {% block body %}
 
-   {% include "includes/_navbar.html.twig" %}
-
     <header class="header-landing-page">
         <div class="headline-landing-page">
             Willkommen im Schulbuch Portal.
         </div>
     </header>
-
-    <div class="logo-div">
-        <img class="landing-page-image" src="/images/lading_page_image_2.jpeg" alt="our-logo">
-    </div>
 
     {% if app.user %}
         <div class="link-to-home">
@@ -28,5 +21,10 @@
             </button>
         </div>
     {% endif %}
+
+    <div class="logo-div">
+        <img class="landing-page-image" src="/images/lading_page_image_2.jpeg" alt="our-logo">
+    </div>
+
 
 {% endblock %}

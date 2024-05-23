@@ -2,125 +2,38 @@
 
 {% block title %}Homepage{% endblock %}
 
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+        <link href="{{ asset('style/stylingHomePage.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
 {% block body %}
-    <style>
-        .typewriter {
-            overflow: hidden;
-            border-right: .15em solid orange;
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .15em;
-            animation:
-                    typing 3.5s steps(40, end),
-                    blink-caret 1s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #505050; }
-        }
-
-        .result-bar {
-            border-left: 1px solid grey;
-            border-right: 1px solid grey;
-            border-bottom: 1px solid grey;
-            padding: 1rem;
-            font-size: 1.25em;
-            width: 32rem;
-            word-wrap: break-word;
-        }
-
-        .inputBar {
-            background-color:#ECECEC;
-            width: 25.4rem;
-        }
-
-        input[type="search"]::-webkit-search-decoration,
-        input[type="search"]::-webkit-search-cancel-button,
-        input[type="search"]::-webkit-search-results-button,
-        input[type="search"]::-webkit-search-results-decoration {
-            -webkit-appearance:none;
-        }
-
-        .inputBar:focus {
-            outline:none;
-        }
-
-        .borderBox {
-            border: 1px solid grey;
-        }
-    </style>
-
-    <div>
-        <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
-            <a href="{{ path('landing_page') }}">
-                <div class="flex items-center space-x-2">
-                    <img class="w-12 h-12" src="/images/logo.png">
-                    <h1 class="text-xl font-bold">Schulbuchaktion</h1>
-                </div>
-            </a>
-
-            <div class="hidden lg:flex space-x-4">
-                <div>
-                    <p class="hidden md:block">Bestellübersicht</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Klassenübersicht</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Exportieren</p>
-                </div>
-                <div class="border border-gray-300"></div>
-                <div>
-                    <p class="hidden md:block">Importieren</p>
-                </div>
+    <div class="flex flex-col items-center justify-center mt-24 mb-16">
+        <div class="text-4xl">
+            <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
+        </div>
+        <div class="mt-6">
+            <div class="p-2 flex justify-between items-center borderBox">
+                <form class="flex items-center" role="search" action="{{ path('home.search') }}">
+                    <input type="image" class="w-10 h-10 " src="/images/search.png" alt="Input Button">
+                    <input placeholder="{{ searchInput }}" type="search" class="text-xl p-1 inputBar" name="query"
+                           alt="Input Search">
+                </form>
             </div>
-            <div class="flex space-x-4">
-                <div class="flex items-center space-x-2 py-2">
-                    {% if(is_granted("IS_AUTHENTICATED_FULLY")) %}
-                        <p class="text-md">Willkommen {{ user.username }}!</p>
-                        <a href="{{ path('app_logout') }}">
-                            <img class="w-8 h-8 mr-2" src="/images/logout.png">
+
+            <div id="results-container">
+                {% for result in results %}
+                    <div class="result-bar border-x border-b border-gray-700">
+                        <a href="{{ path('order', {'id': result.id}) }}">
+                            <p class="text-xl">{{ result.shortTitle }}</p>
                         </a>
-                    {% else %}
-                        <p class="text-md mr-2">Willkommen auf der Homepage!</p>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        <div class="flex flex-col items-center justify-center mt-24 mb-16">
-            <div class="text-4xl">
-                <h1>Suche nach <span id="animated-text" class="typewriter"></span></h1>
-            </div>
-            <div class="mt-6">
-                <div class="p-2 flex justify-between items-center borderBox">
-                    <form class="flex items-center" role="search" action="{{ path('home.search') }}">
-                        <input type="image" class="w-10 h-10 " src="/images/search.png" alt="Input Button">
-                        <input placeholder="{{ searchInput }}" type="search" class="text-xl p-1 inputBar" name="query" alt="Input Search">
-                    </form>
-                </div>
+        <div>
 
-                <div id="results-container">
-                    {% for result in results %}
-                        <div class="result-bar border-x border-b border-gray-700">
-                            <a href="{{ path('order', {'id': result.id}) }}">
-                                <p class="text-xl">{{ result.shortTitle }}</p>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div>
-
-            </div>
         </div>
+    </div>
     </div>
 
     <script>

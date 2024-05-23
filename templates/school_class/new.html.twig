@@ -2,20 +2,17 @@
 
 {% block title %}Neue Schulklasse{% endblock %}
 
-    {% block stylesheets %}
-        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
-        <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
-    {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" />
+{% endblock %}
 
 {% block body %}
-    {% include "includes/_navbar.html.twig" %}
-
     <div class="text-4xl">
         <h1>Schulklasse Anlegen</h1>
     </div>
 
     <div class="content-form">
-        <form method="post">
+        <form class="form" method="post">
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="btn-links-under-form">
