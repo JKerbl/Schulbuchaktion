@@ -48,7 +48,7 @@ class OrderController extends AbstractController {
         $departments = $departmentRepository->findAll();
 
         return $this->render('order/overview.html.twig', [
-            'orders' => $orders,'user' => $user, 'departments' => $departments, 'test' => $orders[0]->getSchoolclass()->getDepartment()
+            'orders' => $orders,'user' => $user, 'departments' => $departments,
         ]);
     }
 

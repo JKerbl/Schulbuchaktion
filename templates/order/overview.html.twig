@@ -17,42 +17,6 @@
     }
 </style>
 
-<div>
-    <div class="p-2 flex justify-between items-center bg-gray-200 drop-shadow-xl">
-        <a href="{{ path('landing_page') }}">
-            <div class="flex items-center space-x-2">
-                <img class="w-12 h-12" src="/images/logo.png">
-                <h1 class="text-xl font-bold">Schulbuchaktion</h1>
-            </div>
-        </a>
-
-        <div class="hidden lg:flex space-x-4">
-            <div>
-                <p class="hidden md:block">Bestellübersicht</p>
-            </div>
-            <div class="border border-gray-300"></div>
-            <div>
-                <p class="hidden md:block">Klassenübersicht</p>
-            </div>
-            <div class="border border-gray-300"></div>
-            <div>
-                <p class="hidden md:block">Exportieren</p>
-            </div>
-            <div class="border border-gray-300"></div>
-            <div>
-                <p class="hidden md:block">Importieren</p>
-            </div>
-        </div>
-        <div class="flex space-x-4">
-            <div class="flex items-center space-x-2 py-2">
-                <p class="text-md">Willkommen {{ user.username }}!</p>
-                <a href="{{ path('app_logout') }}">
-                    <img class="w-8 h-8 mr-2" src="/images/logout.png">
-                </a>
-            </div>
-        </div>
-    </div>
-
     <div>
         <!-- Dropdown-Filter für Abteilungen -->
         <div class="mb-4">
