@@ -54,7 +54,6 @@ class BookOrderRepository extends ServiceEntityRepository
             ->andWhere('d.id = :val')
             ->setParameter('val', $departmentId)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 }
