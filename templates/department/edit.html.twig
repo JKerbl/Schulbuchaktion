@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="text-4xl">
-        <h1>Abteilung Bearbeiten</h1>
+        <h1>Abteilung Anlegen</h1>
     </div>
 
     <div class="content-form">
@@ -17,7 +18,7 @@
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="btn-links-under-form">
-                <button class="save-update-btn-form" type="submit">{{ button_label|default('Update') }}</button>
+                <button class="save-update-btn-form" type="submit">{{ button_label|default('Anlegen') }}</button>
                 <div class="back-to-list-btn">
                     <a class="anchor-back-to-list" href="{{ path('app_department_index') }}">Zurück zur Liste</a>
                 </div>
