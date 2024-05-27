@@ -2,35 +2,28 @@
 
 {% block title %}Bestellen{% endblock %}
 
-{% block body %}
-<style>
-    .progress-bar {
-        background-color: #f3f3f3;
-        border-radius: 2px;
-        overflow: hidden;
-    }
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('style/stylingBestellungen.css') }}" type="text/css"/>
+    {% endblock %}
 
-    .progress-bar-inner {
-        height: 20px;
-        background-color: #4caf50;
-        width: 0;
-    }
-</style>
+{% block body %}
 
     <div>
-        <!-- Dropdown-Filter für Abteilungen -->
-        <div class="mb-4">
-            <label for="departmentFilter">Abteilung filtern:</label>
+        <div class="department-filter">
+            <label id="label-department-filter" for="departmentFilter">Abteilung filtern:</label>
             <select id="departmentFilter" name="departmentId">
                 <option value="">Alle Abteilungen</option>
                 {% for department in departments %}
-                    <option value="{{ department.id }}" data-budget="{{ department.budget }}" data-used-budget="{{ department.usedBudget }}">{{ department.name }}</option>
+                    <option value="{{ department.id }}" data-budget="{{ department.budget }}"
+                            data-used-budget="{{ department.usedBudget }}">{{ department.name }}</option>
                 {% endfor %}
             </select>
             <div class="progress">
-                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
+                     aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-        <table>
+        </div>
+        <table class="table">
             <thead>
             <tr>
                 <th>Bestellnummer</th>
@@ -57,17 +50,16 @@
             </tbody>
         </table>
     </div>
-</div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#departmentFilter').change(function() {
+        $(document).ready(function () {
+            $('#departmentFilter').change(function () {
                 var departmentId = $(this).val();
                 $.ajax({
                     url: '/orderbooks/getDepartment/' + departmentId,
                     type: 'GET',
-                    success: function(response) {
+                    success: function (response) {
                         var orders = response.orders;
                         var budget = response.budget;
                         var usedBudget = response.usedBudget;
