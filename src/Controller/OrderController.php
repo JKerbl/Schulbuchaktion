@@ -51,24 +51,17 @@ class OrderController extends AbstractController {
     }
 
     #[Route('/orderbooks/getDepartment/{departmentId<\d+>?0}', name: 'order.getDepartment')]
-    public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
+    public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository): Response
     {
         if ($departmentId == 0) {
             $orders = $bookOrderRepository->findAll();
-            $budget = 0;
-            foreach ($departmentRepository->findAll() as $department) {
-                $budget += $department->getBudget();
-            }
+
         } else {
             $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
-            $budget = $departmentRepository->find($departmentId)->getBudget();
         }
-        $usedBudget = 0;
         $ordersArray = [];
 
         foreach ($orders as $order) {
-            $usedBudget += $order->getBook()->getPrice() * $order->getCount();
-
             $ordersArray[] = [
                 'id' => $order->getId(),
                 'count' => $order->getCount(),
@@ -80,7 +73,7 @@ class OrderController extends AbstractController {
             ];
         }
 
-        return new JsonResponse(['orders' => $ordersArray, 'budget' => $budget, 'usedBudget' => $usedBudget]);
+        return new JsonResponse(['orders' => $ordersArray]);
     }
 
     #[Route('/orders', name: 'app_orders')]
