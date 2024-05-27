@@ -48,8 +48,7 @@
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: {{ department.usedBudget / department.budget * 100 }}%"></div>
                     </div>
-                    {{ department.usedBudget / department.budget * 100 }}%
-                </td>
+                    {{ (department.usedBudget / department.budget * 100)|number_format(2, '.', ',') }}%                </td>
                 <td>{{ department.umew }}</td>
                 <td>
                     <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>

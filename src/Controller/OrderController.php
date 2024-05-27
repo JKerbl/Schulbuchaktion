@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BookOrder;
 use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\DepartmentRepository;
@@ -43,26 +44,36 @@ class OrderController extends AbstractController {
     #[Route('/orderbooks/index', name: 'order.index')]
     public function index(BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
     {
-        $orders = $bookOrderRepository->findAll();
-        $user = $this->getUser();
-        $departments = $departmentRepository->findAll();
-
         return $this->render('order/overview.html.twig', [
-            'orders' => $orders,'user' => $user, 'departments' => $departments,
+            'departments' => $departmentRepository->findAll(),
+            'orders' => $bookOrderRepository->findAll(),
         ]);
     }
 
-    #[Route('/orderbooks/getDepartment/{departmentId}', name: 'order.getDepartment')]
-    public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
+    #[Route('/orderbooks/getDepartment/{departmentId<\d+>?0}', name: 'order.getDepartment')]
+    public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository): Response
     {
-        $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
-        $department = $departmentRepository->findOneBy(['id' => $departmentId]);
+        if ($departmentId == 0) {
+            $orders = $bookOrderRepository->findAll();
 
-        $budget = $department->getBudget();
-        $usedBudget = $department->getUsedBudget();
+        } else {
+            $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
+        }
+        $ordersArray = [];
 
-        return new JsonResponse(['orders' => $orders, 'budget' => $budget, 'usedBudget' => $usedBudget]);
+        foreach ($orders as $order) {
+            $ordersArray[] = [
+                'id' => $order->getId(),
+                'count' => $order->getCount(),
+                'teacherCopy' => $order->getTeacherCopy(),
+                'eBook' => $order->getEBook(),
+                'eBookPlus' => $order->getEBookPlus(),
+                'schoolclass' => $order->getSchoolclass() ? $order->getSchoolclass()->getName() : 'Nicht zugewiesen',
+                'book' => $order->getBook() ? $order->getBook()->getTitle() : 'Nicht zugewiesen',
+            ];
+        }
 
+        return new JsonResponse(['orders' => $ordersArray]);
     }
 
     #[Route('/orders', name: 'app_orders')]

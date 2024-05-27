@@ -45,7 +45,7 @@ class HomeController extends AbstractController {
         }
 
         $filteredResults = array_filter($res, function($item) use ($query) {
-            return strpos($item['shortTitle'], $query) !== false;
+            return stripos($item['shortTitle'], $query) !== false;
         });
 
         $user = $this->getUser();
