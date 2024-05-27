@@ -68,6 +68,7 @@ class Book
     public function __construct()
     {
         $this->schoolGrades = new ArrayCollection();
+        $this->bookOrder = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,6 +241,38 @@ class Book
     public function setYear(int $year): static
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    public function isEBook(): ?bool
+    {
+        return $this->eBook;
+    }
+
+    public function isEBookPlus(): ?bool
+    {
+        return $this->eBookPlus;
+    }
+
+    public function addBookOrder(BookOrder $bookOrder): static
+    {
+        if (!$this->bookOrder->contains($bookOrder)) {
+            $this->bookOrder->add($bookOrder);
+            $bookOrder->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookOrder(BookOrder $bookOrder): static
+    {
+        if ($this->bookOrder->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getBook() === $this) {
+                $bookOrder->setBook(null);
+            }
+        }
 
         return $this;
     }

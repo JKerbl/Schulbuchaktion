@@ -42,6 +42,33 @@ class DepartmentController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/duplicate', name: 'app_department_duplicate', methods: ['GET', 'POST'])]
+    public function duplicate(Request $request, Department $department, EntityManagerInterface $entityManager): Response
+    {
+        $departmentCopy = clone $department;
+        $form = $this->createForm(DepartmentType::class, $departmentCopy);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $duplicatedDepartment = new Department();
+            $duplicatedDepartment->setName($departmentCopy->getName());
+            $duplicatedDepartment->setBudget($departmentCopy->getBudget());
+            $duplicatedDepartment->setUsedBudget($departmentCopy->getUsedBudget());
+            $duplicatedDepartment->setUmew($departmentCopy->getUmew());
+            $duplicatedDepartment->setHeadOfDepartment($departmentCopy->getHeadOfDepartment());
+
+            $entityManager->persist($duplicatedDepartment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('department/edit.html.twig', [
+            'department' => $department,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'app_department_show', methods: ['GET'])]
     public function show(Department $department): Response
     {

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 
@@ -31,6 +32,11 @@ class Department
 
     #[ORM\OneToMany(targetEntity: SchoolClass::class, mappedBy: "department")]
     private Collection $schoolclass;
+
+    public function __construct()
+    {
+        $this->schoolclass = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +111,28 @@ class Department
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function addSchoolclass(SchoolClass $schoolclass): static
+    {
+        if (!$this->schoolclass->contains($schoolclass)) {
+            $this->schoolclass->add($schoolclass);
+            $schoolclass->setDepartment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSchoolclass(SchoolClass $schoolclass): static
+    {
+        if ($this->schoolclass->removeElement($schoolclass)) {
+            // set the owning side to null (unless already changed)
+            if ($schoolclass->getDepartment() === $this) {
+                $schoolclass->setDepartment(null);
+            }
+        }
+
+        return $this;
     }
 
 
