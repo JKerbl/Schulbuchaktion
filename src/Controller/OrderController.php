@@ -50,11 +50,19 @@ class OrderController extends AbstractController {
         ]);
     }
 
-    #[Route('/orderbooks/getDepartment/{departmentId}', name: 'order.getDepartment')]
+    #[Route('/orderbooks/getDepartment/{departmentId<\d+>?0}', name: 'order.getDepartment')]
     public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
     {
-        $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
-        $budget = $departmentRepository->find($departmentId)->getBudget();
+        if ($departmentId == 0) {
+            $orders = $bookOrderRepository->findAll();
+            $budget = 0;
+            foreach ($departmentRepository->findAll() as $department) {
+                $budget += $department->getBudget();
+            }
+        } else {
+            $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
+            $budget = $departmentRepository->find($departmentId)->getBudget();
+        }
         $usedBudget = 0;
         $ordersArray = [];
 

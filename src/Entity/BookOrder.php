@@ -101,4 +101,8 @@ class BookOrder
         $this->book = $book;
     }
 
+    public function __toString(): string
+    {
+        return $this->book->getTitle();
+    }
 }
