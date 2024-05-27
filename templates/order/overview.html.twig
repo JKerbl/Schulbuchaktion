@@ -83,8 +83,8 @@
                             row.append('<td>' + (orders[i].teacherCopy ? 'Ja' : 'Nein') + '</td>');
                             row.append('<td>' + (orders[i].eBook ? 'Ja' : 'Nein') + '</td>');
                             row.append('<td>' + (orders[i].eBookPlus ? 'Ja' : 'Nein') + '</td>');
-                            row.append('<td>' + (orders[i].schoolclass ? orders[i].schoolclass.name : 'Nicht zugewiesen') + '</td>');
-                            row.append('<td>' + (orders[i].book ? orders[i].book.title : 'Nicht zugewiesen') + '</td>');
+                            row.append('<td>' + (orders[i].schoolclass ? orders[i].schoolclass : 'Nicht zugewiesen') + '</td>');
+                            row.append('<td>' + (orders[i].book ? orders[i].book : 'Nicht zugewiesen') + '</td>');
                             orderTable.append(row);
                         }
                     }

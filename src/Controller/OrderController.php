@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BookOrder;
 use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\DepartmentRepository;
@@ -43,26 +44,43 @@ class OrderController extends AbstractController {
     #[Route('/orderbooks/index', name: 'order.index')]
     public function index(BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
     {
-        $orders = $bookOrderRepository->findAll();
-        $user = $this->getUser();
-        $departments = $departmentRepository->findAll();
-
         return $this->render('order/overview.html.twig', [
-            'orders' => $orders,'user' => $user, 'departments' => $departments,
+            'departments' => $departmentRepository->findAll(),
+            'orders' => $bookOrderRepository->findAll(),
         ]);
     }
 
-    #[Route('/orderbooks/getDepartment/{departmentId}', name: 'order.getDepartment')]
+    #[Route('/orderbooks/getDepartment/{departmentId<\d+>?0}', name: 'order.getDepartment')]
     public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
     {
-        $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
-        $department = $departmentRepository->findOneBy(['id' => $departmentId]);
+        if ($departmentId == 0) {
+            $orders = $bookOrderRepository->findAll();
+            $budget = 0;
+            foreach ($departmentRepository->findAll() as $department) {
+                $budget += $department->getBudget();
+            }
+        } else {
+            $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
+            $budget = $departmentRepository->find($departmentId)->getBudget();
+        }
+        $usedBudget = 0;
+        $ordersArray = [];
 
-        $budget = $department->getBudget();
-        $usedBudget = $department->getUsedBudget();
+        foreach ($orders as $order) {
+            $usedBudget += $order->getBook()->getPrice() * $order->getCount();
 
-        return new JsonResponse(['orders' => $orders, 'budget' => $budget, 'usedBudget' => $usedBudget]);
+            $ordersArray[] = [
+                'id' => $order->getId(),
+                'count' => $order->getCount(),
+                'teacherCopy' => $order->getTeacherCopy(),
+                'eBook' => $order->getEBook(),
+                'eBookPlus' => $order->getEBookPlus(),
+                'schoolclass' => $order->getSchoolclass() ? $order->getSchoolclass()->getName() : 'Nicht zugewiesen',
+                'book' => $order->getBook() ? $order->getBook()->getTitle() : 'Nicht zugewiesen',
+            ];
+        }
 
+        return new JsonResponse(['orders' => $ordersArray, 'budget' => $budget, 'usedBudget' => $usedBudget]);
     }
 
     #[Route('/orders', name: 'app_orders')]

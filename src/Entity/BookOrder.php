@@ -115,5 +115,9 @@ class BookOrder
     {
         return $this->eBookPlus;
     }
-
+  
+   public function __toString(): string
+    {
+        return $this->book->getTitle();
+    }
 }
