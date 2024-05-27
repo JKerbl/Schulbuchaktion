@@ -45,10 +45,17 @@
                 <td>{{ department.budget }}</td>
                 <td>{{ department.usedBudget }}</td>
                 <td>
+                    {% set percentage = (department.usedBudget / department.budget * 100) %}
+                    {% set percentageShown = (department.usedBudget / department.budget * 100) %}
+                    {% if percentage > 100 %}
+                        {% set percentage = 100 %}
+                    {% endif %}
+
                     <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ department.usedBudget / department.budget * 100 }}%"></div>
+                        <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
                     </div>
-                    {{ (department.usedBudget / department.budget * 100)|number_format(2, '.', ',') }}%                </td>
+                    {{ percentageShown |number_format(2, '.', ',') }}%
+                </td>
                 <td>{{ department.umew }}</td>
                 <td>
                     <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>
