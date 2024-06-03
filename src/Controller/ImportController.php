@@ -58,10 +58,10 @@ class ImportController extends AbstractController
             if ($Row['A'] !== null) {
                 $output[] = [
                     'bnr' => $Row['A'],
-                    'shortTitle' => $Row['B'],
                     'title' => $Row['C'],
                     'schoolGrade' => $Row['G'],
-                    'price' => $Row['M']
+                    'price' => $Row['M'],
+                    'ebook' => $Row['P']
                 ];
             }
         }
