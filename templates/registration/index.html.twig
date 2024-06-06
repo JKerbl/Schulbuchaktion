@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registrierung{% endblock %}
+{% block title %}{{ parent() }} Registrierung{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('/style/stylingLoginRegisterPages.css') }}" type="text/css" rel="stylesheet"/>
