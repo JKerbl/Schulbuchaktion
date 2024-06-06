@@ -36,6 +36,8 @@ class RegistrationController extends AbstractController
             $user = new User;
             $user->setUsername($input['username']);
             $user->setPassword($passwordHasher->hashPassword($user, $input['password']));
+            // $roles[] = "ROLE_ADMIN"; TODO Rollenquswahl einbauen
+            //$user->setRoles($roles);
 
             $entityManager->persist($user);
             $entityManager->flush();
