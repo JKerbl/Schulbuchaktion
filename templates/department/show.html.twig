@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Abteilung{% endblock %}
+{% block title %}{{ parent() }} Abteilung{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
