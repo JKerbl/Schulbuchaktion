@@ -101,4 +101,23 @@ class BookOrder
         $this->book = $book;
     }
 
+    public function isTeacherCopy(): ?bool
+    {
+        return $this->teacherCopy;
+    }
+
+    public function isEBook(): ?bool
+    {
+        return $this->eBook;
+    }
+
+    public function isEBookPlus(): ?bool
+    {
+        return $this->eBookPlus;
+    }
+  
+   public function __toString(): string
+    {
+        return $this->book->getTitle();
+    }
 }

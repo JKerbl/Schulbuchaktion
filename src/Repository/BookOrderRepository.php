@@ -45,4 +45,15 @@ class BookOrderRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getOrdersOfDepartment($departmentId): array
+    {
+        return $this->createQueryBuilder('bo')
+            ->join('bo.schoolclass', 'sc')
+            ->join('sc.department', 'd')
+            ->andWhere('d.id = :departmentId')
+            ->setParameter('departmentId', $departmentId)
+            ->getQuery()
+            ->getResult();
+    }
 }

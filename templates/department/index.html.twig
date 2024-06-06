@@ -3,12 +3,24 @@
 {% block title %}Abteilung Übersicht{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
-    <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" />
 {% endblock %}
 
 {% block body %}
-    {% include "includes/_navbar.html.twig" %}
+    <style>
+        .progress-bar-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #378fbe;
+            border-radius: 5px;
+        }
+    </style>
+
     <div class="text-4xl">
         <h1>Abteilungen</h1>
     </div>
@@ -33,15 +45,22 @@
                 <td>{{ department.budget }}</td>
                 <td>{{ department.usedBudget }}</td>
                 <td>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {{ department.usedBudget / department.budget * 100 }}%" aria-valuenow="{{ department.usedBudget / department.budget * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    {% set percentage = (department.usedBudget / department.budget * 100) %}
+                    {% set percentageShown = (department.usedBudget / department.budget * 100) %}
+                    {% if percentage > 100 %}
+                        {% set percentage = 100 %}
+                    {% endif %}
+
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
                     </div>
-                    {{ department.usedBudget / department.budget * 100 }}%
+                    {{ percentageShown |number_format(2, '.', ',') }}%
                 </td>
                 <td>{{ department.umew }}</td>
                 <td>
                     <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>
                     <a href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
+                    <a href="{{ path('app_department_duplicate', {'id': department.id}) }}">Duplizieren</a>
                 </td>
             </tr>
         {% else %}

@@ -2,10 +2,9 @@
 
 {% block title %}Neue Schulklasse{% endblock %}
 
-    {% block stylesheets %}
-        <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
-        <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
-    {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" />
+{% endblock %}
 
 {% block body %}
     <div class="text-4xl">

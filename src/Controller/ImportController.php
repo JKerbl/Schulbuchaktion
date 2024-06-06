@@ -34,8 +34,7 @@ class ImportController extends AbstractController
     #[Route('/upload-excel', name: 'xlsx')]
     public function xslx(Request $request, ManagerRegistry $doctrine, LoggerInterface $logger)
     {
-        $file = $request->files->get('file'); // get the file from the sent request
-
+        $file = $request->files->get('file'); // get the file from the send request
         $fileFolder = 'uploads/';
 
         $filePathName = 'excelUploadFile.xlsx';
@@ -44,10 +43,31 @@ class ImportController extends AbstractController
         } catch (FileException $e) {
             dd($e);
         }
-        $output = $this->getExcelData($fileFolder . $filePathName);
+        $output = $this->getShortExcelData($fileFolder . $filePathName);
 
         return new JsonResponse($output);
     }
+
+    public function getShortExcelData($filePathName): array
+    {
+        $spreadsheet = IOFactory::load($filePathName);
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        $output = [];
+        foreach ($sheetData as $Row) {
+            if ($Row['A'] !== null) {
+                $output[] = [
+                    'bnr' => $Row['A'],
+                    'title' => $Row['C'],
+                    'schoolGrade' => $Row['G'],
+                    'price' => $Row['M'],
+                    'ebook' => $Row['P']
+                ];
+            }
+        }
+        return $output;
+    }
+
 
     public function getExcelData($filePathName): array
     {
@@ -105,7 +125,7 @@ class ImportController extends AbstractController
             $bookRepository = $doctrine->getRepository(Book::class);
             $existingBook = $bookRepository->findOneBy(['bnr' => intval($row['bnr'])]);
 
-            if ($existingBook) {
+            if ($existingBook && $existingBook->getYear() == intval($year)) {
                 $book = $existingBook;
             } else {
                 $book = new Book();
