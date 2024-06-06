@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Budgetübersicht{% endblock %}
+{% block body %}
+    <style>
+        .selectColor {
+            background-color: #F7F7F7;
+        }
+
+        .progress-bar {
+            height: 20px;
+            border-radius: 5px;
+        }
+    </style>
+    <div class="flex items-center justify-center mt-32 text-3xl">
+        <div class="w-1/2 text-center space-y-32">
+            <div>
+                <label>Schuljahr:</label>
+                <select id="yearSelect" class="rounded-md p-1 selectColor">
+                    <option value="" disabled selected>Schuljahr auswählen</option>
+                    {% for class in classes %}
+                        <option value="{{ class.year }}">{{ class.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label>Abteilung:</label>
+                <select id="departmentSelect" class="rounded-md p-1 selectColor" disabled>
+                    <option value="" disabled selected>Abteilung auswählen</option>
+                </select>
+            </div>
+            <div>
+                <label>Klasse:</label>
+                <select id="classSelect" class="rounded-md p-1 selectColor" disabled>
+                    <option value="" disabled selected>Klasse auswählen</option>
+                </select>
+            </div>
+        </div>
+        <div class="w-1/2 text-center">
+            <div class="space-x-16 flex justify-center">
+                <div class="inline-block">
+                    <div class="flex justify-between">
+                        <label>Budget: </label>
+                        <p id="budget"></p>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between">
+                        <label>Benutztes Budget: </label>
+                        <p id="usedBudget"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-16">
+                <div class="border rounded-md w-96 h-8 relative bg-gray-200" style="background-color: #f3f3f3;">
+                    <div class="absolute top-0 left-0 h-full bg-blue-600" style="background-color: #378fbe;" id="progressBar"></div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-8 min-h-[10px]">
+                <p id="percentage" class="font-semibold"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function resetSelects(selects) {
+            selects.forEach(select => {
+                let placeholder;
+                if (select.id === 'departmentSelect') {
+                    placeholder = 'Abteilung auswählen';
+                } else if (select.id === 'classSelect') {
+                    placeholder = 'Klasse auswählen';
+                } else {
+                    placeholder = 'Select';
+                }
+                select.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+                select.disabled = true;
+            });
+        }
+
+        function updateBudget(type, id) {
+            fetch(`/get-budget/${type}/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('budget').textContent = data.budget;
+                    document.getElementById('usedBudget').textContent = data.usedBudget;
+
+                    let progressBar = document.getElementById('progressBar');
+                    let usedPercentage = (data.usedBudget / data.budget) * 100;
+                    progressBar.style.width = `${usedPercentage}%`;
+                    document.getElementById('percentage').textContent = parseFloat(usedPercentage).toFixed(2) + "%";
+                });
+        }
+
+        function updateDepartments() {
+            let year = document.getElementById('yearSelect').value;
+            updateBudget('year', year);
+
+            fetch('/get-departments/' + year)
+                .then(response => response.json())
+                .then(data => {
+                    let departmentSelect = document.getElementById('departmentSelect');
+                    resetSelects([departmentSelect, document.getElementById('classSelect')]);
+                    departmentSelect.innerHTML = '<option value="" disabled selected>Abteilung auswählen</option>';
+                    data.forEach(department => {
+                        let option = document.createElement('option');
+                        option.value = department.id;
+                        option.textContent = department.name;
+                        departmentSelect.appendChild(option);
+                    });
+                    departmentSelect.disabled = false;
+                });
+        }
+
+        function updateClasses() {
+            let departmentId = document.getElementById('departmentSelect').value;
+            updateBudget('department', departmentId);
+
+            fetch('/get-classes/' + departmentId)
+                .then(response => response.json())
+                .then(data => {
+                    let classSelect = document.getElementById('classSelect');
+                    resetSelects([classSelect]);
+                    classSelect.innerHTML = '<option value="" disabled selected>Klasse auswählen</option>';
+                    data.forEach(classObj => {
+                        let option = document.createElement('option');
+                        option.value = classObj.id;
+                        option.textContent = classObj.name;
+                        classSelect.appendChild(option);
+                    });
+                    classSelect.disabled = false;
+                });
+        }
+
+        function updateClassBudget() {
+            let classId = document.getElementById('classSelect').value;
+            updateBudget('class', classId);
+        }
+
+        document.getElementById('yearSelect').addEventListener('change', updateDepartments);
+        document.getElementById('departmentSelect').addEventListener('change', updateClasses);
+        document.getElementById('classSelect').addEventListener('change', updateClassBudget);
+        document.getElementById('yearSelect').addEventListener('change', () => resetSelects([document.getElementById('departmentSelect'), document.getElementById('classSelect')]));
+        document.getElementById('departmentSelect').addEventListener('change', () => resetSelects([document.getElementById('classSelect')]));
+    </script>
+{% endblock %}
