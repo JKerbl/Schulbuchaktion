@@ -125,7 +125,7 @@ class ImportController extends AbstractController
             $bookRepository = $doctrine->getRepository(Book::class);
             $existingBook = $bookRepository->findOneBy(['bnr' => intval($row['bnr'])]);
 
-            if ($existingBook) {
+            if ($existingBook && $existingBook->getYear() == intval($year)) {
                 $book = $existingBook;
             } else {
                 $book = new Book();

@@ -33,6 +33,9 @@ class Department
     #[ORM\OneToMany(targetEntity: SchoolClass::class, mappedBy: "department")]
     private Collection $schoolclass;
 
+    #[ORM\Column]
+    private ?int $year = null;
+
     public function __construct()
     {
         $this->schoolclass = new ArrayCollection();
@@ -131,6 +134,18 @@ class Department
                 $schoolclass->setDepartment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getYear(): ?int
+    {
+        return $this->year;
+    }
+
+    public function setYear(int $year): static
+    {
+        $this->year = $year;
 
         return $this;
     }
