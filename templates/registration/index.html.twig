@@ -5,6 +5,7 @@
 {% block stylesheets %}
     <link href="{{ asset('/style/stylingLoginRegisterPages.css') }}" type="text/css" rel="stylesheet"/>
     <link href="{{ asset('style/stylingLandingPage.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('style/stylingChoiceBoxSpecial.css') }}" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -47,7 +48,7 @@
                 </div>
             </div>
             <div class="role">
-                <label class="username-label" for="inputRole">Rolle</label>
+                <label class="username-label" id="labelrole" for="inputRole">Rolle</label>
                 <div class="inputRole">
                     {{ form_widget(regform.roles, {'attr': {'class': 'inputRole', 'onfocus': 'setBlueBorder("line-role")'}}) }}
                     {{ form_errors(regform.roles) }}
@@ -58,10 +59,6 @@
                 <button class="submit-btn" type="submit">
                     Registrieren
                 </button>
-            </div>
-            <div class="not-member-register">
-                {#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
-                <div>Schon Mitglied? <a href="{{ path('app_login') }}"><button  class="register-btn-in-login">Login</button></a></div>
             </div>
             {{ form_end(regform) }}
         </form>
