@@ -46,6 +46,13 @@
                 <div id="line-pw-repeat">
                 </div>
             </div>
+            <div class="role">
+                <label class="username-label" for="inputRole">Rolle</label>
+                <div class="inputRole">
+                    {{ form_widget(regform.roles, {'attr': {'class': 'inputRole', 'onfocus': 'setBlueBorder("line-role")'}}) }}
+                    {{ form_errors(regform.roles) }}
+                </div>
+            </div>
 
             <div class="register-btn-submit">
                 <button class="submit-btn" type="submit">
