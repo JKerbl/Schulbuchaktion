@@ -43,6 +43,7 @@ security:
         - { path: ^/order, roles: ROLE_USER}
         - { path: ^/department, roles: ROLE_AV}
         - { path: ^/school/class, roles: ROLE_ADMIN}
+        - { path: ^/user, roles: ROLE_ADMIN}
         - { path: ^/import, roles: ROLE_ADMIN}
         - { path: ^/landing_page, roles: PUBLIC_ACCESS}
         - { path: ^/registration, roles: PUBLIC_ACCESS} #TODO auf admin umändern
