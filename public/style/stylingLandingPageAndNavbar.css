@@ -164,7 +164,7 @@
     font-weight: 650;
 }
 
-@media (min-width: 1150px) {
+@media (min-width: 1285px) {
     .burger-menu {
         display: none;
     }
@@ -174,7 +174,7 @@
     }
 }
 
-@media (max-width: 1150px) {
+@media (max-width: 1285px) {
     .headline-landing-page {
         width: 80%;
         margin: 0 auto;
