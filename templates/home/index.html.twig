@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}{{ parent() }} Homepage{% endblock %}
 
     {% block stylesheets %}
         <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>

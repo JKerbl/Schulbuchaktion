@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bestellen{% endblock %}
+{% block title %}{{ parent() }} Bestellen{% endblock %}
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('style/stylingBestellungen.css') }}" type="text/css"/>

@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registrierung{% endblock %}
+{% block title %}{{ parent() }} Registrierung{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('/style/stylingLoginRegisterPages.css') }}" type="text/css" rel="stylesheet"/>
     <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('style/stylingChoiceBoxSpecial.css') }}" type="text/css" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -42,6 +43,13 @@
                     {{ form_errors(regform.password.second) }}
                 <div class="line" id="line-password-repeat"></div>
                 <div id="line-pw-repeat">
+                </div>
+            </div>
+            <div class="role">
+                <label class="username-label" id="labelrole" for="inputRole">Rolle</label>
+                <div class="inputRole">
+                    {{ form_widget(regform.roles, {'attr': {'class': 'inputRole', 'onfocus': 'setBlueBorder("line-role")'}}) }}
+                    {{ form_errors(regform.roles) }}
                 </div>
             </div>
 

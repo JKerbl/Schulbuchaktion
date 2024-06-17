@@ -41,11 +41,19 @@ security:
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/home, roles: ROLE_USER}
         - { path: ^/order, roles: ROLE_USER}
-        - { path: ^/import, roles: ROLE_USER}
+        - { path: ^/department, roles: ROLE_AV}
+        - { path: ^/school/class, roles: ROLE_ADMIN}
+        - { path: ^/user, roles: ROLE_ADMIN}
+        - { path: ^/import, roles: ROLE_ADMIN}
         - { path: ^/landing_page, roles: PUBLIC_ACCESS}
-        - { path: ^/registration, roles: PUBLIC_ACCESS}
+        - { path: ^/registration, roles: PUBLIC_ACCESS} #TODO auf admin umändern
         - { path: ^/app_login, roles: PUBLIC_ACCESS}
         - { path: ^/app_team, roles: PUBLIC_ACCESS}
+
+    role_hierarchy:
+        ROlE_AV: ROLE_USER
+        ROLE_FV: ROLE_USER
+        ROLE_ADMIN: [ ROLE_AV, ROLE_ALLOWED_TO_SWITCH, ROLE_FV ]
 
 when@test:
     security:

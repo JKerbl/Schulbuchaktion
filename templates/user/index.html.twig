@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Userübersicht{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingUser.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+{% block body %}
+    <h1 class="text-4xl">Userübersicht</h1>
+
+    <div class="users-wrapper">
+        {% for user in users %}
+            <div>
+                <p>{{ user.username }}</p>
+                <form action="{{ path('user.change_role', {'id': user.id}) }}" method="post">
+                    <select name="role">
+                        <option value="ROLE_AV" {% if 'ROLE_AV' in user.roles %}selected{% endif %}>AV</option>
+                        <option value="ROLE_FV" {% if 'ROLE_FV' in user.roles %}selected{% endif %}>FV</option>
+                        <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Admin</option>
+                    </select>
+                    <button type="submit">Rolle ändern</button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
