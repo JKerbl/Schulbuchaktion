@@ -37,11 +37,9 @@
 
             <div class="password">
                 <label class="password-label" for="inputPasswordRepeat">Passwort wiederholen</label>
-{#                <div class="inputPassword">#}
-{#                    {{ form_widget(regform.password.second) }}#}
+
                 {{ form_widget(regform.password.second, {'attr': {'class': 'inputPassword', 'onfocus': 'setBlueBorder("line-pw-repeat")'}}) }}
                     {{ form_errors(regform.password.second) }}
-{#                </div>#}
                 <div class="line" id="line-password-repeat"></div>
                 <div id="line-pw-repeat">
                 </div>
@@ -53,7 +51,6 @@
                 </button>
             </div>
             <div class="not-member-register">
-                {#                <div>Noch kein Mitglied? <button class="register-btn-in-login"> Registrieren</button></div>#}
                 <div>Schon Mitglied? <a href="{{ path('app_login') }}"><button  class="register-btn-in-login">Login</button></a></div>
             </div>
             {{ form_end(regform) }}

@@ -38,6 +38,17 @@
 
     <script>
         $(document).ready(function () {
+
+            $('.submit-btn-form').prop('disabled', true);
+
+            $('#input-import-file').on('change', function () {
+                if ($(this).val() !== '') {
+                    $('.submit-btn-form').prop('disabled', false);
+                } else {
+                    $('.submit-btn-form').prop('disabled', true);
+                }
+            });
+
             $('#upload-form').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
