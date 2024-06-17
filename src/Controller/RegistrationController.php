@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +27,16 @@ class RegistrationController extends AbstractController
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password']
             ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'AV' => 'ROLE_AV',
+                    'FV' => 'ROLE_FV',
+                    'Admin' => 'ROLE_ADMIN',
+                ],
+                'label' => 'Role',
+                'multiple' => false,
+                'expanded' => false,
+            ])
             ->getForm();
 
         $regform->handleRequest($request);
@@ -36,6 +46,7 @@ class RegistrationController extends AbstractController
             $user = new User;
             $user->setUsername($input['username']);
             $user->setPassword($passwordHasher->hashPassword($user, $input['password']));
+            $user->setRoles([$input['roles']]); // Assign the selected role to the user
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -44,7 +55,7 @@ class RegistrationController extends AbstractController
         }
 
         return $this->render('registration/index.html.twig', [
-            'regform' => $regform->createView()
+            'regform' => $regform->createView(),
         ]);
     }
 }

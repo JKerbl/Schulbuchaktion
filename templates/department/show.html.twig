@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Abteilung{% endblock %}
+{% block title %}{{ parent() }} Abteilung{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" rel="stylesheet"/>
@@ -18,6 +18,14 @@
             <tr>
                 <th>Name</th>
                 <td>{{ department.name }}</td>
+            </tr>
+            <tr>
+                <th>Jahr</th>
+                <td>{{ department.year }}</td>
+            </tr>
+            <tr>
+                <th>Abteilungsleiter</th>
+                <td>{{ department.headOfDepartment }}</td>
             </tr>
             <tr>
                 <th>Budget</th>
