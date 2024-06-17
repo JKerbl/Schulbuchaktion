@@ -6,17 +6,16 @@
 .headline-landing-page {
     color: #17A2B8;
     font-weight: 750;
-    font-size: clamp(1.8rem, 3vw, 3.5rem);
+    font-size: clamp(2rem, 3.1vw, 3.5rem);
 }
 
 .nav-bar-outer {
     width: 100%;
-    min-width: 650px;
     height: 5em;
     background-color: #ECECEC;
     box-shadow: 0 5px 10px rgb(138, 146, 147);
     background-clip: padding-box;
-    display: flex;
+    align-content: center;
 }
 
 .company-name {
@@ -40,7 +39,7 @@
 }
 
 .landing-page-image {
-    width: 37%;
+    width: 500px;
     max-width: 650px;
     border-radius: 10px;
 }
@@ -164,3 +163,107 @@
 .navbar-button:focus {
     font-weight: 650;
 }
+
+@media (min-width: 1150px) {
+    .burger-menu {
+        display: none;
+    }
+
+    .nav-bar-elements {
+        display: flex!important;
+    }
+}
+
+@media (max-width: 1150px) {
+    .headline-landing-page {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .burger-menu {
+        position: absolute;
+        right: 0;
+        padding-right: 1em;
+        top: 1em;
+        cursor: pointer;
+    }
+
+    .nav-bar-outer {
+        display: block;
+        height: 5em;
+        justify-content: space-between;
+    }
+
+    .nav-bar-elements {
+        display: none;
+        position: absolute;
+        top: 5em;
+        left: 0;
+        padding: 1em 2em 1em 2em;
+        width: 100%;
+        background-color: #c8d7dc;
+        align-items: center;
+        height: auto;
+        box-shadow: 0 5px 10px rgb(138, 146, 147);
+        z-index: 1000;
+    }
+
+    #login-btn {
+        text-align: center;
+    }
+
+    /* TODO: NAVBAR wieder anzeigen (LINKS) nach klicken ausgeblendet - Wieso??? ym*/
+    .nav-bar-company-name-and-icon {
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: flex-start;
+    }
+
+    .company-name {
+        margin-top: 0.3em;
+    }
+
+    #login-btn {
+        margin-top: 1em;
+    }
+
+
+    .nav-bar-inside {
+        align-content: center;
+    }
+
+    .nav-bar-company-name-and-icon {
+        align-content: center;
+    }
+
+}
+
+.nav-bar-inside {
+    display: flex;
+}
+
+.burger-menu-active {
+    display: block;
+}
+
+
+@media (max-width: 760px) {
+    .landing-page-image {
+        width: 400px;
+    }
+
+}
+
+
+/*@media (max-width: 760px) {*/
+/*    !*.burger-menu {*!*/
+/*    !*    display: none!important;*!*/
+/*    !*}*!*/
+/*    !*.nav-bar-elements {*!*/
+/*    !*    display: none!important;*!*/
+/*    !*}*!*/
+
+
+/*}*/
