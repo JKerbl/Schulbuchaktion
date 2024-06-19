@@ -99,6 +99,26 @@ class OrderController extends AbstractController {
         return new JsonResponse(['orders' => $ordersArray]);
     }
 
+    #[Route('/orderbooks/delete{id}', name: 'order.delete')]
+    public function delete($id, EntityManagerInterface $entityManager, BookOrderRepository $bookOrderRepository): Response
+    {
+        $bookOrder = $bookOrderRepository->findOneBy(['id' => $id]);
+
+        $book = $bookOrder->getBook();
+
+        $schoolClass = $bookOrder->getSchoolclass();
+
+        $department = $schoolClass->getDepartment();
+
+        $schoolClass->setUsedBudget($schoolClass->getUsedBudget()-$bookOrder->getCount()*$book->getPrice());
+        $department->setUsedBudget($department->getUsedBudget()-$bookOrder->getCount()*$book->getPrice());
+
+        $entityManager->remove($bookOrder);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/orders', name: 'app_orders')]
     public function showOrders()
     {
