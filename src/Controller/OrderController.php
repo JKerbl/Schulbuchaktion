@@ -106,7 +106,7 @@ class OrderController extends AbstractController {
     }
 
     #[Route('/order', name: 'submit_order', methods: ['POST'])]
-    public function submitOrder(Request $request, EntityManagerInterface $em, BookRepository $br, SchoolClassRepository $scr): JsonResponse {
+    public function submitOrder(DepartmentRepository $departmentRepository, Request $request, EntityManagerInterface $em, BookRepository $br, SchoolClassRepository $scr): JsonResponse {
         try {
             $data = json_decode($request->getContent(), true);
 
@@ -119,6 +119,11 @@ class OrderController extends AbstractController {
 
             $class = $scr->find($classId);
             $book = $br->find($bookId);
+            $department = $departmentRepository->find($class->getDepartment()->getId());
+
+            $class->setUsedBudget($class->getUsedBudget()+$bookAmount*$book->getPrice());
+            $department->setUsedBudget($department->getUsedBudget()+$bookAmount*$book->getPrice());
+
 
             if (!$class || !$book) {
                 return new JsonResponse(['success' => false, 'message' => 'Klasse oder Buch nicht gefunden.'], 404);

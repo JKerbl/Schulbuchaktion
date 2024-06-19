@@ -29,6 +29,7 @@ class RegistrationController extends AbstractController
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
+                    'User' => 'ROLE_USER',
                     'AV' => 'ROLE_AV',
                     'FV' => 'ROLE_FV',
                     'Admin' => 'ROLE_ADMIN',
