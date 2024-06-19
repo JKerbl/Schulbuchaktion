@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subject index{% endblock %}
+
+{% block body %}
+    <h1>Schulfächer</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>FV</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.fullName }}</td>
+                <td>
+                    <form action="{{ path('change_fv', {'id': subject.id}) }}" method="post">
+                        <label>
+                            <select name="fv">
+                                {% if not subject.headOfSubject %}
+                                    <option selected value="0">kein FV ausgewählt</option>
+                                {% endif %}
+                                {% for fvUser in fvs %}
+                                    <option value="{{ fvUser.id }}" {% if fvUser == subject.headOfSubject %} selected {% endif %}>{{ fvUser.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <button type="submit">FV ändern</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Keine Einträge gefunden</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
