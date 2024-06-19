@@ -40,7 +40,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/home, roles: ROLE_USER}
-        - { path: ^/order, roles: ROLE_USER}
+        - { path: ^/order, roles: ROLE_FV}
         - { path: ^/department, roles: ROLE_AV}
         - { path: ^/school/class, roles: ROLE_ADMIN}
         - { path: ^/user, roles: ROLE_ADMIN}
@@ -50,6 +50,7 @@ security:
         - { path: ^/app_login, roles: PUBLIC_ACCESS}
         - { path: ^/app_team, roles: PUBLIC_ACCESS}
         - { path: ^/subject, roles: ROLE_ADMIN}
+        - { path: ^/book, roles: ROLE_USER}
 
     role_hierarchy:
         ROlE_AV: ROLE_USER
