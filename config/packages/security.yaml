@@ -49,6 +49,7 @@ security:
         - { path: ^/registration, roles: PUBLIC_ACCESS} #TODO auf admin umändern
         - { path: ^/app_login, roles: PUBLIC_ACCESS}
         - { path: ^/app_team, roles: PUBLIC_ACCESS}
+        - { path: ^/subject, roles: ROLE_ADMIN}
 
     role_hierarchy:
         ROlE_AV: ROLE_USER
