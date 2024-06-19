@@ -3,40 +3,42 @@
 {% block title %}{{ parent() }} Schulfachübersicht{% endblock %}
 
 {% block body %}
-    <h1>Schulfächer</h1>
+    <h1 class="text-4xl font-bold my-8 text-center">Schulfächer</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>FV</th>
+    <div class="overflow-x-auto mx-8">
+        <table class="table-auto min-w-full bg-white border border-gray-200">
+            <thead>
+            <tr class="bg-gray-100">
+                <th class="px-4 py-2">Name</th>
+                <th class="px-4 py-2">FV</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for subject in subjects %}
-            <tr>
-                <td>{{ subject.fullName }}</td>
-                <td>
-                    <form action="{{ path('change_fv', {'id': subject.id}) }}" method="post">
-                        <label>
-                            <select name="fv">
-                                {% if not subject.headOfSubject %}
-                                    <option selected value="0">kein FV ausgewählt</option>
-                                {% endif %}
-                                {% for fvUser in fvs %}
-                                    <option value="{{ fvUser.id }}" {% if fvUser == subject.headOfSubject %} selected {% endif %}>{{ fvUser.username }}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                        <button type="submit">FV ändern</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">Keine Einträge gefunden</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for subject in subjects %}
+                <tr class="border-b border-gray-200">
+                    <td class="px-4 py-3">{{ subject.fullName }}</td>
+                    <td class="px-4 py-3 flex items-center">
+                        <form action="{{ path('change_fv', {'id': subject.id}) }}" method="post" class="flex items-center">
+                            <div class="relative flex-grow">
+                                <select name="fv" class="block w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    {% if not subject.headOfSubject %}
+                                        <option selected value="0">kein FV ausgewählt</option>
+                                    {% endif %}
+                                    {% for fvUser in fvs %}
+                                        <option value="{{ fvUser.id }}" {% if fvUser == subject.headOfSubject %} selected {% endif %}>{{ fvUser.username }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">FV ändern</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="px-4 py-3 text-center">Keine Einträge gefunden</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
