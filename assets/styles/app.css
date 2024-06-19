@@ -1,4 +1,12 @@
 body {
     background-color: #ECECEC;
-    font-family: "Inter", sans-serif
+    font-family: 'Inter', 'Arial', sans-serif;
 }
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
