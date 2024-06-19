@@ -118,17 +118,11 @@ th {
     padding-left: 0;
 }
 
-
 #output-import {
     text-align: center;
     margin: 0 auto;
     margin-bottom: 2em!important;
     padding: 0.5em;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
 }
 
 .table {
