@@ -99,7 +99,6 @@ class BudgetController extends AbstractController
 
         switch ($type) {
             case 'year':
-
                 $classes = $scr->findBy(['year' => $id]);
                 foreach ($classes as $class) {
                     $budget += $class->getDepartment()->getBudget();

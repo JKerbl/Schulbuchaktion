@@ -36,10 +36,9 @@
     }
 </style>
 
-    <div class="flex items-center justify-center mt-16 text-xl">
+    <div class="flex items-center justify-center mt-8 text-xl">
         <div class="w-1/2 text-center space-y-4 text-xl mb-24">
             <p class="font-semibold">Titel: {{ book.shortTitle }}</p>
-            <!--CENTER TEXT!!!-->
             <p class="w-1/2 mx-auto">Info: {{ book.info }}</p>
             <p>Buchnummer: {{ book.bnr }}</p>
             <p>Preis: {{ book.price }}€</p>
@@ -69,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="mt-20">
+            <div class="mt-12">
                 <div>
                     <h3 class="font-semibold text-3xl">Bestelldetails wählen:</h3>
                 </div>
@@ -148,9 +147,7 @@
         bookAmount.value = currentAmount.toString()
     }
 
-    function updateClassData() {
-        let classId = document.getElementById('classSelect').value;
-
+    function updateClassData(classId) {
         fetch('/get-class-data/' + classId)
             .then(response => response.json())
             .then(data => {
@@ -162,7 +159,10 @@
             });
     }
 
-    document.getElementById('classSelect').addEventListener('change', updateClassData);
+    document.getElementById('classSelect').addEventListener('change', function() {
+        updateClassData(document.getElementById('classSelect').value);
+    });
+
 
     document.getElementById('repetentenSelect').addEventListener('change', updateAnzahl);
 
@@ -220,18 +220,7 @@
             });
     });
 
-    /*(function() {
-        if( window.localStorage ) {
-            if(!localStorage.getItem('fetchDone')) {
-                updateClassData();
-                localStorage['fetchDone'] = true;
-            } else {
-                localStorage.removeItem('fetchDone');
-            }
-        }
-    })();
-
-    window.addEventListener('load', updateClassData);*/
+    updateClassData(document.getElementById('classSelect').value);
 </script>
 
 {% endblock %}
