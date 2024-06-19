@@ -43,7 +43,7 @@
                     <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
                     <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
                     <td>
-                        <a href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('img/delete.png') }}" alt="delete"></a>
+                        <a href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
                     </td>
                 </tr>
             {% endfor %}
