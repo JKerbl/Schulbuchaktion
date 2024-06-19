@@ -9,12 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/budget', name: 'app_budget')]
+#[Route('/budget', name: 'app_budget.')]
 
 class BudgetController extends AbstractController
 {
 
-    #[Route('/', name: 'app_budget_index')]
+    #[Route('/', name: 'index')]
     public function index(SchoolClassRepository $scr, DepartmentRepository $dr): Response
     {
         $classes = $scr->findAll();
