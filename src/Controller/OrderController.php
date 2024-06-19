@@ -7,9 +7,11 @@ use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class OrderController extends AbstractController {
@@ -101,7 +103,41 @@ class OrderController extends AbstractController {
     public function showOrders()
     {
         return $this->render('order/index.html.twig');
-
     }
 
+    #[Route('/order', name: 'submit_order', methods: ['POST'])]
+    public function submitOrder(Request $request, EntityManagerInterface $em, BookRepository $br, SchoolClassRepository $scr): JsonResponse {
+        try {
+            $data = json_decode($request->getContent(), true);
+
+            $classId = $data['classId'];
+            $bookId = $data['bookId'];
+            $bookAmount = $data['bookAmount'];
+            $teacherCopy = $data['teacherCopy'];
+            $ebookPlus = $data['ebookPlus'];
+            $ebook = $data['ebook'];
+
+            $class = $scr->find($classId);
+            $book = $br->find($bookId);
+
+            if (!$class || !$book) {
+                return new JsonResponse(['success' => false, 'message' => 'Klasse oder Buch nicht gefunden.'], 404);
+            }
+
+            $bookOrder = new BookOrder();
+            $bookOrder->setSchoolClass($class);
+            $bookOrder->setBook($book);
+            $bookOrder->setCount($bookAmount);
+            $bookOrder->setTeacherCopy($teacherCopy);
+            $bookOrder->setEBook($ebook);
+            $bookOrder->setEBookPlus($ebookPlus);
+
+            $em->persist($bookOrder);
+            $em->flush();
+
+            return new JsonResponse(['success' => true]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['success' => false, 'message' => 'Ein Fehler ist aufgetreten: ' . $e->getMessage()], 500);
+        }
+    }
 }
