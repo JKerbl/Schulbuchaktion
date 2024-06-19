@@ -9,17 +9,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/budget', name: 'app_budget')]
+
 class BudgetController extends AbstractController
 {
-    #[Route('/budget', name: 'app_budget')]
+
+    #[Route('/', name: 'app_budget_index')]
     public function index(SchoolClassRepository $scr, DepartmentRepository $dr): Response
     {
         $classes = $scr->findAll();
         $departments = $dr->findAll();
 
+        $years = [];
+        foreach ($classes as $class) {
+            if (!in_array($class->getYear(), $years)) {
+                $years[] = $class->getYear();
+            }
+        }
+
         return $this->render('budget/index.html.twig', [
             'departments' => $departments,
-            'classes' => $classes,
+            'years' => $years,
         ]);
     }
 
@@ -31,7 +41,6 @@ class BudgetController extends AbstractController
         if (!$classes) {
             throw $this->createNotFoundException('No classes found for year ' . $year);
         }
-        dump($classes);
 
         $departments = [];
         foreach ($classes as $class) {
@@ -90,18 +99,17 @@ class BudgetController extends AbstractController
 
         switch ($type) {
             case 'year':
+
                 $classes = $scr->findBy(['year' => $id]);
                 foreach ($classes as $class) {
-                    $budget += $class->getBudget(); // Assuming getBudget() method exists
-                    $usedBudget += $class->getUsedBudget(); // Assuming getUsedBudget() method exists
+                    $budget += $class->getDepartment()->getBudget();
+                    $usedBudget += $class->getDepartment()->getUsedBudget();
                 }
                 break;
             case 'department':
                 $department = $dr->find($id);
-                foreach ($department->getSchoolclass() as $class) {
-                    $budget += $class->getBudget();
-                    $usedBudget += $class->getUsedBudget();
-                }
+                $budget = $department->getBudget();
+                $usedBudget = $department->getUsedBudget();
                 break;
             case 'class':
                 $class = $scr->find($id);
