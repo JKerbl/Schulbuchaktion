@@ -3,44 +3,110 @@
 {% block title %}{{ parent() }} Buchübersicht{% endblock %}
 
 {% block body %}
-    <h1>Buchübersicht</h1>
+    <div class="container mx-auto p-4">
+        <h1 class="text-4xl font-bold my-8 text-center">Buchübersicht</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Bnr</th>
-                <th>Kurztitel</th>
-                <th>Titel</th>
-                <th>Listentyp</th>
-                <th>Schulform</th>
-                <th>Info</th>
-                <th>EBook</th>
-                <th>EBookPlus</th>
-                <th>Schulstufen</th>
-                <th>Preis</th>
-                <th>Jahr</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.bnr }}</td>
-                <td>{{ book.shortTitle }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.listtype }}</td>
-                <td>{{ book.schoolForm }}</td>
-                <td>{{ book.info }}</td>
-                <td>{{ book.eBook ? 'Ja' : 'Nein' }}</td>
-                <td>{{ book.eBookPlus ? 'Ja' : 'Nein' }}</td>
-                <td>{{ book.schoolGrades }}</td>
-                <td>{{ book.price }}</td>
-                <td>{{ book.year }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="16">Keine Einträge gefunden</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="flex justify-center my-4">
+            <form method="get" action="{{ path('app_book_index') }}" class="flex justify-center">
+                <input type="text" name="search" value="{{ search }}" placeholder="Suche nach einem Buch..."
+                       class="border px-4 py-2 w-full rounded-md"/>
+                <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-800 ease-in-out duration-300">Search</button>
+            </form>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead>
+                <tr>
+                    <th class="px-2 py-2 bg-gray-100">B.Nr.</th>
+                    <th class="px-2 py-2 bg-gray-100">Kurztitel</th>
+                    <th class="px-2 py-2 bg-gray-100">Titel</th>
+                    <th class="px-2 py-2 bg-gray-100">Schulform</th>
+                    <th class="px-2 py-2 bg-gray-100">Info</th>
+                    <th class="px-2 py-2 bg-gray-100">E-Book</th>
+                    <th class="px-2 py-2 bg-gray-100">E-Book+</th>
+                    <th class="px-2 py-2 bg-gray-100">Schulst.</th>
+                    <th class="px-2 py-2 bg-gray-100">Preis</th>
+                    <th class="px-2 py-2 bg-gray-100">Jahr</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in books %}
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ book.bnr }}</td>
+                        <td class="px-4 py-2">{{ book.shortTitle }}</td>
+                        <td class="px-4 py-2">{{ book.title }}</td>
+                        <td class="px-4 py-2">{{ book.schoolForm }}</td>
+                        <td class="px-4 py-2">{{ book.info }}</td>
+                        <td class="px-4 py-2">{{ book.eBook ? 'Ja' : 'Nein' }}</td>
+                        <td class="px-4 py-2">{{ book.eBookPlus ? 'Ja' : 'Nein' }}</td>
+                        <td class="px-4 py-2">{{ book.schoolGrades }}</td>
+                        <td class="px-4 py-2">{{ book.price }}</td>
+                        <td class="px-4 py-2">{{ book.year }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10" class="px-4 py-2 text-center">Keine Einträge gefunden</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <nav aria-label="Page navigation" class="my-12 flex justify-center">
+            <ul class="inline-flex -space-x-px">
+                <li>
+                    <a href="{{ path('app_book_index', {page: currentPage-1, search: search}) }}"
+                       class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg
+                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == 1 %}cursor-not-allowed{% endif %}">
+                        &laquo; Previous
+                    </a>
+                </li>
+                {% if currentPage > 3 %}
+                    <li>
+                        <a href="{{ path('app_book_index', {page: 1, search: search}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700">
+                            1
+                        </a>
+                    </li>
+                    <li>
+                        <span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">
+                            ...
+                        </span>
+                    </li>
+                {% endif %}
+                {% for page in (currentPage > 2 ? currentPage - 2 : 1) .. (currentPage < maxPages - 1 ? currentPage + 2 : maxPages) %}
+                    <li>
+                        <a href="{{ path('app_book_index', {page: page, search: search}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700 {% if page == currentPage %}bg-blue-500 text-gray-900{% endif %}">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+                {% if currentPage < maxPages - 2 %}
+                    <li>
+                        <span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">
+                            ...
+                        </span>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_book_index', {page: maxPages, search: search}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700">
+                            {{ maxPages }}
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ path('app_book_index', {page: currentPage+1, search: search}) }}"
+                       class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg
+                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == maxPages %}cursor-not-allowed{% endif %}">
+                        Next &raquo;
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 {% endblock %}
