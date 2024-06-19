@@ -19,6 +19,12 @@
             background-color: #378fbe;
             border-radius: 5px;
         }
+
+        .img-size {
+            margin: auto;
+            height: 32px;
+            width: 32px;
+        }
     </style>
 
     <div class="text-4xl">
@@ -28,21 +34,19 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Jahr</th>
                 <th>Abteilungsleiter</th>
                 <th>Budget</th>
                 <th>Benutztes Budget</th>
                 <th>Prozentuale Budget Nutzung</th>
-                <th>Umew</th>
+                <th>U.M.E.W</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
         <tbody>
         {% for department in departments %}
             <tr>
-                <td>{{ department.id }}</td>
                 <td>{{ department.name }}</td>
                 <td>{{ department.year }}</td>
                 <td>{{ department.headOfDepartment }}</td>
@@ -61,10 +65,10 @@
                     {{ percentageShown |number_format(2, '.', ',') }}%
                 </td>
                 <td>{{ department.umew }}</td>
-                <td>
-                    <a href="{{ path('app_department_show', {'id': department.id}) }}">Anzeigen</a>
-                    <a href="{{ path('app_department_edit', {'id': department.id}) }}">Bearbeiten</a>
-                    <a href="{{ path('app_department_duplicate', {'id': department.id}) }}">Duplizieren</a>
+                <td class="actionList">
+                    <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                    <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                    <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
                 </td>
             </tr>
         {% else %}

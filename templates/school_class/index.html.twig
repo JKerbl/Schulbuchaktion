@@ -15,13 +15,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Schulstufe</th>
-                <th>Schüler Anzahl</th>
-                <th>Repetenten Anzahl</th>
+                <th>Schüleranzahl</th>
+                <th>Repetentenanzahl</th>
                 <th>Benutztes Budget</th>
-                <th>Gesamt Budget</th>
+                <th>Gesamtes Budget</th>
                 <th>Jahr</th>
                 <th>Aktionen</th>
             </tr>
@@ -29,7 +28,6 @@
         <tbody>
         {% for school_class in school_classes %}
             <tr>
-                <td>{{ school_class.id }}</td>
                 <td>{{ school_class.name }}</td>
                 <td>{{ school_class.grade }}</td>
                 <td>{{ school_class.studentsAmount }}</td>
@@ -38,9 +36,9 @@
                 <td>{{ school_class.budget }}</td>
                 <td>{{ school_class.year }}</td>
                 <td>
-                    <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}">Anzeigen</a>
-                    <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}">Bearbeiten</a>
-                    <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}">Duplizieren</a>
+                    <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                    <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                    <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
                 </td>
             </tr>
         {% else %}

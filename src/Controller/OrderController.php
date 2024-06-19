@@ -99,12 +99,6 @@ class OrderController extends AbstractController {
         return new JsonResponse(['orders' => $ordersArray]);
     }
 
-    #[Route('/orders', name: 'app_orders')]
-    public function showOrders()
-    {
-        return $this->render('order/index.html.twig');
-    }
-
     #[Route('/order', name: 'submit_order', methods: ['POST'])]
     public function submitOrder(DepartmentRepository $departmentRepository, Request $request, EntityManagerInterface $em, BookRepository $br, SchoolClassRepository $scr): JsonResponse {
         try {
