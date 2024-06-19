@@ -39,7 +39,8 @@
     <div class="flex items-center justify-center mt-16 text-xl">
         <div class="w-1/2 text-center space-y-4 text-xl mb-24">
             <p class="font-semibold">Titel: {{ book.shortTitle }}</p>
-            <p>Info: {{ book.info }}</p>
+            <!--CENTER TEXT!!!-->
+            <p class="w-1/2 mx-auto">Info: {{ book.info }}</p>
             <p>Buchnummer: {{ book.bnr }}</p>
             <p>Preis: {{ book.price }}€</p>
         </div>
@@ -74,18 +75,26 @@
                 </div>
                 <div class="flex mt-4">
                     <div class="w-1/2 space-y-4">
-                        <p>Anzahl der Buchmenge:</p>
-                        <p>Kopie für Lehrer:</p>
-                        <p>E-Book:</p>
-                        <p>E-Book+:</p>
+                        <p>Repetenten</p>
+                        <p>Anzahl der Buchmenge</p>
+                        <p>Kopie für Lehrer</p>
+                        <p>E-Book</p>
+                        <p>E-Book+</p>
                     </div>
                     <div class="w-1/2 space-y-4 text-center mr-8">
+                        <div>
+                            <select id="repetentenSelect" class="mx-auto rounded-sm p-0.5">
+                                <option>Mit Repetenten</option>
+                                <option>Ohne Repetenten</option>
+                                <option>Nur Repetenten</option>
+                            </select>
+                        </div>
                         <div class="inline-block">
                             <button
                                     class="border customColorBorder customColorNumber rounded-md ml-1 px-2"
                                     onclick="updateBookAmount(-1)"
                             >-</button>
-                            <p class="inline-block w-8" id="bookAmount">3</p>
+                            <input class="inline-block w-8 text-center border rounded-md customColorBorder" style="background-color: #ECECEC;" id="bookAmount" value="3">
                             <button
                                     class="border customColorBorder customColorNumber rounded-md mr-1 px-1.5"
                                     onclick="updateBookAmount(1)"
@@ -119,6 +128,7 @@
             <div class="mt-12 flex justify-center mr-32 mb-8">
                 <button
                     class="customColorBG p-4 rounded-md text-white font-semibold tracking-wider"
+                    id="orderButton"
                 >
                     Zur Bestellliste hinzufügen
                 </button>
@@ -130,12 +140,12 @@
 <script>
     function updateBookAmount(amount) {
         let bookAmount = document.getElementById('bookAmount')
-        let currentAmount = parseInt(bookAmount.innerText) + amount
+        let currentAmount = parseInt(bookAmount.value) + amount
         if(currentAmount < 1) {
             currentAmount = 1
         }
 
-        bookAmount.innerText = currentAmount.toString()
+        bookAmount.value = currentAmount.toString()
     }
 
     function updateClassData() {
@@ -144,9 +154,9 @@
         fetch('/get-class-data/' + classId)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 document.getElementById('studentAmount').textContent = data.studentAmount;
                 document.getElementById('repeaterAmount').textContent = data.repeaterAmount;
+                document.getElementById('bookAmount').value = data.studentAmount;
                 document.getElementById('budgetAmount').textContent =
                     data.usedBudgetAmount + '€ / ' + data.budgetAmount + '€';
             });
@@ -154,7 +164,74 @@
 
     document.getElementById('classSelect').addEventListener('change', updateClassData);
 
-    window.addEventListener('load', updateClassData);
+    document.getElementById('repetentenSelect').addEventListener('change', updateAnzahl);
+
+    function updateAnzahl() {
+        let repetentenSetting = document.getElementById('repetentenSelect').value;
+        let studentAmount = document.getElementById('studentAmount').textContent;
+        let repetentenAmount = document.getElementById('repeaterAmount').textContent;
+
+        switch (repetentenSetting) {
+            case 'Mit Repetenten':
+                document.getElementById('bookAmount').value = studentAmount;
+                break;
+            case 'Ohne Repetenten':
+                document.getElementById('bookAmount').value = studentAmount - repetentenAmount;
+                break;
+            case 'Nur Repetenten':
+                document.getElementById('bookAmount').value = repetentenAmount;
+                break;
+        }
+    }
+
+    document.getElementById('orderButton').addEventListener('click', function () {
+        let classId = document.getElementById('classSelect').value;
+        let bookAmount = document.getElementById('bookAmount').value;
+        let teacherCopy = document.querySelector('input[type="checkbox"]').checked;
+        let ebookPlus = {{ book.ebookplus ? 'true' : 'false' }};
+        let ebook = {{ book.ebook ? 'true' : 'false' }};
+        let bookId = {{ book.id }}; // Include book ID
+
+        let orderData = {
+            classId: classId,
+            bookId: bookId,
+            bookAmount: bookAmount,
+            teacherCopy: teacherCopy,
+            ebookPlus: ebookPlus,
+            ebook: ebook
+        };
+
+        console.log(orderData);
+
+        fetch('/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/orderbooks/index';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Bücher konnten nicht bestellt werden!');
+            });
+    });
+
+    /*(function() {
+        if( window.localStorage ) {
+            if(!localStorage.getItem('fetchDone')) {
+                updateClassData();
+                localStorage['fetchDone'] = true;
+            } else {
+                localStorage.removeItem('fetchDone');
+            }
+        }
+    })();
+
+    window.addEventListener('load', updateClassData);*/
 </script>
 
 {% endblock %}
