@@ -56,7 +56,7 @@
                         <p>Aktuelles Budget</p>
                     </div>
                     <div class="w-1/2 space-y-4 text-center mr-8">
-                        <select id="classSelect" class="mx-auto rounded-sm p-0.5">
+                        <select id="classSelect" class="text-center rounded-sm p-0.5">
                             {% for class in classes %}
                                 <option value="{{ class.id }}">{{ class.name }}</option>
                             {% endfor %}
@@ -82,7 +82,7 @@
                     </div>
                     <div class="w-1/2 space-y-4 text-center mr-8">
                         <div>
-                            <select id="repetentenSelect" class="mx-auto rounded-sm p-0.5">
+                            <select id="repetentenSelect" class="text-center rounded-sm p-0.5">
                                 <option>Mit Repetenten</option>
                                 <option>Ohne Repetenten</option>
                                 <option>Nur Repetenten</option>
@@ -148,6 +148,10 @@
     }
 
     function updateClassData(classId) {
+        document.getElementById('studentAmount').textContent = 'Warten...';
+        document.getElementById('repeaterAmount').textContent = 'Warten...';
+        document.getElementById('budgetAmount').textContent = 'Warten...';
+
         fetch('/get-class-data/' + classId)
             .then(response => response.json())
             .then(data => {
