@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Buchübersicht{% endblock %}
+
+{% block body %}
+    <h1>Buchübersicht</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bnr</th>
+                <th>Kurztitel</th>
+                <th>Titel</th>
+                <th>Listentyp</th>
+                <th>Schulform</th>
+                <th>Info</th>
+                <th>EBook</th>
+                <th>EBookPlus</th>
+                <th>Schulstufen</th>
+                <th>Preis</th>
+                <th>Jahr</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.bnr }}</td>
+                <td>{{ book.shortTitle }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.listtype }}</td>
+                <td>{{ book.schoolForm }}</td>
+                <td>{{ book.info }}</td>
+                <td>{{ book.eBook ? 'Ja' : 'Nein' }}</td>
+                <td>{{ book.eBookPlus ? 'Ja' : 'Nein' }}</td>
+                <td>{{ book.schoolGrades }}</td>
+                <td>{{ book.price }}</td>
+                <td>{{ book.year }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">Keine Einträge gefunden</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

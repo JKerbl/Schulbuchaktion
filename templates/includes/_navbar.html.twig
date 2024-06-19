@@ -21,6 +21,11 @@
             </div>
             {% if (app.user) %}
                 <div class="nav-bar-item">
+                    <a href="{{ path('app_book_index') }}">
+                        <button class="navbar-button">Bücherliste</button>
+                    </a>
+                </div>
+                <div class="nav-bar-item">
                     <a href="{{ path('home.') }}">
                         <button class="navbar-button">Bestellen</button>
                     </a>
@@ -32,7 +37,7 @@
                 </div>
                 <div class="nav-bar-item">
                     <a href="{{ path('app_import') }}">
-                        <button class="navbar-button">Importieren</button>
+                        <button class="navbar-button">Import</button>
                     </a>
                 </div>
                 <div class="nav-bar-item">
