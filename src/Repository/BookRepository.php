@@ -45,4 +45,38 @@ class BookRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getPaginatedEntries(int $limit, int $currentPage, string $search = null): array
+    {
+        $offset = ($currentPage - 1) * $limit;
+
+        if ($offset < 1) $offset = 1;
+
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        if ($search) {
+            $queryBuilder
+                ->where('b.title LIKE :search')
+                ->orWhere('b.bnr LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getTotalEntries(string $search = null): int
+    {
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->select('count(b.id)');
+
+        if ($search) {
+            $queryBuilder->where('b.title LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
 }
