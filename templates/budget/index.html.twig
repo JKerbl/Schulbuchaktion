@@ -6,20 +6,15 @@
         .selectColor {
             background-color: #F7F7F7;
         }
-
-        .progress-bar {
-            height: 20px;
-            border-radius: 5px;
-        }
     </style>
-    <div class="flex items-center justify-center mt-32 text-3xl">
+    <div class="flex items-center justify-center mt-32 text-xl">
         <div class="w-1/2 text-center space-y-32">
             <div>
                 <label>Schuljahr:</label>
                 <select id="yearSelect" class="rounded-md p-1 selectColor">
                     <option value="" disabled selected>Schuljahr auswählen</option>
-                    {% for class in classes %}
-                        <option value="{{ class.year }}">{{ class.year }}</option>
+                    {% for year in years %}
+                        <option value="{{ year }}">{{ year }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -56,6 +51,7 @@
                     <div class="absolute top-0 left-0 h-full bg-blue-600" style="background-color: #378fbe;" id="progressBar"></div>
                 </div>
             </div>
+            <!--Fix moving paragraph-->
             <div class="flex justify-center mt-8 min-h-[10px]">
                 <p id="percentage" class="font-semibold"></p>
             </div>
@@ -78,15 +74,24 @@
         }
 
         function updateBudget(type, id) {
-            fetch(`/get-budget/${type}/${id}`)
+            fetch(`/budget/get-budget/${type}/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('budget').textContent = data.budget;
-                    document.getElementById('usedBudget').textContent = data.usedBudget;
+                    document.getElementById('budget').textContent = data.budget + "€";
+                    document.getElementById('usedBudget').textContent = data.usedBudget + "€";
 
                     let progressBar = document.getElementById('progressBar');
                     let usedPercentage = (data.usedBudget / data.budget) * 100;
-                    progressBar.style.width = `${usedPercentage}%`;
+
+                    if (usedPercentage > 100) {
+                        progressBar.style.backgroundColor = 'red';
+                        progressBar.style.width = '100%';
+                    } else {
+                        progressBar.style.backgroundColor = '';
+                        progressBar.style.width = `${usedPercentage}%`;
+                    }
+
+                    progressBar.style.borderRadius = '6px';
                     document.getElementById('percentage').textContent = parseFloat(usedPercentage).toFixed(2) + "%";
                 });
         }
@@ -95,7 +100,7 @@
             let year = document.getElementById('yearSelect').value;
             updateBudget('year', year);
 
-            fetch('/get-departments/' + year)
+            fetch('/budget/get-departments/' + year)
                 .then(response => response.json())
                 .then(data => {
                     let departmentSelect = document.getElementById('departmentSelect');
@@ -115,7 +120,7 @@
             let departmentId = document.getElementById('departmentSelect').value;
             updateBudget('department', departmentId);
 
-            fetch('/get-classes/' + departmentId)
+            fetch('/budget/get-classes/' + departmentId)
                 .then(response => response.json())
                 .then(data => {
                     let classSelect = document.getElementById('classSelect');
