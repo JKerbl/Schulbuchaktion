@@ -15,6 +15,7 @@
                 <p>{{ user.username }}</p>
                 <form action="{{ path('user.change_role', {'id': user.id}) }}" method="post">
                     <select name="role">
+                        <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>User</option>
                         <option value="ROLE_AV" {% if 'ROLE_AV' in user.roles %}selected{% endif %}>AV</option>
                         <option value="ROLE_FV" {% if 'ROLE_FV' in user.roles %}selected{% endif %}>FV</option>
                         <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Admin</option>
