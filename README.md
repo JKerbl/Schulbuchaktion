@@ -51,4 +51,8 @@ To run the project, make sure the following prerequisites are met:
   ```bash
   symfony server:start
   ```
+- Use the following command to build the tables in the database
+  ```bash
+  php bin/console doctrine:schema:update --force
+  ```
 - Everything should be working
