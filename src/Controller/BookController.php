@@ -16,6 +16,7 @@ class BookController extends AbstractController
 
     private function getMaxPages(BookRepository $bookRepository, int $limit, string $search = null): int
     {
+        // testing git
         $totalEntries = $bookRepository->getTotalEntries($search);
         return ceil($totalEntries / $limit);
     }
