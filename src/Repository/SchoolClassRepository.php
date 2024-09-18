@@ -21,6 +21,32 @@ class SchoolClassRepository extends ServiceEntityRepository
         parent::__construct($registry, SchoolClass::class);
     }
 
+    public function findAllByDepartmentID(int $departmentId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.department = :departmentId')
+            ->setParameter('departmentId', $departmentId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAlLByYear(int $year): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.year = :year')
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findHighestYear(): ?int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('MAX(s.year) as year')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return SchoolClass[] Returns an array of SchoolClass objects
     //     */

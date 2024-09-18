@@ -21,6 +21,23 @@ class DepartmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Department::class);
     }
 
+    public function findAlLByYear(int $year): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.year = :year')
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findHighestYear(): ?int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('MAX(s.year) as year')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Department[] Returns an array of Department objects
     //     */

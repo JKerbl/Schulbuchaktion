@@ -12,11 +12,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/books')]
 class BookController extends AbstractController
 {
-    public function __construct(private int $limit) {}
+    public function __construct(private int $limit)
+    {
+    }
 
     private function getMaxPages(BookRepository $bookRepository, int $limit, string $search = null): int
     {
-        // testing git
         $totalEntries = $bookRepository->getTotalEntries($search);
         return ceil($totalEntries / $limit);
     }
