@@ -36,6 +36,9 @@ class SchoolClass
     #[ORM\Column]
     private ?int $year = null;
 
+    #[ORM\Column(options: ["default" => "h"])]
+    private ?string $type = "h";
+
     #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: "schoolclass")]
     private ?Department $department = null;
 
@@ -135,6 +138,16 @@ class SchoolClass
     public function getBookOrder(): Collection
     {
         return $this->bookOrder;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
     }
 
     public function setBookOrder(Collection $bookOrder): void

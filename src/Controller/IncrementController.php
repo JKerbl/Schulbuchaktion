@@ -33,46 +33,38 @@ class IncrementController extends AbstractController
             $newDepartment->setUmew($department->getUmew());
             $em->persist($newDepartment);
 
-            $classes = $scr->findAllByDepartmentID($newDepartment->getId());
+            $classes = $scr->findAllByDepartmentID($department->getId());
 
             // Increments all classes in the department
             foreach ($classes as $class) {
                 $newClass = new SchoolClass();
 
-                $classWithoutGrade = substr($className, 1 );
+                $classWithoutGrade = substr($class->getName(), 1 );
 
                 if ($class->getGrade() != 5) {
                     $className = $class->getName();
 
-
                     $newClass->setName(($class->getGrade() + 1) . $classWithoutGrade);
                     $newClass->setGrade($class->getGrade() + 1);
                     $newClass->setStudentsAmount($class->getStudentsAmount() + $class->getRepAmount());
-                    $newClass->setRepAmount(0);
-                    $newClass->setYear($highestYear + 1);
-                    $newClass->setDepartment($newDepartment);
-                    $newClass->setBudget($class->getBudget());
-                    $newClass->setUsedBudget(0);
                 } else {
                     $newClass->setGrade(1);
 
                     $newClass->setName("1" . $classWithoutGrade);
                     $newClass->setGrade(1);
                     $newClass->setStudentsAmount(0);
-                    $newClass->setRepAmount(0);
-                    $newClass->setYear($highestYear + 1);
-                    $newClass->setDepartment($newDepartment);
-                    $newClass->setBudget($class->getBudget());
-                    $newClass->setUsedBudget(0);
                 }
+                $newClass->setRepAmount(0);
+                $newClass->setYear($highestYear + 1);
+                $newClass->setDepartment($newDepartment);
+                $newClass->setBudget($class->getBudget());
+                $newClass->setUsedBudget(0);
                 $em->persist($newClass);
             }
         }
         $em->flush();
 
-        return $this->render('increment/index.html.twig', [
-            'controller_name' => 'IncrementController',
-        ]);
+        return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }
 
 

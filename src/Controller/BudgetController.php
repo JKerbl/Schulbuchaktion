@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use function PHPUnit\Framework\equalTo;
 
 #[Route('/budget', name: 'app_budget.')]
 
@@ -31,6 +34,41 @@ class BudgetController extends AbstractController
             'departments' => $departments,
             'years' => $years,
         ]);
+    }
+
+    #[Route('/calc-budget', name: 'calc_budget')]
+    public function calcBudget(EntityManagerInterface $manager, DepartmentRepository $d, SchoolClassRepository $sc)
+    {
+        $limit_4100 = 180;
+        $limit_3100 = 95;
+
+        $year = $d->findHighestYear();
+        $departments = $d->findAlLByYear($year);
+
+
+        foreach ($departments as $dep){
+            $classes = $sc->findAllByDepartmentID($dep->getId());
+
+            $higherstudents = 0;
+            $technicalStudents = 0;
+
+            foreach ($classes as $class){
+                if ($class->getType() === "h"){
+                    $higherstudents += $class->getStudentsAmount() + $class->getRepAmount();
+                } else {
+                    $technicalStudents += $class->getStudentsAmount() + $class->getRepAmount();
+                }
+            }
+
+            $budget = $higherstudents * $limit_4100 + $technicalStudents * $limit_3100;
+            $dep->setBudget($budget);
+            $manager->persist($dep);
+
+        }
+
+        $manager->flush();
+
+        return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/get-departments/{year}', name: 'get_departments')]
