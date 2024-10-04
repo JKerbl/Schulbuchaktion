@@ -83,7 +83,6 @@ class ImportController extends AbstractController
                     'title' => $Row['C'],
                     'listType' => $Row['D'],
                     'schoolForm' => $Row['E'],
-                    'fullName' => $Row['F'],
                     'schoolGrade' => $Row['G'],
                     'teacherVersion' => $Row['H'],
                     'info' => $Row['I'],
@@ -132,19 +131,6 @@ class ImportController extends AbstractController
                 $book->setBnr(intval($row['bnr']));
             }
 
-            $subjectRepository = $doctrine->getRepository(Subject::class);
-            $existingSubject = $subjectRepository->findOneBy(['fullName' => $row['fullName']]);
-
-            if ($existingSubject){
-                $subject=$existingSubject;
-            } else{
-                $subject = new Subject();
-                $subject->setFullName($row['fullName']);
-
-                $entityManager->persist($subject);
-
-            }
-
             // Convert string to integer
             $book->setListType(intval($row['listType']));
             $book->setSchoolForm(intval($row['schoolForm']));
@@ -158,7 +144,6 @@ class ImportController extends AbstractController
             $book->setShortTitle($row['shortTitle']);
             $book->setTitle($row['title']);
             $book->setInfo($row['info']);
-            $book->setSubject($subject);
             $book->setSchoolGrades($row['schoolGrade']);
 
             if ($row['teacherVersion']!= null){

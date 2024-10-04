@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\BookOrder;
+use App\Entity\Subject;
 use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class OrderController extends AbstractController {
     #[Route('/order/{id}', name: 'order')]
-    public function order($id, BookRepository $br, SchoolClassRepository $scr): Response {
+    public function order($id, BookRepository $br, SchoolClassRepository $scr, SubjectRepository $sr): Response {
         $res = array();
         $books = $br->findAll();
         foreach ($books as $key => $book) {
@@ -26,6 +28,8 @@ class OrderController extends AbstractController {
             );
         }
         $user = $this->getUser();
+        $subjects = $sr->findAll();
+        $userSubject = $sr->findSubjectsByHeadOfSubjectId($user->getId());
 
         $book = $br->find($id);
         $classes = $scr->findAll();
@@ -33,13 +37,14 @@ class OrderController extends AbstractController {
         if ($classes === []) {
             return $this->render('home/index.html.twig', [
                 'results' => $res, 'user' => $user,
-                'searchInput' => ""
+                'searchInput' => "",
             ]);
         }
 
         return $this->render('order/index.html.twig', [
             'user' => $user, 'book' => $book,
-            'classes' => $classes,
+            'classes' => $classes,'allSubjects' => $subjects,
+            'userSubject' => $userSubject,
         ]);
     }
 
@@ -130,10 +135,12 @@ class OrderController extends AbstractController {
             $teacherCopy = $data['teacherCopy'];
             $ebookPlus = $data['ebookPlus'];
             $ebook = $data['ebook'];
+            $subjectId = $data['subject'];
 
             $class = $scr->find($classId);
             $book = $br->find($bookId);
             $department = $departmentRepository->find($class->getDepartment()->getId());
+            $subject = $em->getRepository(Subject::class)->find($subjectId);
 
             $class->setUsedBudget($class->getUsedBudget()+$bookAmount*$book->getPrice());
             $department->setUsedBudget($department->getUsedBudget()+$bookAmount*$book->getPrice());
@@ -150,6 +157,9 @@ class OrderController extends AbstractController {
             $bookOrder->setTeacherCopy($teacherCopy);
             $bookOrder->setEBook($ebook);
             $bookOrder->setEBookPlus($ebookPlus);
+
+            $bookOrder->setSubject($subject);
+            $subject->addBookOrder($bookOrder);
 
             $em->persist($bookOrder);
             $em->flush();

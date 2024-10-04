@@ -79,6 +79,7 @@
                         <p>Kopie für Lehrer</p>
                         <p>E-Book</p>
                         <p>E-Book+</p>
+                        <p>Gegenstand</p>
                     </div>
                     <div class="w-1/2 space-y-4 text-center mr-8">
                         <div>
@@ -120,6 +121,21 @@
                             >
                             <label class="text-xs customColorText">J/N</label>
                         </div>
+                        <div>
+                            <select id="subjectSelect" class="text-center rounded-sm p-0.5"
+                                {% if 'ROLE_ADMIN' not in user.roles %}
+                                    disabled
+                                {% endif %}
+                            >
+                            {% if 'ROLE_ADMIN' not in user.roles %}
+                                <option>{{ userSubject[0].fullname }}</option>
+                            {% else %}
+                                {% for subject in allSubjects %}
+                                    <option value="{{ subject.id }}">{{ subject.fullname }}</option>
+                                {% endfor %}
+                            {% endif %}
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,6 +147,7 @@
                 >
                     Zur Bestellliste hinzufügen
                 </button>
+
             </div>
         </div>
     </div>
@@ -187,6 +204,8 @@
         }
     }
 
+
+
     document.getElementById('orderButton').addEventListener('click', function () {
         let classId = document.getElementById('classSelect').value;
         let bookAmount = document.getElementById('bookAmount').value;
@@ -194,6 +213,7 @@
         let ebookPlus = {{ book.ebookplus ? 'true' : 'false' }};
         let ebook = {{ book.ebook ? 'true' : 'false' }};
         let bookId = {{ book.id }}; // Include book ID
+        let subject = document.getElementById('subjectSelect').value;
 
         let orderData = {
             classId: classId,
@@ -201,7 +221,8 @@
             bookAmount: bookAmount,
             teacherCopy: teacherCopy,
             ebookPlus: ebookPlus,
-            ebook: ebook
+            ebook: ebook,
+            subject: subject
         };
 
         console.log(orderData);

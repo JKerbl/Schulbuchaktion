@@ -21,6 +21,15 @@ class SubjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Subject::class);
     }
 
+    public function findSubjectsByHeadOfSubjectId($hosId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.headOfSubject = :val')
+            ->setParameter('val', $hosId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Subject[] Returns an array of Subject objects
     //     */

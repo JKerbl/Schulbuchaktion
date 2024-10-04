@@ -42,10 +42,6 @@ class Book
     #[ORM\Column]
     private string $schoolGrades;
 
-    #[ORM\ManyToOne(targetEntity: Subject::class, inversedBy: "book")]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Subject $subject = null;
-
     #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: "book")]
     private Collection $bookOrder;
 
@@ -159,16 +155,6 @@ class Book
     public function setEBookPlus(?bool $eBookPlus): void
     {
         $this->eBookPlus = $eBookPlus;
-    }
-
-    public function getSubject(): ?Subject
-    {
-        return $this->subject;
-    }
-
-    public function setSubject(?Subject $subject): void
-    {
-        $this->subject = $subject;
     }
 
     public function getBookOrder(): Collection

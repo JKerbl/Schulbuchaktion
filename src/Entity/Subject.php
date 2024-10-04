@@ -24,9 +24,13 @@ class Subject
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'subject')]
     private Collection $book;
 
+    #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: 'subject')]
+    private Collection $bookOrders;
+
     public function __construct()
     {
         $this->book = new ArrayCollection();
+        $this->bookOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,5 +94,36 @@ class Subject
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, BookOrder>
+     */
+    public function getBookOrders(): Collection
+    {
+        return $this->bookOrders;
+    }
+
+    public function addBookOrder(BookOrder $bookOrder): static
+    {
+        if (!$this->bookOrders->contains($bookOrder)) {
+            $this->bookOrders->add($bookOrder);
+            $bookOrder->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookOrder(BookOrder $bookOrder): static
+    {
+        if ($this->bookOrders->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getSubject() === $this) {
+                $bookOrder->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }

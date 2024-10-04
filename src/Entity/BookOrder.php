@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookOrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookOrderRepository::class)]
@@ -30,6 +32,14 @@ class BookOrder
 
     #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "bookOrder")]
     private ?Book $book = null;
+
+    #[ORM\ManyToOne(inversedBy: 'bookOrders')]
+    private ?Subject $subject = null;
+
+    public function __construct()
+    {
+
+    }
 
     public function getId(): ?int
     {
@@ -120,4 +130,19 @@ class BookOrder
     {
         return $this->book->getTitle();
     }
+
+   /**
+    * @return Collection<int, subject>
+    */
+   public function getSubject(): Collection
+   {
+       return $this->subject;
+   }
+
+   public function setSubject(?subject $subject): static
+   {
+       $this->subject = $subject;
+
+       return $this;
+   }
 }
