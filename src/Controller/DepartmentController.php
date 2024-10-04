@@ -14,11 +14,23 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/department')]
 class DepartmentController extends AbstractController
 {
-    #[Route('/', name: 'app_department_index', methods: ['GET'])]
-    public function index(DepartmentRepository $departmentRepository): Response
+    #[Route('/{year?}', name: 'app_department_index', methods: ['GET'])]
+    public function index(DepartmentRepository $departmentRepository, int $year = null): Response
+    {
+        // Gets the Classes with the year or the current year if there is no year provided
+        $departments = $year ? $departmentRepository->findAlLByYear($year) : $departmentRepository->findAlLByYear(date('Y'));
+
+        return $this->render('department/index.html.twig', [
+            'departments' => $departments,
+            'year' => $year ? $year : date('Y'),
+        ]);
+    }
+
+    #[Route('/year/{year}', name: 'app_department_get_year', methods: ['GET'])]
+    public function getDepartmentWithYear(DepartmentRepository $departmentRepository, int $year): Response
     {
         return $this->render('department/index.html.twig', [
-            'departments' => $departmentRepository->findAll(),
+            'departments' => $departmentRepository->findAlLByYear($year),
         ]);
     }
 

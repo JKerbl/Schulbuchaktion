@@ -35,7 +35,13 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Jahr</th>
+                <th>
+                    <!-- The form is used to change the year of the departmentst to show -->
+                    <form id="yearForm" method="get" onsubmit="submitForm(event)">
+                        <input style="text-align: center" type="text" id="yearInput" placeholder="{{ year }}" />
+                        <button type="submit" style="display: none;"></button>
+                    </form>
+                </th>
                 <th>Abteilungsleiter</th>
                 <th>Budget</th>
                 <th>Benutztes Budget</th>
@@ -44,6 +50,17 @@
                 <th>Aktionen</th>
             </tr>
         </thead>
+
+        <script>
+            function submitForm(event) {
+                event.preventDefault(); // Prevent the default form submission
+                const year = document.getElementById('yearInput').value;
+                const form = document.getElementById('yearForm');
+                form.action = `{{ path('app_department_index') }}/${year}`;
+                form.submit(); // Submit the form programmatically
+            }
+        </script>
+
         <tbody>
         {% for department in departments %}
             <tr>

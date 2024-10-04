@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/school/class')]
 class SchoolClassController extends AbstractController
 {
-    #[Route('/', name: 'app_school_class_index', methods: ['GET'])]
-    public function index(SchoolClassRepository $schoolClassRepository): Response
+    #[Route('/{year?}', name: 'app_school_class_index', methods: ['GET'])]
+    public function index(SchoolClassRepository $schoolClassRepository, int $year = null): Response
     {
+        // Gets the Classes with the year or the current year if there is no year provided
+        $schoolClasses = $year ? $schoolClassRepository->findAlLByYear($year) : $schoolClassRepository->findAlLByYear(date('Y'));
+
         return $this->render('school_class/index.html.twig', [
-            'school_classes' => $schoolClassRepository->findAll(),
+            'school_classes' => $schoolClasses,
+            'year' => $year ? $year : date('Y'),
         ]);
     }
 

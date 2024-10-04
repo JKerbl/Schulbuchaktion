@@ -54,9 +54,9 @@ class BudgetController extends AbstractController
 
             foreach ($classes as $class){
                 if ($class->getType() === "h"){
-                    $higherstudents += $class->getStudentsAmount() + $class->getRepAmount();
+                    $higherstudents += $class->getStudentsAmount();
                 } else {
-                    $technicalStudents += $class->getStudentsAmount() + $class->getRepAmount();
+                    $technicalStudents += $class->getStudentsAmount();
                 }
             }
 

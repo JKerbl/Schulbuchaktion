@@ -16,25 +16,42 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>
+                    <!-- The form is used to change the year of the schoolclasses to show -->
+                    <form id="yearForm" method="get" onsubmit="submitForm(event)">
+                        <input style="text-align: center" type="text" id="yearInput" placeholder="{{ year }}" />
+                        <button type="submit" style="display: none;"></button>
+                    </form>
+                </th>
                 <th>Schulstufe</th>
                 <th>Schüleranzahl</th>
                 <th>Repetentenanzahl</th>
                 <th>Benutztes Budget</th>
                 <th>Gesamtes Budget</th>
-                <th>Jahr</th>
                 <th>Aktionen</th>
             </tr>
         </thead>
+
+        <script>
+            function submitForm(event) {
+                event.preventDefault(); // Prevent the default form submission
+                const year = document.getElementById('yearInput').value;
+                const form = document.getElementById('yearForm');
+                form.action = `{{ path('app_school_class_index') }}/${year}`;
+                form.submit(); // Submit the form programmatically
+            }
+        </script>
+
         <tbody>
         {% for school_class in school_classes %}
             <tr>
                 <td>{{ school_class.name }}</td>
+                <td>{{ school_class.year }}</td>
                 <td>{{ school_class.grade }}</td>
                 <td>{{ school_class.studentsAmount }}</td>
                 <td>{{ school_class.repAmount }}</td>
                 <td>{{ school_class.usedBudget }}</td>
                 <td>{{ school_class.budget }}</td>
-                <td>{{ school_class.year }}</td>
                 <td>
                     <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
                     <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
