@@ -13,6 +13,22 @@
         background-color: #118c9f;
     }
 
+    .customSaveColorBG {
+        background-color: green;
+        transition: 0.3s;
+    }
+
+    .customSaveColorBG:hover {
+        background-color: mediumseagreen;
+    }
+
+    .disabled {
+        background-color: gray;
+    }
+    .disabled:hover {
+        background-color: gray;
+    }
+
     .customColorText {
         color: #17A2B8;
     }
@@ -142,12 +158,23 @@
 
             <div class="mt-12 flex justify-center mr-32 mb-8">
                 <button
-                    class="customColorBG p-4 rounded-md text-white font-semibold tracking-wider"
-                    id="orderButton"
+                        class="customColorBG p-4 mr-2 rounded-md text-white font-semibold tracking-wider"
+                        id="bookListButton"
                 >
-                    Zur Bestellliste hinzufügen
+                    Zur Bücherliste
                 </button>
-
+                <button
+                        class="customColorBG p-4 mr-20 rounded-md text-white font-semibold tracking-wider"
+                        id="orderlistButton"
+                >
+                    Zur Bestellliste
+                </button>
+                <button
+                        class="customSaveColorBG p-4 rounded-md text-white font-semibold tracking-wider"
+                        id="saveButton"
+                >
+                    Speichern
+                </button>
             </div>
         </div>
     </div>
@@ -182,6 +209,7 @@
 
     document.getElementById('classSelect').addEventListener('change', function() {
         updateClassData(document.getElementById('classSelect').value);
+        changeSaveButtonStatus(true);
     });
 
     document.getElementById('repetentenSelect').addEventListener('change', updateAnzahl);
@@ -204,9 +232,22 @@
         }
     }
 
+    function changeSaveButtonStatus(enableOnly = false) {
+        let saveButton = document.getElementById('saveButton');
 
+        if (enableOnly && !saveButton.disabled) {
+            return;
+        }
 
-    document.getElementById('orderButton').addEventListener('click', function () {
+        saveButton.disabled = !saveButton.disabled;
+        if (saveButton.disabled) {
+            saveButton.classList.add('disabled');
+        } else {
+            saveButton.classList.remove('disabled');
+        }
+    }
+
+    document.getElementById('saveButton').addEventListener('click', function () {
         let classId = document.getElementById('classSelect').value;
         let bookAmount = document.getElementById('bookAmount').value;
         let teacherCopy = document.querySelector('input[type="checkbox"]').checked;
@@ -214,6 +255,8 @@
         let ebook = {{ book.ebook ? 'true' : 'false' }};
         let bookId = {{ book.id }}; // Include book ID
         let subject = document.getElementById('subjectSelect').value;
+
+        changeSaveButtonStatus();
 
         let orderData = {
             classId: classId,
@@ -235,9 +278,6 @@
             body: JSON.stringify(orderData)
         })
             .then(response => response.json())
-            .then(data => {
-                window.location.href = '/orderbooks/index';
-            })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Bücher konnten nicht bestellt werden!');
@@ -245,6 +285,15 @@
     });
 
     updateClassData(document.getElementById('classSelect').value);
+
+    document.getElementById('bookListButton').addEventListener('click', function() {
+        window.location.href = '/home';
+    });
+
+    document.getElementById('orderlistButton').addEventListener('click', function() {
+        window.location.href = '/orderbooks/index';
+    });
+
 </script>
 
 {% endblock %}
