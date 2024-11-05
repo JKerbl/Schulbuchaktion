@@ -8,6 +8,7 @@ use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,5 +40,22 @@ class SubjectController extends AbstractController
         }
 
         return $this->redirectToRoute('app_subject_index');
+    }
+
+    #[Route('/get/all', name: 'app_subject_get_all', methods: ['GET', 'POST'])]
+    public function getSubjects(SubjectRepository $subjectRepository): JsonResponse
+    {
+        $subjects = $subjectRepository->findAll();
+
+        $subjectsArray = [];
+
+        foreach ($subjects as $subject) {
+            $subjectsArray[] = [
+                'id' => $subject->getId(),
+                'name' => $subject->getFullName()
+            ];
+        }
+
+        return new JsonResponse($subjectsArray);
     }
 }

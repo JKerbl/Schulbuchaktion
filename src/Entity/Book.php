@@ -61,6 +61,10 @@ class Book
     #[ORM\Column]
     private ?int $year = null;
 
+    #[ORM\ManyToOne(inversedBy: 'csvSubject')]
+    private ?ImportSubjectMap $importSubjectMap = null;
+
+
     public function __construct()
     {
         $this->schoolGrades = new ArrayCollection();
@@ -262,6 +266,19 @@ class Book
 
         return $this;
     }
+
+    public function getImportSubjectMap(): ?ImportSubjectMap
+    {
+        return $this->importSubjectMap;
+    }
+
+    public function setImportSubjectMap(?ImportSubjectMap $importSubjectMap): static
+    {
+        $this->importSubjectMap = $importSubjectMap;
+
+        return $this;
+    }
+
 
 
 }

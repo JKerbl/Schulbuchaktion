@@ -27,10 +27,15 @@ class Subject
     #[ORM\OneToMany(targetEntity: BookOrder::class, mappedBy: 'subject')]
     private Collection $bookOrders;
 
+    #[ORM\OneToMany(targetEntity: ImportSubjectMap::class, mappedBy: 'subject')]
+    private Collection $importSubjectMaps;
+
     public function __construct()
     {
         $this->book = new ArrayCollection();
         $this->bookOrders = new ArrayCollection();
+        $this->subjectMaps = new ArrayCollection();
+        $this->importSubjectMaps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +124,63 @@ class Subject
             // set the owning side to null (unless already changed)
             if ($bookOrder->getSubject() === $this) {
                 $bookOrder->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ImportSubjectMap>
+     */
+    public function getSubjectMaps(): Collection
+    {
+        return $this->subjectMaps;
+    }
+
+    public function addSubjectMap(ImportSubjectMap $subjectMap): static
+    {
+        if (!$this->subjectMaps->contains($subjectMap)) {
+            $this->subjectMaps->add($subjectMap);
+            $subjectMap->addSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubjectMap(ImportSubjectMap $subjectMap): static
+    {
+        if ($this->subjectMaps->removeElement($subjectMap)) {
+            $subjectMap->removeSubject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ImportSubjectMap>
+     */
+    public function getImportSubjectMaps(): Collection
+    {
+        return $this->importSubjectMaps;
+    }
+
+    public function addImportSubjectMap(ImportSubjectMap $importSubjectMap): static
+    {
+        if (!$this->importSubjectMaps->contains($importSubjectMap)) {
+            $this->importSubjectMaps->add($importSubjectMap);
+            $importSubjectMap->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImportSubjectMap(ImportSubjectMap $importSubjectMap): static
+    {
+        if ($this->importSubjectMaps->removeElement($importSubjectMap)) {
+            // set the owning side to null (unless already changed)
+            if ($importSubjectMap->getSubject() === $this) {
+                $importSubjectMap->setSubject(null);
             }
         }
 

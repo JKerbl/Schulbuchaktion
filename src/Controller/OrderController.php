@@ -32,7 +32,7 @@ class OrderController extends AbstractController {
         $userSubject = $sr->findSubjectsByHeadOfSubjectId($user->getId());
 
         $book = $br->find($id);
-        $classes = $scr->findAll();
+        $classes = $scr->findAlLByYear(date('Y'));
 
         if ($classes === []) {
             return $this->render('home/index.html.twig', [

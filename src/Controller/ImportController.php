@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\ImportSubjectMap;
 use App\Entity\Subject;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use function Sodium\add;
 use function Symfony\Component\String\u;
 
 class ImportController extends AbstractController
@@ -61,13 +64,69 @@ class ImportController extends AbstractController
                     'title' => $Row['C'],
                     'schoolGrade' => $Row['G'],
                     'price' => $Row['M'],
-                    'ebook' => $Row['P']
+                    'ebook' => $Row['P'],
+                    'subject' => $Row['F'],
                 ];
             }
         }
         return $output;
     }
 
+    #[Route('/map-subjects', name: 'map-subject')]
+    public function mapSubjects(EntityManagerInterface $em)
+    {
+        $spreadsheet = IOFactory::load('uploads/excelUploadFile.xlsx');
+        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        // Es werden nur Gegenstände zurückgegeben, die noch kein Mapping haben
+        $output = [];
+
+        // Alle Gegenstände aus der CSV
+        $csvSubjects = [];
+
+        // Jeden Gegenstand aus der CSV holen
+        foreach ($sheetData as $Row) {
+            if ($Row['F'] !== "Gegenstand" && !in_array($Row['F'], $csvSubjects)) {
+                $csvSubjects[] = $Row['F'];
+            }
+        }
+
+        foreach ($csvSubjects as $csvSubject) {
+            ($subjectMap = $em->getRepository(ImportSubjectMap::class)->findOneBy(['name' => $csvSubject]));
+
+            if ($subjectMap == null) {
+                $subjectMap = new ImportSubjectMap();
+                $subjectMap->setName($csvSubject);
+                $em->persist($subjectMap);
+                $em->flush();
+
+                $output[] = $csvSubject;
+            }
+        }
+
+        return new JsonResponse($output);
+    }
+
+    #[Route('/addSubjectMap', name: 'add-subject-map')]
+    public function addSubjectMap(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $subjectName = $request->get('subjectName');
+        $subjectId = $request->get('subjectId');
+
+        $subjectMap = $em->getRepository(ImportSubjectMap::class)->findOneBy(['name' => $subjectName]);
+
+        if ($subjectMap == null) {
+            $subjectMap = new ImportSubjectMap();
+            $subjectMap->setName($subjectName);
+        }
+
+        $subjectMap->setSubject($em->getRepository(Subject::class)->findOneBy(['id' => $subjectId]));
+
+        $em->persist($subjectMap);
+        $em->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
 
     public function getExcelData($filePathName): array
     {
@@ -83,6 +142,7 @@ class ImportController extends AbstractController
                     'title' => $Row['C'],
                     'listType' => $Row['D'],
                     'schoolForm' => $Row['E'],
+                    'subject' => $Row['F'],
                     'schoolGrade' => $Row['G'],
                     'teacherVersion' => $Row['H'],
                     'info' => $Row['I'],

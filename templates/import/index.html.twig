@@ -12,9 +12,9 @@
         </div>
         <div class="form-div-outside">
             <form id="upload-form" method="post" action="{{ path('xlsx') }}" enctype="multipart/form-data">
-                <label id="label-text" for="input-import-file" class="file-upload">Datei auswählen</label>
+                <label id="label-text" for="input-import-file" class="file-upload"> Datei auswählen</label>
                 <input id="input-import-file" type="file" name="file" onchange="updateFileName()">
-                <button class="submit-btn-form" type="submit">Upload</button>
+                <button id="upload-excel-btn" class="submit-btn-form" type="submit">Upload</button>
             </form>
         </div>
         <div id="submit-upload">
@@ -82,14 +82,12 @@
                         $('<button>')
                             .text('Import bestätigen')
                             .click(function () {
-                                // Call the save function when the button is clicked
+                                // Call the map-subjects function when the button is clicked
                                 $.ajax({
-                                    url: '/save',
+                                    url: '/map-subjects',
                                     type: 'POST',
-                                    success: function (response) {
-                                        // Redirect to the returned URL
-                                        alert('Daten gespeichert!')
-                                        window.location.href = response.url;
+                                    success: function (data) {
+                                        showSubjects(data);
                                     }
                                 });
                             }).appendTo('#submit-upload');
@@ -128,8 +126,109 @@
                 // input.files[0].name;
             } else {
                 label.textContent = "Datei auswählen";
-
             }
+        }
+
+        function getSubjects() {
+            return $.ajax({
+                url: '{{ path('app_subject_get_all') }}',
+                type: 'GET',
+                async: false,
+                success: function(data) {
+                    subjects = data;
+                }
+            }).responseJSON;
+        }
+
+        function showSubjects(data) {
+            // If the Data is empty (no subjects to map) save the data
+            if (data.length === 0) {
+                $.ajax({
+                    url: '/save',
+                    type: 'POST',
+                    success: function (response) {
+                        // Redirect to the returned URL
+                        alert('Daten gespeichert!')
+                        window.location.href = response.url;
+                    }
+                });
+                return;
+            }
+
+            // Clear the old buttons
+            $('#submit-upload').empty();
+
+            // Append the new button
+            $('<button>')
+                .text('Import bestätigen')
+                .click(function () {
+                    // Call the save function when the button is clicked
+                    $.ajax({
+                        url: '/save',
+                        type: 'POST',
+                        success: function (response) {
+                            // Redirect to the returned URL
+                            alert('Daten gespeichert!')
+                            window.location.href = response.url;
+                        }
+                    });
+                }).appendTo('#submit-upload');
+
+
+            // Clear the old table
+            $('#output-head').empty();
+            $('#output-body').empty();
+
+            //var table = $('<table class="table">').appendTo('#output');
+            let row = $('<tr>').appendTo('#output-head');
+
+            subjects = getSubjects();
+
+            // Add the Column Gegestand
+            $('<th style="width: 150px;">Gegenstand</th>').appendTo(row);
+            // Adds the column Fachbereich
+            $('<th style="width: 150px;">').text('Fachbereich').appendTo(row);
+
+            data.forEach(function (item) {
+                row = $('<tr>').appendTo('#output-body');
+
+                $('<td>').text(item).appendTo(row);
+
+                // Create a new td element and append the select element to it
+                let td = $('<td>').appendTo(row);
+                let select = $('<select id="selectSubject" style="border: 3px dashed red;">').appendTo(td);
+                $('<option disabled selected>').text('Bitte wählen').appendTo(select);
+                subjects.forEach(subject => {
+                    $('<option>').val(subject.id).text(subject.name).appendTo(select);
+                });
+                select.addClass('select-style');
+                select.addClass('select-style').on('change', function() {
+                    $(this).css('border', '1px solid grey');
+                });
+                select.on('change', function() {
+                    MapSubject($(this).val(), item);
+                });
+            });
+        }
+
+        function MapSubject($subjectId, $subjectName) {
+            $.ajax({
+                url: '{{ path('add-subject-map') }}',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    subjectId: $subjectId,
+                    subjectName: $subjectName
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Gegenstand hinzugefügt');
+                    }
+                },
+                error: function() {
+                    console.log('Gegenstand konnte nicht hinzugefügt werden');
+                }
+            });
         }
 
     </script>
