@@ -206,6 +206,8 @@ class ImportController extends AbstractController
             $book->setInfo($row['info']);
             $book->setSchoolGrades($row['schoolGrade']);
 
+            $book->setImportSubjectMap($doctrine->getRepository(ImportSubjectMap::class)->findOneBy(['name' => $row['subject']]));
+
             if ($row['teacherVersion']!= null){
                 $book->setTeacherVersion(true);
             } else {
