@@ -157,23 +157,7 @@
 
             // Clear the old buttons
             $('#submit-upload').empty();
-
-            // Append the new button
-            $('<button>')
-                .text('Import bestätigen')
-                .click(function () {
-                    // Call the save function when the button is clicked
-                    $.ajax({
-                        url: '/save',
-                        type: 'POST',
-                        success: function (response) {
-                            // Redirect to the returned URL
-                            alert('Daten gespeichert!')
-                            window.location.href = response.url;
-                        }
-                    });
-                }).appendTo('#submit-upload');
-
+            $('#submit-upload').hide();
 
             // Clear the old table
             $('#output-head').empty();
@@ -182,17 +166,20 @@
             //var table = $('<table class="table">').appendTo('#output');
             let row = $('<tr>').appendTo('#output-head');
 
-            subjects = getSubjects();
+            let subjects = getSubjects();
 
             // Add the Column Gegestand
             $('<th style="width: 150px;">Gegenstand</th>').appendTo(row);
             // Adds the column Fachbereich
             $('<th style="width: 150px;">').text('Fachbereich').appendTo(row);
 
+            let fachbereiche = [];
+
             data.forEach(function (item) {
                 row = $('<tr>').appendTo('#output-body');
 
                 $('<td>').text(item).appendTo(row);
+                fachbereiche.push(item);
 
                 // Create a new td element and append the select element to it
                 let td = $('<td>').appendTo(row);
@@ -207,6 +194,25 @@
                 });
                 select.on('change', function() {
                     MapSubject($(this).val(), item);
+                    fachbereiche.splice(fachbereiche.indexOf(item), 1);
+                    if (fachbereiche.length === 0) {
+                        $('#submit-upload').show();
+                        // Append the save button
+                        $('<button>')
+                            .text('Import bestätigen')
+                            .click(function () {
+                                // Call the save function when the button is clicked
+                                $.ajax({
+                                    url: '/save',
+                                    type: 'POST',
+                                    success: function (response) {
+                                        // Redirect to the returned URL
+                                        alert('Daten gespeichert!')
+                                        window.location.href = response.url;
+                                    }
+                                });
+                            }).appendTo('#submit-upload');
+                    }
                 });
             });
         }
