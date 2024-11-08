@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gegenstand-Mapping{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-4">
+        <h1 class="text-4xl font-bold my-8 text-center">Gegenstand-Mappings</h1>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead>
+                <tr>
+                    <th class="px-2 py-2 bg-gray-100">Gegenstand</th>
+                    <th class="px-2 py-2 bg-gray-100">Fachbereich</th>
+                    <th class="px-2 py-2 bg-gray-100"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subject_map in subject_maps %}
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ subject_map.name }}</td>
+                        <td class="px-4 py-2">{{ subject_map.subject.fullName }}</td>
+                        <td class="px-4 py-0">
+                            <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}"><img style="width: 50%; height: 50%" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Keine Einträge gefunden</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

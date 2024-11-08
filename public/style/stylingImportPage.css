@@ -148,6 +148,7 @@ th {
 
 .table td {
     color: #666;
+    border-bottom: 1px solid #eaeaea;
 }
 
 .table a {
@@ -166,4 +167,18 @@ th {
     text-align: center;
     padding: 0.3em;
     color: #333;
+}
+
+.select-style {
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+.select {
+    border-bottom: 1px solid #eaeaea;
 }

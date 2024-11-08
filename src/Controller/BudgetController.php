@@ -43,7 +43,7 @@ class BudgetController extends AbstractController
         $limit_3100 = 95;
 
         $year = $d->findHighestYear();
-        $departments = $d->findAlLByYear($year);
+        $departments = $d->findAllByYear($year);
 
 
         foreach ($departments as $dep){

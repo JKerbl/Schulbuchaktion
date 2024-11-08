@@ -18,7 +18,7 @@ class DepartmentController extends AbstractController
     public function index(DepartmentRepository $departmentRepository, int $year = null): Response
     {
         // Gets the Classes with the year or the current year if there is no year provided
-        $departments = $year ? $departmentRepository->findAlLByYear($year) : $departmentRepository->findAlLByYear(date('Y'));
+        $departments = $year ? $departmentRepository->findAllByYear($year) : $departmentRepository->findAllByYear(date('Y'));
 
         return $this->render('department/index.html.twig', [
             'departments' => $departments,
@@ -30,7 +30,7 @@ class DepartmentController extends AbstractController
     public function getDepartmentWithYear(DepartmentRepository $departmentRepository, int $year): Response
     {
         return $this->render('department/index.html.twig', [
-            'departments' => $departmentRepository->findAlLByYear($year),
+            'departments' => $departmentRepository->findAllByYear($year),
         ]);
     }
 

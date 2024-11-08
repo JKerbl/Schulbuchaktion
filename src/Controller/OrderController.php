@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\BookOrder;
+use App\Entity\Department;
 use App\Entity\Subject;
 use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
@@ -72,36 +73,65 @@ class OrderController extends AbstractController {
     #[Route('/orderbooks/index', name: 'order.index')]
     public function index(BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
     {
+        $year = date('Y');
+
+        $departments = $departmentRepository->findAllByYear($year);
+        $orders = $bookOrderRepository->findOrdersByYear($year);
+
         return $this->render('order/overview.html.twig', [
-            'departments' => $departmentRepository->findAll(),
-            'orders' => $bookOrderRepository->findAll(),
+            'departments' => $departments,
+            'orders' => $orders,
+            'currentYear' => $year
         ]);
     }
 
-    #[Route('/orderbooks/getDepartment/{departmentId<\d+>?0}', name: 'order.getDepartment')]
-    public function getDepartment($departmentId, BookOrderRepository $bookOrderRepository): Response
+    #[Route('/orderbooks/filter/{year}/{department}/{grade}', name: 'order.filter')]
+    public function filterOrders(EntityManagerInterface $em, $year, $department, $grade): Response
     {
-        if ($departmentId == 0) {
-            $orders = $bookOrderRepository->findAll();
-
-        } else {
-            $orders = $bookOrderRepository->getOrdersOfDepartment($departmentId);
+        if ($department == 0 && $grade == 0) {
+            $orders = $em->getRepository(BookOrder::class)->findOrdersByYear($year);
+        } else if ($department != 0 && $grade == 0) {
+            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndDepartment($year, $department);
+        } else if ($department == 0 && $grade != 0) {
+            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndGrade($year, $grade);
+        }else {
+            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndDepartmentAndGrade($year, $department, $grade);
         }
-        $ordersArray = [];
+
+        $response = [];
 
         foreach ($orders as $order) {
-            $ordersArray[] = [
+            $response[] = [
                 'id' => $order->getId(),
+                'schoolclass' => $order->getSchoolclass()->getName(),
                 'count' => $order->getCount(),
                 'teacherCopy' => $order->getTeacherCopy(),
-                'eBook' => $order->getEBook(),
-                'eBookPlus' => $order->getEBookPlus(),
-                'schoolclass' => $order->getSchoolclass() ? $order->getSchoolclass()->getName() : 'Nicht zugewiesen',
-                'book' => $order->getBook() ? $order->getBook()->getTitle() : 'Nicht zugewiesen',
+                'ebook' => $order->getEBook(),
+                'ebookPlus' => $order->getEBookPlus(),
+                'book' => $order->getBook()->getShortTitle()
             ];
         }
 
-        return new JsonResponse(['orders' => $ordersArray]);
+        return new JsonResponse([
+            'orders' => $response
+        ]);
+    }
+
+
+    #[Route('/orderbooks/getDepartments/{year}', name: 'order.getDepartment')]
+    public function getDepartment($year, DepartmentRepository $dr): Response
+    {
+        $departments = $dr->findAllByYear($year);
+
+        $response = [];
+        foreach ($departments as $department) {
+            $response[] = [
+                'id' => $department->getId(),
+                'name' => $department->getName()
+            ];
+        }
+
+        return new JsonResponse(['departments' => $response, 'year' => $year]);
     }
 
     #[Route('/orderbooks/delete{id}', name: 'order.delete')]

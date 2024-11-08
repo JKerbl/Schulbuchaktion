@@ -52,8 +52,8 @@
     width: 0;
 }
 
-.department-filter {
-    width: 30%;
+.order-filters {
+    width: 50%;
     text-align: center;
     margin: 2em auto;
     padding: 1em;
@@ -62,12 +62,8 @@
     box-shadow: 0 0 19px 0 rgba(0,0,0,0.1);
 }
 
-#departmentFilter {
-    background-color: #f3f3f3;
-}
-
 @media screen and (max-width: 1030px) {
-    .department-filter {
+    .order-filters {
         width: 80%;
     }
 
@@ -76,11 +72,13 @@
     }
 }
 
-#label-department-filter {
+.order-filter-label {
     font-weight: bold;
+    margin-left: 2%;
 }
 
-#departmentFilter {
+.order-filter {
+    background-color: #f3f3f3;
     padding: 10px;
     font-size: 16px;
     border-radius: 4px;

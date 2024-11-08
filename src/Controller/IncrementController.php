@@ -19,7 +19,7 @@ class IncrementController extends AbstractController
     {
         $highestYear = $dr->findHighestYear();
 
-        $departments = $dr->findAlLByYear($highestYear);
+        $departments = $dr->findAllByYear($highestYear);
 
         foreach ($departments as $department){
             $newDepartment = new Department();

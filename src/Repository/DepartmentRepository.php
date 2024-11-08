@@ -21,7 +21,7 @@ class DepartmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Department::class);
     }
 
-    public function findAlLByYear(int $year): array
+    public function findAllByYear(int $year): ?array
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.year = :year')

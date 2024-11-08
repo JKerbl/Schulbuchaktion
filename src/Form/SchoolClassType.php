@@ -23,7 +23,7 @@ class SchoolClassType extends AbstractType
                 'attr' => ['class' => 'form-input mb-3']
             ])
             ->add('studentsAmount', null, [
-                'label' => 'Schüler Anzahl',
+                'label' => 'Schüler Anzahl (Exclusive Repetenten)',
                 'attr' => ['class' => 'form-input mb-3']
             ])
             ->add('repAmount', null, [

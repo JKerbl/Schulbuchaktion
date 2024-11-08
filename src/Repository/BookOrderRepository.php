@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\BookOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @extends ServiceEntityRepository<BookOrder>
@@ -19,6 +20,60 @@ class BookOrderRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BookOrder::class);
+    }
+
+    public function findOrdersByYear(int $year): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.book', 'b')
+            ->andWhere('b.year = :year')
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOrdersByYearAndDepartment(int $year, int $departmentId): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.book', 'b')
+            ->innerJoin('o.schoolclass', 'c')
+            ->andWhere('c.year = :year')
+            ->andWhere('c.department = :departmentId')
+            ->setParameter('year', $year)
+            ->setParameter('departmentId', $departmentId)
+            ->select('o')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOrdersByYearAndGrade(int $year, int $grade): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.book', 'b')
+            ->innerJoin('o.schoolclass', 'c')
+            ->andWhere('c.year = :year')
+            ->andWhere('c.grade = :grade')
+            ->setParameter('year', $year)
+            ->setParameter('grade', $grade)
+            ->select('o')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOrdersByYearAndDepartmentAndGrade(int $year, int $departmentId, int $grade): array
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.book', 'b')
+            ->innerJoin('o.schoolclass', 'c')
+            ->andWhere('b.year = :year')
+            ->andWhere('c.department = :departmentId')
+            ->andWhere('c.grade = :grade')
+            ->setParameter('year', $year)
+            ->setParameter('departmentId', $departmentId)
+            ->setParameter('grade', $grade)
+            ->select('o')
+            ->getQuery()
+            ->getResult();
     }
 
     //    /**

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ImportSubjectMap{% endblock %}
+
+{% block body %}
+    <h1>ImportSubjectMap</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ subject_map.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ subject_map.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_subject_map_index') }}">back to list</a>
+
+    <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}">edit</a>
+
+    {{ include('subject_map/_delete_form.html.twig') }}
+{% endblock %}
