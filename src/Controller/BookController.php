@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/books')]
 class BookController extends AbstractController
 {
-    public function __construct(private int $limit)
+    public function __construct()
     {
     }
 
@@ -31,11 +31,13 @@ class BookController extends AbstractController
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository, Request $request): Response
     {
+        $limit = $this->getUser()->getPagelimit();
+
         $search = $request->query->get('search', '');
-        $maxPages = $this->getMaxPages($bookRepository, $this->limit, $search);
+        $maxPages = $this->getMaxPages($bookRepository, $limit, $search);
         $currentPage = $this->getCurrentPage($request, $maxPages);
 
-        $books = $bookRepository->getPaginatedEntries($this->limit, $currentPage, $search);
+        $books = $bookRepository->getPaginatedEntries($limit, $currentPage, $search);
 
         return $this->render('book/index.html.twig', [
             'books' => $books,

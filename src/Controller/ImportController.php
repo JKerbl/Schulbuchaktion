@@ -226,12 +226,10 @@ class ImportController extends AbstractController
                 $book->setEbookPlus(false);
             }
 
-            if (!$existingBook){
-                $entityManager->persist($book);
-            }
-            $entityManager->flush();
+            $entityManager->persist($book);
         }
 
+        $entityManager->flush();
 
         if (file_exists($filePathName)) {
             unlink($filePathName);

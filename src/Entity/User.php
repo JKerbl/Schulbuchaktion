@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255,  nullable: true)]
     private ?string $lastName = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 10])]
+    private int $pagelimit = 10;
+
     #[ORM\OneToMany(targetEntity: Subject::class, mappedBy: "headOfSubject")]
     #[ORM\JoinColumn(nullable: true)]
     private ?Collection $subject = null;
@@ -147,6 +150,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->lastName = $lastName;
     }
+
+    public function getPagelimit(): int
+    {
+        return $this->pagelimit;
+    }
+
+    public function setPagelimit(int $pagelimit): void
+    {
+        $this->pagelimit = $pagelimit;
+    }
+
+
 
     public function getSubject(): ?Collection
     {
