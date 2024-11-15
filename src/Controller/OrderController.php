@@ -75,19 +75,28 @@ class OrderController extends AbstractController {
     {
         $year = date('Y');
 
+        // Get all years
+        $allYears = $departmentRepository->findAllYears();
+        //remove current year from array
+        $key = array_search($year, $allYears);
+        unset($allYears[$key]);
+
+        // get all departments and orders of the current year
         $departments = $departmentRepository->findAllByYear($year);
         $orders = $bookOrderRepository->findOrdersByYear($year);
 
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
             'orders' => $orders,
-            'currentYear' => $year
+            'currentYear' => $year,
+            'allYears' => $allYears
         ]);
     }
 
     #[Route('/orderbooks/filter/{year}/{department}/{grade}', name: 'order.filter')]
     public function filterOrders(EntityManagerInterface $em, $year, $department, $grade): Response
     {
+        // Check which filter is set
         if ($department == 0 && $grade == 0) {
             $orders = $em->getRepository(BookOrder::class)->findOrdersByYear($year);
         } else if ($department != 0 && $grade == 0) {
@@ -100,14 +109,15 @@ class OrderController extends AbstractController {
 
         $response = [];
 
+        // Create response array
         foreach ($orders as $order) {
             $response[] = [
                 'id' => $order->getId(),
                 'schoolclass' => $order->getSchoolclass()->getName(),
                 'count' => $order->getCount(),
-                'teacherCopy' => $order->getTeacherCopy(),
-                'ebook' => $order->getEBook(),
-                'ebookPlus' => $order->getEBookPlus(),
+                'teacherCopy' => ($order->getTeacherCopy() == 1) ? 'Ja' : 'Nein',
+                'ebook' => ($order->getEBook() == 1) ? 'Ja' : 'Nein',
+                'ebookPlus' => ($order->getEBookPlus() == 1) ? 'Ja' : 'Nein',
                 'book' => $order->getBook()->getShortTitle()
             ];
         }
@@ -119,7 +129,7 @@ class OrderController extends AbstractController {
 
 
     #[Route('/orderbooks/getDepartments/{year}', name: 'order.getDepartment')]
-    public function getDepartment($year, DepartmentRepository $dr): Response
+    public function getDepartmentsOfYear($year, DepartmentRepository $dr): Response
     {
         $departments = $dr->findAllByYear($year);
 
@@ -131,10 +141,10 @@ class OrderController extends AbstractController {
             ];
         }
 
-        return new JsonResponse(['departments' => $response, 'year' => $year]);
+        return new JsonResponse(['departments' => $response]);
     }
 
-    #[Route('/orderbooks/delete{id}', name: 'order.delete')]
+    #[Route('/orderbooks/delete/{id}', name: 'order.delete')]
     public function delete($id, EntityManagerInterface $entityManager, BookOrderRepository $bookOrderRepository): Response
     {
         $bookOrder = $bookOrderRepository->findOneBy(['id' => $id]);

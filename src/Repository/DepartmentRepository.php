@@ -38,6 +38,17 @@ class DepartmentRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function findAllYears(): ?array
+    {
+        $result = $this->createQueryBuilder('s')
+            ->select('s.year')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        return array_map('current', $result);
+    }
+
     //    /**
     //     * @return Department[] Returns an array of Department objects
     //     */
