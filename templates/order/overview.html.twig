@@ -18,7 +18,7 @@
                 {% endfor %}
             </select>
 
-            <label id="label-department-filter" for="departmentFilter" class="order-filter-label">Abteilung filtern:</label>
+            <label id="label-department-filter" for="departmentFilter" class="order-filter-label">Abteilung:</label>
             <select id="departmentFilter" name="departmentId" class="order-filter">
                 <option value="0">Alle Abteilungen</option>
                 {% for department in departments %}
@@ -26,7 +26,7 @@
                 {% endfor %}
             </select>
 
-            <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgänge filtern:</label>
+            <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
             <select id="gradeFilter" name="gradeId" class="order-filter">
                 <option value="0">Alle Jahrgänge</option>
                 {% for i in 1..5 %}
@@ -38,26 +38,25 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Bestellnummer</th>
+                <th>Buchnummer</th>
+                <th>Buch</th>
                 <th>Anzahl</th>
                 <th>Lehrerexemplar</th>
                 <th>eBook</th>
                 <th>eBook Plus</th>
                 <th>Schulklasse</th>
-                <th>Buch</th>
                 <th>Optionen</th>
             </tr>
             </thead>
             <tbody id="orderTable">
             {% for order in orders %}
                 <tr>
-                    <td>{{ order.id }}</td>
+                    <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
                     <td>{{ order.count }}</td>
                     <td>{{ order.teacherCopy ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.eBook ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.eBookPlus ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
-                    <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
                     <td>
                         <a href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
                     </td>

@@ -21,6 +21,18 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+    public function getAllYears(): array
+    {
+        $result = $this->createQueryBuilder('b')
+            ->select('b.year')
+            ->distinct()
+            ->orderBy('b.year', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return array_map('current', $result);
+    }
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */
@@ -46,7 +58,7 @@ class BookRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function getPaginatedEntries(int $limit, int $currentPage, string $search = null): array
+    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $subjectId = null, int $grade = null, string $search = null): array
     {
         $offset = ($currentPage - 1) * $limit;
 
@@ -60,23 +72,58 @@ class BookRepository extends ServiceEntityRepository
             $queryBuilder
                 ->where('b.title LIKE :search')
                 ->orWhere('b.bnr LIKE :search')
+                ->orWhere('b.shortTitle LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($year) {
+            $queryBuilder
+                ->andWhere('b.year = :year')
+                ->setParameter('year', $year);
+        }
+
+        if ($subjectId) {
+            $queryBuilder
+                ->join('b.importSubjectMap', 'ism')
+                ->andWhere('ism.subject = :subject')
+                ->setParameter('subject', $subjectId);
+        }
+
+        if ($grade) {
+            $queryBuilder
+                ->andWhere('b.schoolGrades LIKE :grade')
+                ->setParameter('grade', '%' . $grade . '%');
         }
 
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function getTotalEntries(string $search = null): int
+    public function getTotalEntries(int $year, int $subjectId = null, int $grade = null, string $search = null): int
     {
         $queryBuilder = $this->createQueryBuilder('b')
-            ->select('count(b.id)');
+            ->select('count(b.id)')
+            ->where('b.year = :year')
+            ->setParameter('year', $year);
 
         if ($search) {
-            $queryBuilder->where('b.title LIKE :search')
+            $queryBuilder->andWhere('b.title LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+        if ($subjectId) {
+            $queryBuilder
+                ->join('b.importSubjectMap', 'ism')
+                ->andWhere('ism.subject = :subject')
+                ->setParameter('subject', $subjectId);
+        }
+
+        if ($grade) {
+            $queryBuilder
+                ->andWhere('b.schoolGrades LIKE :grade')
+                ->setParameter('grade', '%' . $grade . '%');
+        }
+
+        return (int)$queryBuilder->getQuery()->getSingleScalarResult();
     }
 
 }

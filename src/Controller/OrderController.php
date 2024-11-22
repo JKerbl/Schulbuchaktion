@@ -78,8 +78,7 @@ class OrderController extends AbstractController {
         // Get all years
         $allYears = $departmentRepository->findAllYears();
         //remove current year from array
-        $key = array_search($year, $allYears);
-        unset($allYears[$key]);
+        $allYears = array_diff($allYears, [$year]);
 
         // get all departments and orders of the current year
         $departments = $departmentRepository->findAllByYear($year);
@@ -114,11 +113,12 @@ class OrderController extends AbstractController {
             $response[] = [
                 'id' => $order->getId(),
                 'schoolclass' => $order->getSchoolclass()->getName(),
-                'count' => $order->getCount(),
+                'countStudents' => $order->getCount(),
                 'teacherCopy' => ($order->getTeacherCopy() == 1) ? 'Ja' : 'Nein',
                 'ebook' => ($order->getEBook() == 1) ? 'Ja' : 'Nein',
                 'ebookPlus' => ($order->getEBookPlus() == 1) ? 'Ja' : 'Nein',
-                'book' => $order->getBook()->getShortTitle()
+                'book' => $order->getBook()->getShortTitle(),
+                'bnr' => $order->getBook()->getBnr(),
             ];
         }
 
