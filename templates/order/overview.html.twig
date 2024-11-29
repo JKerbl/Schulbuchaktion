@@ -39,7 +39,7 @@
             </select>
 
             <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
-            <select id="gradeFilter" name="grade" class="order-filter">
+            <select id="gradeFilter" name="grade" class="order-filter mr-5">
                 {% if gradeFilter == 0 %}
                     <option value="0" selected>Alle Jahrgänge</option>
                 {% else %}
@@ -90,6 +90,64 @@
             {% endfor %}
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation" class="my-12 flex justify-center">
+            <ul class="inline-flex -space-x-px">
+                <li>
+                    <a href="{{ path('order.index', {page: currentPage-1, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                       class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg
+                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == 0 %}cursor-not-allowed{% endif %}">
+                        &laquo; Previous
+                    </a>
+                </li>
+                {% if currentPage > 3 %}
+                    <li>
+                        <a href="{{ path('order.index', {page: 0, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700">
+                            1
+                        </a>
+                    </li>
+                    <li>
+                        <span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">
+                            ...
+                        </span>
+                    </li>
+                {% endif %}
+                {% for page in (currentPage > 2 ? currentPage - 2 : 1) .. (currentPage < maxPages - 1 ? currentPage + 2 : maxPages) %}
+                    <li>
+                        <a href="{{ path('order.index', {page: page, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700 {% if page == currentPage %}bg-blue-500 text-gray-900{% endif %}">
+                            {{ page }}
+                        </a>
+                    </li>
+                {% endfor %}
+                {% if currentPage < maxPages - 2 %}
+                    <li>
+                        <span class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300">
+                            ...
+                        </span>
+                    </li>
+                    <li>
+                        <a href="{{ path('order.index', {page: maxPages, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                           class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
+                           hover:bg-gray-100 hover:text-gray-700">
+                            {{ maxPages }}
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ path('order.index', {page: currentPage + 1, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                       class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg
+                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == maxPages %}cursor-not-allowed{% endif %}">
+                        Next &raquo;
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

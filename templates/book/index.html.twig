@@ -67,8 +67,6 @@
     </div>
 </div>
 
-
-
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                 <thead>
@@ -83,6 +81,7 @@
                     <th class="px-2 py-2 bg-gray-100">Schulst.</th>
                     <th class="px-2 py-2 bg-gray-100">Preis</th>
                     <th class="px-2 py-2 bg-gray-100">Jahr</th>
+                    <th class="px-2 py-2 bg-gray-100">Bestellen</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -98,6 +97,10 @@
                         <td class="px-4 py-2">{{ book.schoolGrades }}</td>
                         <td class="px-4 py-2">{{ book.price }}</td>
                         <td class="px-4 py-2">{{ book.year }}</td>
+                        <td class="px-4 py-2">
+                            <a href="{{ path('orderBook', {id: book.id}) }}"
+                               class=""><img class="img-size" src="{{ asset('images/order.png') }}" alt="Bestellen"></a>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -113,13 +116,13 @@
                 <li>
                     <a href="{{ path('app_book_index', {page: currentPage-1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
                        class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg
-                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == 1 %}cursor-not-allowed{% endif %}">
+                       hover:bg-gray-100 hover:text-gray-700 {% if currentPage == 0 %}cursor-not-allowed{% endif %}">
                         &laquo; Previous
                     </a>
                 </li>
                 {% if currentPage > 3 %}
                     <li>
-                        <a href="{{ path('app_book_index', {page: currentPage-1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
+                        <a href="{{ path('app_book_index', {page: 0, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700">
                             1
@@ -133,7 +136,7 @@
                 {% endif %}
                 {% for page in (currentPage > 2 ? currentPage - 2 : 1) .. (currentPage < maxPages - 1 ? currentPage + 2 : maxPages) %}
                     <li>
-                        <a href="{{ path('app_book_index', {page: currentPage-1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
+                        <a href="{{ path('app_book_index', {page: page, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700 {% if page == currentPage %}bg-blue-500 text-gray-900{% endif %}">
                             {{ page }}
@@ -147,7 +150,7 @@
                         </span>
                     </li>
                     <li>
-                        <a href="{{ path('app_book_index', {page: currentPage-1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
+                        <a href="{{ path('app_book_index', {page: maxPages, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700">
                             {{ maxPages }}
@@ -155,7 +158,7 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="{{ path('app_book_index', {page: currentPage-1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
+                    <a href="{{ path('app_book_index', {page: currentPage + 1, search: search, year: currentYear, subject: subjectFilter, grade: gradeFilter}) }}"
                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg
                        hover:bg-gray-100 hover:text-gray-700 {% if currentPage == maxPages %}cursor-not-allowed{% endif %}">
                         Next &raquo;

@@ -18,8 +18,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class OrderController extends AbstractController {
-    #[Route('/order/{id}', name: 'order')]
-    public function order($id, BookRepository $br, SchoolClassRepository $scr, SubjectRepository $sr): Response {
+    #[Route('/orderBook', name: 'orderBook')]
+    public function order(BookRepository $br, SchoolClassRepository $scr, SubjectRepository $sr, Request $request): Response {
+        $id = $request->query->get('id', null);
+
+        if ($id === null) {
+            return $this->redirectToRoute('app_book_index');
+        }
+
         $res = array();
         $books = $br->findAll();
         foreach ($books as $key => $book) {
@@ -78,7 +84,7 @@ class OrderController extends AbstractController {
     private function getCurrentPage(Request $request, int $maxPages): int
     {
         $page = (int) $request->get('page', 1);
-        return min(max($page, 1), $maxPages);
+        return min(max($page, 0), $maxPages);
     }
 
     #[Route('/orderbooks/index', name: 'order.index')]

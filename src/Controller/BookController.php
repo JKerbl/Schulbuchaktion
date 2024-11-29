@@ -28,7 +28,7 @@ class BookController extends AbstractController
     private function getCurrentPage(Request $request, int $maxPages): int
     {
         $page = (int) $request->get('page', 1);
-        return min(max($page, 1), $maxPages);
+        return min(max($page, 0), $maxPages);
     }
 
     #[Route('/', name: 'app_book_index', methods: ['GET'])]

@@ -161,13 +161,13 @@
                         class="customColorBG p-4 mr-2 rounded-md text-white font-semibold tracking-wider"
                         id="bookListButton"
                 >
-                    Zur Bücherliste
+                    Zur Liste aller Bücher
                 </button>
                 <button
                         class="customColorBG p-4 mr-20 rounded-md text-white font-semibold tracking-wider"
                         id="orderlistButton"
                 >
-                    Zur Bestellliste
+                    Zur Liste aller Bestellungen
                 </button>
                 <button
                         class="customSaveColorBG p-4 rounded-md text-white font-semibold tracking-wider"
@@ -287,7 +287,7 @@
     updateClassData(document.getElementById('classSelect').value);
 
     document.getElementById('bookListButton').addEventListener('click', function() {
-        window.location.href = '/home';
+        window.location.href = '/books';
     });
 
     document.getElementById('orderlistButton').addEventListener('click', function() {
