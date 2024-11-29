@@ -36,7 +36,7 @@ class BookController extends AbstractController
     {
         $limit = $this->getUser()->getPagelimit();
 
-        // get current year and all years
+        // get requested or current (as default) year and all years
         $year = $request->query->get('year', date('Y'));
         $allYears = $bookRepository->getAllYears();
 

@@ -32,48 +32,61 @@ class BookOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findOrdersByYearAndDepartment(int $year, int $departmentId): array
+    public function getTotalEntries(int $year, int $departmentId = null, int $grade = null): int
     {
-        return $this->createQueryBuilder('o')
-            ->innerJoin('o.book', 'b')
+        $query = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
             ->innerJoin('o.schoolclass', 'c')
+            ->innerJoin('c.department', 'd')
             ->andWhere('c.year = :year')
-            ->andWhere('c.department = :departmentId')
-            ->setParameter('year', $year)
-            ->setParameter('departmentId', $departmentId)
-            ->select('o')
-            ->getQuery()
-            ->getResult();
+            ->setParameter('year', $year);
+
+        if ($departmentId) {
+            $query->andWhere('d.id = :departmentId')
+                ->setParameter('departmentId', $departmentId);
+        }
+
+        if ($grade) {
+            $query->andWhere('c.grade = :grade')
+                ->setParameter('grade', $grade);
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
     }
 
-    public function findOrdersByYearAndGrade(int $year, int $grade): array
+    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $departmentId = null, int $grade = null, String $search = null): array
     {
-        return $this->createQueryBuilder('o')
-            ->innerJoin('o.book', 'b')
+        $offset = ($currentPage - 1) * $limit;
+
+        if ($offset < 1) $offset = 1;
+
+        $queryBuilder = $this->createQueryBuilder('o')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->innerJoin('o.schoolclass', 'c')
             ->andWhere('c.year = :year')
-            ->andWhere('c.grade = :grade')
-            ->setParameter('year', $year)
-            ->setParameter('grade', $grade)
-            ->select('o')
-            ->getQuery()
-            ->getResult();
-    }
+            ->setParameter('year', $year);
 
-    public function findOrdersByYearAndDepartmentAndGrade(int $year, int $departmentId, int $grade): array
-    {
-        return $this->createQueryBuilder('o')
-            ->innerJoin('o.book', 'b')
-            ->innerJoin('o.schoolclass', 'c')
-            ->andWhere('b.year = :year')
-            ->andWhere('c.department = :departmentId')
-            ->andWhere('c.grade = :grade')
-            ->setParameter('year', $year)
-            ->setParameter('departmentId', $departmentId)
-            ->setParameter('grade', $grade)
-            ->select('o')
-            ->getQuery()
-            ->getResult();
+        if ($search) {
+            $queryBuilder->innerJoin('o.book', 'b')
+                ->andWhere('b.title LIKE :search')
+                ->setParameter('search', '%' . $search . '%')
+                ->orWhere('b.bnr LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($departmentId) {
+            $queryBuilder->innerJoin('c.department', 'd')
+                ->andWhere('d.id = :departmentId')
+                ->setParameter('departmentId', $departmentId);
+        }
+
+        if ($grade) {
+            $queryBuilder->andWhere('c.grade = :grade')
+                ->setParameter('grade', $grade);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
     //    /**

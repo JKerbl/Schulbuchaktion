@@ -49,7 +49,6 @@ class OrderController extends AbstractController {
         ]);
     }
 
-
     #[Route('/get-class-data/{id}', name: 'get_class_data')]
     public function getClassData($id, SchoolClassRepository $scr) {
         $class = $scr->find($id);
@@ -70,78 +69,62 @@ class OrderController extends AbstractController {
         return new JsonResponse($data);
     }
 
-    #[Route('/orderbooks/index', name: 'order.index')]
-    public function index(BookOrderRepository $bookOrderRepository, DepartmentRepository $departmentRepository): Response
+    private function getMaxPages(BookOrderRepository $bookOrderRepository, int $limit, int $year, int $department = null, int $grade = null, string $search = null): int
     {
-        $year = date('Y');
+        $totalEntries = $bookOrderRepository->getTotalEntries($year, $department, $grade, $search);
+        return ceil($totalEntries / $limit);
+    }
 
-        // Get all years
-        $allYears = $departmentRepository->findAllYears();
-        //remove current year from array
-        $allYears = array_diff($allYears, [$year]);
+    private function getCurrentPage(Request $request, int $maxPages): int
+    {
+        $page = (int) $request->get('page', 1);
+        return min(max($page, 1), $maxPages);
+    }
+
+    #[Route('/orderbooks/index', name: 'order.index')]
+    public function index(EntityManagerInterface $em, Request $request): Response
+    {
+        $bookOrderRepository = $em->getRepository(BookOrder::class);
+        $limit = $this->getUser()->getPagelimit();
+
+        // get requested or current (as default) year and all years
+        $year = $request->query->get('year', date('Y'));
+        $allYears = $em->getRepository(Department::class)->findAllYears();
+
+        $departmentFilter = $request->query->get('department', null);
+        if ($departmentFilter == 0) {
+            // 0 is the value for the "all" option
+            $departmentFilter = null;
+        }
+
+        $gradeFilter = $request->query->get('grade', null);
+        if ($gradeFilter == 0) {
+            // 0 is the value for the "all" option
+            $gradeFilter = null;
+        }
 
         // get all departments and orders of the current year
-        $departments = $departmentRepository->findAllByYear($year);
-        $orders = $bookOrderRepository->findOrdersByYear($year);
+        $departments = $em->getRepository(Department::class)->findAllByYear($year);
+
+        // get the search query
+        $search = $request->query->get('search', '');
+
+        $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter);
+        $currentPage = $this->getCurrentPage($request, $maxPages);
+
+        $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $search);
 
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
             'orders' => $orders,
             'currentYear' => $year,
-            'allYears' => $allYears
+            'allYears' => $allYears,
+            'departmentFilter' => $departmentFilter ?? 0,
+            'gradeFilter' => $gradeFilter ?? 0,
+            'maxPages' => $maxPages,
+            'currentPage' => $currentPage,
+            'search' => $search,
         ]);
-    }
-
-    #[Route('/orderbooks/filter/{year}/{department}/{grade}', name: 'order.filter')]
-    public function filterOrders(EntityManagerInterface $em, $year, $department, $grade): Response
-    {
-        // Check which filter is set
-        if ($department == 0 && $grade == 0) {
-            $orders = $em->getRepository(BookOrder::class)->findOrdersByYear($year);
-        } else if ($department != 0 && $grade == 0) {
-            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndDepartment($year, $department);
-        } else if ($department == 0 && $grade != 0) {
-            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndGrade($year, $grade);
-        }else {
-            $orders = $em->getRepository(BookOrder::class)->findOrdersByYearAndDepartmentAndGrade($year, $department, $grade);
-        }
-
-        $response = [];
-
-        // Create response array
-        foreach ($orders as $order) {
-            $response[] = [
-                'id' => $order->getId(),
-                'schoolclass' => $order->getSchoolclass()->getName(),
-                'countStudents' => $order->getCount(),
-                'teacherCopy' => ($order->getTeacherCopy() == 1) ? 'Ja' : 'Nein',
-                'ebook' => ($order->getEBook() == 1) ? 'Ja' : 'Nein',
-                'ebookPlus' => ($order->getEBookPlus() == 1) ? 'Ja' : 'Nein',
-                'book' => $order->getBook()->getShortTitle(),
-                'bnr' => $order->getBook()->getBnr(),
-            ];
-        }
-
-        return new JsonResponse([
-            'orders' => $response
-        ]);
-    }
-
-
-    #[Route('/orderbooks/getDepartments/{year}', name: 'order.getDepartment')]
-    public function getDepartmentsOfYear($year, DepartmentRepository $dr): Response
-    {
-        $departments = $dr->findAllByYear($year);
-
-        $response = [];
-        foreach ($departments as $department) {
-            $response[] = [
-                'id' => $department->getId(),
-                'name' => $department->getName()
-            ];
-        }
-
-        return new JsonResponse(['departments' => $response]);
     }
 
     #[Route('/orderbooks/delete/{id}', name: 'order.delete')]
