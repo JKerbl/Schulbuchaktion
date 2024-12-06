@@ -58,7 +58,7 @@ class BookOrderRepository extends ServiceEntityRepository
     {
         $offset = ($currentPage - 1) * $limit;
 
-        if ($offset < 1) $offset = 1;
+        if ($offset < 1) $offset = 0;
 
         $queryBuilder = $this->createQueryBuilder('o')
             ->setFirstResult($offset)

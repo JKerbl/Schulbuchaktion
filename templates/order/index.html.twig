@@ -91,7 +91,6 @@
                 <div class="flex mt-4">
                     <div class="w-1/2 space-y-4">
                         <p>Repetenten</p>
-                        <p>Anzahl der Buchmenge</p>
                         <p>Kopie für Lehrer</p>
                         <p>E-Book</p>
                         <p>E-Book+</p>
@@ -104,17 +103,6 @@
                                 <option>Ohne Repetenten</option>
                                 <option>Nur Repetenten</option>
                             </select>
-                        </div>
-                        <div class="inline-block">
-                            <button
-                                    class="border customColorBorder customColorNumber rounded-md ml-1 px-2"
-                                    onclick="updateBookAmount(-1)"
-                            >-</button>
-                            <input class="inline-block w-8 text-center border rounded-md customColorBorder" style="background-color: #ECECEC;" id="bookAmount" value="3">
-                            <button
-                                    class="border customColorBorder customColorNumber rounded-md mr-1 px-1.5"
-                                    onclick="updateBookAmount(1)"
-                            >+</button>
                         </div>
                         <div>
                             <input type="checkbox" class="h-4 w-4">
@@ -249,7 +237,7 @@
 
     document.getElementById('saveButton').addEventListener('click', function () {
         let classId = document.getElementById('classSelect').value;
-        let bookAmount = document.getElementById('bookAmount').value;
+        let orderFor = document.getElementById('repetentenSelect').value;
         let teacherCopy = document.querySelector('input[type="checkbox"]').checked;
         let ebookPlus = {{ book.ebookplus ? 'true' : 'false' }};
         let ebook = {{ book.ebook ? 'true' : 'false' }};
@@ -261,7 +249,7 @@
         let orderData = {
             classId: classId,
             bookId: bookId,
-            bookAmount: bookAmount,
+            orderFor: orderFor,
             teacherCopy: teacherCopy,
             ebookPlus: ebookPlus,
             ebook: ebook,

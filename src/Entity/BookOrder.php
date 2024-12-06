@@ -16,7 +16,7 @@ class BookOrder
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $count = null;
+    private ?String $orderFor = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $teacherCopy = null;
@@ -51,14 +51,14 @@ class BookOrder
         $this->id = $id;
     }
 
-    public function getCount(): ?int
+    public function getOrderFor(): ?string
     {
-        return $this->count;
+        return $this->orderFor;
     }
 
-    public function setCount(?int $count): void
+    public function setOrderFor(?string $orderFor): void
     {
-        $this->count = $count;
+        $this->orderFor = $orderFor;
     }
 
     public function getTeacherCopy(): ?bool

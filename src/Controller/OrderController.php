@@ -144,13 +144,25 @@ class OrderController extends AbstractController {
 
         $department = $schoolClass->getDepartment();
 
-        $schoolClass->setUsedBudget($schoolClass->getUsedBudget()-$bookOrder->getCount()*$book->getPrice());
-        $department->setUsedBudget($department->getUsedBudget()-$bookOrder->getCount()*$book->getPrice());
+        $orderFor = $bookOrder->getOrderFor();
+
+        if ($orderFor == 'Mit Repetenten'){
+            $bookAmount = $schoolClass->getStudentsAmount();
+        } else if ($orderFor == 'Ohne Repetenten'){
+            $bookAmount = $schoolClass->getStudentsAmount();
+        } else if ($orderFor == 'Nur Repetenten'){
+            $bookAmount = 0;
+        } else {
+            $bookAmount = 0;
+        }
+
+        $schoolClass->setUsedBudget($schoolClass->getUsedBudget() - $bookAmount * $book->getPrice());
+        $department->setUsedBudget($department->getUsedBudget() - $bookAmount * $book->getPrice());
 
         $entityManager->remove($bookOrder);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('order.index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/order', name: 'submit_order', methods: ['POST'])]
@@ -160,7 +172,7 @@ class OrderController extends AbstractController {
 
             $classId = $data['classId'];
             $bookId = $data['bookId'];
-            $bookAmount = $data['bookAmount'];
+            $orderFor = $data['orderFor'];
             $teacherCopy = $data['teacherCopy'];
             $ebookPlus = $data['ebookPlus'];
             $ebook = $data['ebook'];
@@ -171,7 +183,18 @@ class OrderController extends AbstractController {
             $department = $departmentRepository->find($class->getDepartment()->getId());
             $subject = $em->getRepository(Subject::class)->find($subjectId);
 
-            $class->setUsedBudget($class->getUsedBudget()+$bookAmount*$book->getPrice());
+            // Repetenten sollen nicht ins Budget einfließen
+            if ($orderFor == 'Mit Repetenten'){
+                $bookAmount = $class->getStudentsAmount() + $class->getRepAmount();
+            } else if ($orderFor == 'Ohne Repetenten'){
+                $bookAmount = $class->getStudentsAmount();
+            } else if ($orderFor == 'Nur Repetenten'){
+                $bookAmount = 0;
+            } else {
+                $bookAmount = 0;
+            }
+
+            $class->setUsedBudget($class->getUsedBudget()+ $bookAmount * $book->getPrice());
             $department->setUsedBudget($department->getUsedBudget()+$bookAmount*$book->getPrice());
 
 
@@ -182,7 +205,7 @@ class OrderController extends AbstractController {
             $bookOrder = new BookOrder();
             $bookOrder->setSchoolClass($class);
             $bookOrder->setBook($book);
-            $bookOrder->setCount($bookAmount);
+            $bookOrder->setOrderFor($orderFor);
             $bookOrder->setTeacherCopy($teacherCopy);
             $bookOrder->setEBook($ebook);
             $bookOrder->setEBookPlus($ebookPlus);

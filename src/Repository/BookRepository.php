@@ -62,7 +62,7 @@ class BookRepository extends ServiceEntityRepository
     {
         $offset = ($currentPage - 1) * $limit;
 
-        if ($offset < 1) $offset = 1;
+        if ($offset < 1) $offset = 0;
 
         $queryBuilder = $this->createQueryBuilder('b')
             ->setFirstResult($offset)
@@ -107,6 +107,8 @@ class BookRepository extends ServiceEntityRepository
 
         if ($search) {
             $queryBuilder->andWhere('b.title LIKE :search')
+                ->setParameter('search', '%' . $search . '%')
+                ->orWhere('b.bnr LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
         }
 
