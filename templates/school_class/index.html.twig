@@ -54,10 +54,12 @@
                 <td>{{ school_class.repAmount }}</td>
                 <td>{{ school_class.usedBudget }}</td>
                 <td>{{ school_class.budget }}</td>
-                <td style="display: inline-block">
-                    <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
-                    <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
-                    <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                <td>
+                    <div class="actionIcons">
+                        <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                        <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                        <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                    </div>
                 </td>
             </tr>
         {% else %}
