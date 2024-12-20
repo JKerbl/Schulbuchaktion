@@ -17,10 +17,16 @@
             <tr>
                 <th>Name</th>
                 <th>
-                    <!-- The form is used to change the year of the schoolclasses to show -->
-                    <form id="yearForm" method="get" onsubmit="submitForm(event)">
-                        <input style="text-align: center" type="text" id="yearInput" placeholder="{{ year }}" />
-                        <button type="submit" style="display: none;"></button>
+                    <form id="yearForm" method="get" action="{{ path('app_school_class_index') }}">
+                        <select id="yearFilter" name="year" class="year-filter">
+                            {% for year in allYears %}
+                                {% if year == currentYear %}
+                                    <option value="{{ year }}" selected>{{ year }}</option>
+                                {% else %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </form>
                 </th>
                 <th>Schulstufe</th>
@@ -33,13 +39,9 @@
         </thead>
 
         <script>
-            function submitForm(event) {
-                event.preventDefault(); // Prevent the default form submission
-                const year = document.getElementById('yearInput').value;
-                const form = document.getElementById('yearForm');
-                form.action = `{{ path('app_school_class_index') }}/${year}`;
-                form.submit(); // Submit the form programmatically
-            }
+            document.getElementById('yearFilter').addEventListener('change', function () {
+                document.getElementById('yearForm').submit();
+            });
         </script>
 
         <tbody>
@@ -52,7 +54,7 @@
                 <td>{{ school_class.repAmount }}</td>
                 <td>{{ school_class.usedBudget }}</td>
                 <td>{{ school_class.budget }}</td>
-                <td>
+                <td style="display: inline-block">
                     <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
                     <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                     <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>

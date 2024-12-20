@@ -148,3 +148,11 @@
     height: 32px;
     width: 32px;
 }
+
+.year-filter {
+    background-color: white;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}

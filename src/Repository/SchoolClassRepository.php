@@ -39,6 +39,17 @@ class SchoolClassRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllYears(): ?array
+    {
+        $result =  $this->createQueryBuilder('s')
+            ->select('s.year')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        return array_map('current', $result);
+    }
+
     public function findHighestYear(): ?int
     {
         return $this->createQueryBuilder('s')

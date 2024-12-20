@@ -93,6 +93,10 @@ class OrderController extends AbstractController {
         $bookOrderRepository = $em->getRepository(BookOrder::class);
         $limit = $this->getUser()->getPagelimit();
 
+        // Get the sorting settings
+        $sortDirection = $request->query->get('sortDirection', 'ASC');
+        $sortBy = $request->query->get('sortBy', 'class');
+
         // get requested or current (as default) year and all years
         $year = $request->query->get('year', date('Y'));
         $allYears = $em->getRepository(Department::class)->findAllYears();
@@ -118,7 +122,7 @@ class OrderController extends AbstractController {
         $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter);
         $currentPage = $this->getCurrentPage($request, $maxPages);
 
-        $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $search);
+        $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $search, $sortDirection, $sortBy);
 
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
@@ -130,6 +134,8 @@ class OrderController extends AbstractController {
             'maxPages' => $maxPages,
             'currentPage' => $currentPage,
             'search' => $search,
+            'sortBy' => $sortBy,
+            'sortDirection' => $sortDirection
         ]);
     }
 

@@ -36,10 +36,16 @@
             <tr>
                 <th>Name</th>
                 <th>
-                    <!-- The form is used to change the year of the departmentst to show -->
-                    <form id="yearForm" method="get" onsubmit="submitForm(event)">
-                        <input style="text-align: center" type="text" id="yearInput" placeholder="{{ year }}" />
-                        <button type="submit" style="display: none;"></button>
+                    <form id="yearForm" method="get" action="{{ path('app_department_index') }}">
+                        <select id="yearFilter" name="year" class="year-filter">
+                            {% for year in allYears %}
+                                {% if year == currentYear %}
+                                    <option value="{{ year }}" selected>{{ year }}</option>
+                                {% else %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                     </form>
                 </th>
                 <th>Abteilungsleiter</th>
@@ -52,13 +58,9 @@
         </thead>
 
         <script>
-            function submitForm(event) {
-                event.preventDefault(); // Prevent the default form submission
-                const year = document.getElementById('yearInput').value;
-                const form = document.getElementById('yearForm');
-                form.action = `{{ path('app_department_index') }}/${year}`;
-                form.submit(); // Submit the form programmatically
-            }
+            document.getElementById('yearFilter').addEventListener('change', function () {
+                document.getElementById('yearForm').submit();
+            });
         </script>
 
         <tbody>

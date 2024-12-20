@@ -6,6 +6,7 @@ use App\Entity\BookOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Config\TwigExtra\StringConfig;
 
 /**
  * @extends ServiceEntityRepository<BookOrder>
@@ -54,7 +55,7 @@ class BookOrderRepository extends ServiceEntityRepository
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $departmentId = null, int $grade = null, String $search = null): array
+    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $departmentId = null, int $grade = null, String $search = null, String $sortDirection = null, String $sortBy = null): array
     {
         $offset = ($currentPage - 1) * $limit;
 
@@ -84,6 +85,15 @@ class BookOrderRepository extends ServiceEntityRepository
         if ($grade) {
             $queryBuilder->andWhere('c.grade = :grade')
                 ->setParameter('grade', $grade);
+        }
+
+        if ($sortDirection && $sortBy) {
+            if ($sortBy === 'bnr'){
+                $queryBuilder->innerJoin('o.book', 'b')
+                    ->orderBy('b.bnr', $sortDirection);
+            } else if ($sortBy === 'class'){
+                $queryBuilder->orderBy('c.name', $sortDirection);
+            }
         }
 
         return $queryBuilder->getQuery()->getResult();

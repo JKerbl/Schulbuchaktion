@@ -64,15 +64,33 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Buchnummer</th>
+                <th style="width: 15%">
+                    Buchnummer
+                    {% if sortBy == 'bnr' %}
+                        {% if sortDirection == 'DESC' %}
+                            <img style="display: inline-block; height: 20px;" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                        {% else %}
+                            <img style="display: inline-block; height: 20px; transform: rotate(180deg)" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                        {% endif %}
+                    {% endif %}
+                </th>
                 <th>Buch</th>
                 <th>Anzahl nicht Repetenten</th>
                 <th>Anzahl Repetenten</th>
                 <th>Lehrerexemplar</th>
                 <th>eBook</th>
                 <th>eBook Plus</th>
-                <th>Schulklasse</th>
-                <th>Optionen</th>
+                <th style="width: 15%" onclick="">
+                    Schulklasse
+                    {% if sortBy == 'class' %}
+                        {% if sortDirection == 'DESC' %}
+                            <img style="display: inline-block; height: 20px;" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                        {% else %}
+                            <img style="display: inline-block; height: 20px; transform: rotate(180deg)" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                        {% endif %}
+                    {% endif %}
+                </th>
+                <th style="width: 5%"></th>
             </tr>
             </thead>
             <tbody id="orderTable">
