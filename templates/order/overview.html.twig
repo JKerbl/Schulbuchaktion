@@ -11,68 +11,87 @@
     <div>
         <div class="order-filters">
             <form id="bookFilterForm" method="get" action="{{ path('order.index') }}" class="flex items-center">
-            <label id="label-year-filter" for="yearFilter" class="order-filter-label">Jahr:</label>
-            <select id="yearFilter" name="year" class="order-filter">
-                {% for year in allYears %}
-                    {% if year == currentYear %}
-                        <option value="{{ year }}" selected>{{ year }}</option>
-                    {% else %}
-                        <option value="{{ year }}">{{ year }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
+                <label id="label-year-filter" for="yearFilter" class="order-filter-label">Jahr:</label>
+                <select id="yearFilter" name="year" class="order-filter">
+                    {% for year in allYears %}
+                        {% if year == currentYear %}
+                            <option value="{{ year }}" selected>{{ year }}</option>
+                        {% else %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
 
-            <label id="label-department-filter" for="departmentFilter" class="order-filter-label">Abteilung:</label>
-            <select id="departmentFilter" name="department" class="order-filter">
-                {% if departmentFilter == 0 %}
-                    <option value="0" selected>Alle Abteilungen</option>
-                {% else %}
-                    <option value="0">Alle Abteilungen</option>
-                {% endif %}
-                {% for department in departments %}
-                    {% if department.id == departmentFilter %}
-                        <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                <label id="label-department-filter" for="departmentFilter" class="order-filter-label">Abteilung:</label>
+                <select id="departmentFilter" name="department" class="order-filter">
+                    {% if departmentFilter == 0 %}
+                        <option value="0" selected>Alle Abteilungen</option>
                     {% else %}
-                        <option value="{{ department.id }}">{{ department.name }}</option>
+                        <option value="0">Alle Abteilungen</option>
                     {% endif %}
-                {% endfor %}
-            </select>
+                    {% for department in departments %}
+                        {% if department.id == departmentFilter %}
+                            <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                        {% else %}
+                            <option value="{{ department.id }}">{{ department.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
 
-            <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
-            <select id="gradeFilter" name="grade" class="order-filter mr-5">
-                {% if gradeFilter == 0 %}
-                    <option value="0" selected>Alle Jahrgänge</option>
-                {% else %}
-                    <option value="0">Alle Jahrgänge</option>
-                {% endif %}
-                {% for i in 1..5 %}
-                    {% if i == gradeFilter %}
-                        <option value="{{ i }}" selected>{{ i }}</option>
+                <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
+                <select id="gradeFilter" name="grade" class="order-filter mr-5">
+                    {% if gradeFilter == 0 %}
+                        <option value="0" selected>Alle Jahrgänge</option>
                     {% else %}
-                        <option value="{{ i }}">{{ i }}</option>
+                        <option value="0">Alle Jahrgänge</option>
                     {% endif %}
-                {% endfor %}
-            </select>
+                    {% for i in 1..5 %}
+                        {% if i == gradeFilter %}
+                            <option value="{{ i }}" selected>{{ i }}</option>
+                        {% else %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
 
                 <div class="flex items-center">
                     <input type="text" name="search" value="{{ search }}" placeholder="Suche nach einem Buch..."
                            class="border px-4 py-2 w-full rounded-md"/>
                     <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-800 ease-in-out duration-300">Suchen</button>
                 </div>
+
+                <!-- Two filters that are not displayed to include them in the URL when submitting the form -->
+                <select id="sortByFilter" name="sortBy" class="order-filter mr-5" style="display: none">
+                    <option value="{{ sortBy }}" selected id="sortByValue"></option>
+                </select>
+
+                <select id="sortDirectionFilter" name="sortDirection" class="order-filter mr-5" style="display: none">
+                    <option value="{{ sortDirection }}" selected id="sortDirectionValue"></option>
+                </select>
             </form>
         </div>
         <table class="table">
             <thead>
             <tr>
-                <th style="width: 15%">
+                <th style="width: 15%" id="bnrHeader">
                     Buchnummer
-                    {% if sortBy == 'bnr' %}
-                        {% if sortDirection == 'DESC' %}
-                            <img style="display: inline-block; height: 20px;" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                    <!-- Builds the image-tag -->
+                    <img style="display: inline-block; height: 20px; transform:
+                    {% if sortBy == 'class' %}
+                            rotate(90deg);
+                    {% else %}
+                        {% if sortDirection == 'ASC' %}
+                                rotate(180deg);
                         {% else %}
-                            <img style="display: inline-block; height: 20px; transform: rotate(180deg)" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
+                                rotate(0deg);
                         {% endif %}
-                    {% endif %}
+                    {% endif %}"
+                            {% if sortBy == 'bnr' %}
+                                src="{{ asset('images/sortingArrowBlue.png') }}"
+                            {% else %}
+                                src="{{ asset('images/sortingArrowGrey.png') }}"
+                            {% endif %}
+                         alt="sortingArrow">
                 </th>
                 <th>Buch</th>
                 <th>Anzahl nicht Repetenten</th>
@@ -80,15 +99,24 @@
                 <th>Lehrerexemplar</th>
                 <th>eBook</th>
                 <th>eBook Plus</th>
-                <th style="width: 15%" onclick="">
+                <th style="width: 15%" id="classHeader">
                     Schulklasse
-                    {% if sortBy == 'class' %}
-                        {% if sortDirection == 'DESC' %}
-                            <img style="display: inline-block; height: 20px;" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
-                        {% else %}
-                            <img style="display: inline-block; height: 20px; transform: rotate(180deg)" src="{{ asset('images/sortingArrow.png') }}" alt="sortingArrow">
-                        {% endif %}
-                    {% endif %}
+                    <img style="display: inline-block; height: 20px; transform:
+                    {% if sortBy == 'bnr' %}
+                            rotate(90deg);
+                    {% else %}
+                            {% if sortDirection == 'ASC' %}
+                                rotate(180deg);
+                            {% else %}
+                                rotate(0deg);
+                            {% endif %}
+                    {% endif %}"
+                            {% if sortBy == 'class' %}
+                                src="{{ asset('images/sortingArrowBlue.png') }}"
+                            {% else %}
+                                src="{{ asset('images/sortingArrowGrey.png') }}"
+                            {% endif %}
+                         alt="sortingArrow">
                 </th>
                 <th style="width: 5%"></th>
             </tr>
@@ -188,6 +216,31 @@
             document.getElementById('bookFilterForm').submit();
         });
         document.getElementById('gradeFilter').addEventListener('change', function () {
+            document.getElementById('bookFilterForm').submit();
+        });
+
+        // handling of sorting
+        let $sortByFilter = document.getElementById('sortByFilter');
+        let $sortDirectionFilter = document.getElementById('sortDirectionFilter');
+
+        let $bnrHeader = document.getElementById('bnrHeader');
+        let $classHeader = document.getElementById('classHeader');
+
+        $bnrHeader.addEventListener('click', function () {
+            if ($sortByFilter.value === 'class') {
+                document.getElementById('sortByValue').value = 'bnr';
+            }
+            document.getElementById('sortDirectionValue').value = $sortDirectionFilter.value === 'ASC' ? 'DESC' : 'ASC';
+
+            document.getElementById('bookFilterForm').submit();
+        });
+
+        $classHeader.addEventListener('click', function () {
+            if ($sortByFilter.value === 'bnr') {
+                document.getElementById('sortByValue').value = 'class';
+            }
+            document.getElementById('sortDirectionValue').value = $sortDirectionFilter.value === 'ASC' ? 'DESC' : 'ASC';
+
             document.getElementById('bookFilterForm').submit();
         });
     </script>
