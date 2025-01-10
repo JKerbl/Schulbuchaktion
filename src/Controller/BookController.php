@@ -40,6 +40,12 @@ class BookController extends AbstractController
         $year = $request->query->get('year', date('Y'));
         $allYears = $bookRepository->getAllYears();
 
+        // check if the requested year is in the array
+        if (!in_array($year, $allYears)){
+            $allYears[] = $year;
+            sort($allYears);
+        }
+
         // get the subject and grade filters
         $subjectFilter = $request->query->get('subject', null);
         if ($subjectFilter == 0){
@@ -56,13 +62,11 @@ class BookController extends AbstractController
         // get all subjects for the filter
         $subjects = $em->getRepository(Subject::class)->findAll();
 
-
         $search = $request->query->get('search', '');
         $maxPages = $this->getMaxPages($bookRepository, $limit, $year, $subjectFilter, $gradeFilter, $search);
         $currentPage = $this->getCurrentPage($request, $maxPages);
 
         $books = $bookRepository->getPaginatedEntries($limit, $currentPage, $year, $subjectFilter, $gradeFilter, $search);
-
 
         return $this->render('book/index.html.twig', [
             'books' => $books,

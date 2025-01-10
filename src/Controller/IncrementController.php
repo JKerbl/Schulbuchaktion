@@ -18,7 +18,6 @@ class IncrementController extends AbstractController
     public function index(EntityManagerInterface $em, DepartmentRepository $dr, SchoolClassRepository $scr): Response
     {
         $highestYear = $dr->findHighestYear();
-
         $departments = $dr->findAllByYear($highestYear);
 
         foreach ($departments as $department){

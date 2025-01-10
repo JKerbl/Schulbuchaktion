@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\SchoolClass;
 use App\Form\SchoolClassType;
+use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,18 +16,33 @@ use Symfony\Component\Routing\Attribute\Route;
 class SchoolClassController extends AbstractController
 {
     #[Route('/', name: 'app_school_class_index', methods: ['GET'])]
-    public function index(SchoolClassRepository $schoolClassRepository, Request $request): Response
+    public function index(SchoolClassRepository $schoolClassRepository, DepartmentRepository $departmentRepository, Request $request): Response
     {
         $year = $request->query->get('year', date('Y'));
         $years = $schoolClassRepository->findAllYears();
 
-        // Gets the Classes with the year or the current year if there is no year provided
-        $schoolClasses = $schoolClassRepository->findAlLByYear($year);
+        // check if the year is in the array of years
+        if (!in_array($year, $years)) {
+            $years[] = $year;
+            sort($years);
+        }
+
+        $department = $request->query->get('department', 0);
+        if ($department !== 0) {
+            $schoolClasses = $schoolClassRepository->findAllByYearAndDepartment($year, $department);
+        } else {
+            // Gets the Classes with the year or the current year if there is no year provided
+            $schoolClasses = $schoolClassRepository->findAlLByYear($year);
+        }
+
+        $departments = $departmentRepository->findAllByYear($year);
 
         return $this->render('school_class/index.html.twig', [
             'school_classes' => $schoolClasses,
             'currentYear' => $year,
             'allYears' => $years,
+            'departments' => $departments,
+            'currentDepartment' => $department,
         ]);
     }
 

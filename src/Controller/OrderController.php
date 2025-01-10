@@ -42,10 +42,7 @@ class OrderController extends AbstractController {
         $classes = $scr->findAlLByYear(date('Y'));
 
         if ($classes === []) {
-            return $this->render('home/index.html.twig', [
-                'results' => $res, 'user' => $user,
-                'searchInput' => "",
-            ]);
+            return $this->redirectToRoute('app_book_index');
         }
 
         return $this->render('order/index.html.twig', [

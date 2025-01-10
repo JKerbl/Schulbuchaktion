@@ -20,6 +20,12 @@ class DepartmentController extends AbstractController
         $year = $request->query->get('year', date('Y'));
         $years = $departmentRepository->findAllYears();
 
+        // check if the year is in the array of years
+        if (!in_array($year, $years)) {
+            $years[] = $year;
+            sort($years);
+        }
+
         // Gets the Classes with the year or the current year if there is no year provided
         $departments = $departmentRepository->findAllByYear($year);
 
