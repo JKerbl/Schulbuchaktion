@@ -34,15 +34,15 @@
             {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_import') }}">
+                        <a href="{{ path('app_import') }}" >
                             <button class="navbar-button">Import</button>
                         </a>
                     </div>
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_increment') }}">
-                        <button class="navbar-button">Neues Jahr</button>
-                    </a>
-                </div>
+                        <a href="{{ path('app_increment') }}" onclick="return confirmIncrement()">
+                            <button class="navbar-button">Neues Jahr</button>
+                        </a>
+                    </div>
                 {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_AV' in app.user.roles or 'ROLE_FV' in app.user.roles %}
                     <div class="nav-bar-item">
@@ -101,4 +101,9 @@
         </div>
     </div>
 
+    <script>
+        function confirmIncrement() {
+            return confirm('Klassen und Abteilungen für das neue Jahr erstellen?');
+        }
+    </script>
 </nav>
