@@ -131,10 +131,7 @@ class BookOrder
         return $this->book->getTitle();
     }
 
-   /**
-    * @return Collection<int, subject>
-    */
-   public function getSubject(): Collection
+   public function getSubject(): Subject
    {
        return $this->subject;
    }

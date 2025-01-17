@@ -30,8 +30,17 @@ class DepartmentController extends AbstractController
         // Gets the Classes with the year or the current year if there is no year provided
         $departments = $departmentRepository->findAllByYear($year);
 
+        if (in_array('ROLE_AV', $user->getRoles())){
+            foreach ($user->getDepartment() as $dep){
+                $showBudgetFor[] = $dep->getName();
+            }
+        } else {
+            $showBudgetFor[] = "all";
+        }
+
         return $this->render('department/index.html.twig', [
             'departments' => $departments,
+            'showBudgetFor' => $showBudgetFor,
             'currentYear' => $year,
             'allYears' => $years,
             'user' => $user,

@@ -29,14 +29,22 @@ class SchoolClassController extends AbstractController
         }
 
         $department = $request->query->get('department', 0);
-        if ($department !== 0) {
-            $schoolClasses = $schoolClassRepository->findAllByYearAndDepartment($year, $department);
-        } else {
-            // Gets the Classes with the year or the current year if there is no year provided
-            $schoolClasses = $schoolClassRepository->findAlLByYear($year);
+        $departments = $departmentRepository->findAllByYear($year);
+
+        foreach ($departments as $dep){
+            $depIds[] = $dep->getId();
         }
 
-        $departments = $departmentRepository->findAllByYear($year);
+        if (!in_array($department, $depIds)) {
+            $department = 0;
+        }
+
+        if ($department == 0) {
+            // Gets the Classes with the year or the current year if there is no year provided
+            $schoolClasses = $schoolClassRepository->findAlLByYear($year);
+        } else {
+            $schoolClasses = $schoolClassRepository->findAllByYearAndDepartment($year, $department);
+        }
 
         return $this->render('school_class/index.html.twig', [
             'school_classes' => $schoolClasses,

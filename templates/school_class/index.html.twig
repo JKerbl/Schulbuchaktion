@@ -5,31 +5,54 @@
 {% block stylesheets %}
     <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
     <link href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('style/stylingBestellungen.css') }}" type="text/css"/>
 {% endblock %}
 
 {% block body %}
     <div class="text-4xl">
         <h1>Schulklassen</h1>
     </div>
+    <div class="class-filters flex flex-wrap justify-between items-center">
+        <div class="flex items-center">
+            <form id="classFilterForm" method="get" action="{{ path('app_school_class_index') }}" class="flex items-center">
+                <div class="flex items-center mr-5" >
+                    <label id="label-year-filter" for="yearFilter" class="class-filter-label">Jahr:  </label>
+                    <select id="yearFilter" name="year" class="class-filter">
+                        {% for year in allYears %}
+                            {% if year == currentYear %}
+                                <option value="{{ year }}" selected>{{ year }}</option>
+                            {% else %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="flex items-center mr-5">
+                    <label id="label-subject-filter" for="departmentFilter" class="class-filter-label">Abteilungen:  </label>
+                    <select id="departmentFilter" name="department" class="class-filter">
+                        {% if currentDepartment == 0 %}
+                            <option value="0" selected>Alle Abteilungen</option>
+                        {% else %}
+                            <option value="0">Alle Abteilungen</option>
+                        {% endif %}
+                        {% for department in departments %}
+                            {% if department.id == currentDepartment %}
+                                <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                            {% else %}
+                                <option value="{{ department.id }}">{{ department.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
-                <th>
-                    <form id="yearForm" method="get" action="{{ path('app_school_class_index') }}">
-                        <select id="yearFilter" name="year" class="year-filter">
-                            {% for year in allYears %}
-                                {% if year == currentYear %}
-                                    <option value="{{ year }}" selected>{{ year }}</option>
-                                {% else %}
-                                    <option value="{{ year }}">{{ year }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </form>
-                </th>
-                <th>Abteilung</th>
                 <th>Schulstufe</th>
                 <th>Schüleranzahl</th>
                 <th>Repetentenanzahl</th>
@@ -51,8 +74,6 @@
         {% for school_class in school_classes %}
             <tr>
                 <td>{{ school_class.name }}</td>
-                <td>{{ school_class.year }}</td>
-                <td>{{ school_class.department }}</td>
                 <td>{{ school_class.grade }}</td>
                 <td>{{ school_class.studentsAmount }}</td>
                 <td>{{ school_class.repAmount }}</td>
@@ -77,4 +98,13 @@
     </table>
 
     <a class="create-new" href="{{ path('app_school_class_new') }}">Neu Anlegen</a>
+
+    <script>
+        document.getElementById('yearFilter').addEventListener('change', function() {
+            document.getElementById('classFilterForm').submit();
+        });
+        document.getElementById('departmentFilter').addEventListener('change', function() {
+            document.getElementById('classFilterForm').submit();
+        });
+    </script>
 {% endblock %}
