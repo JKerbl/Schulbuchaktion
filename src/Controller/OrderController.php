@@ -173,7 +173,7 @@ class OrderController extends AbstractController {
         return $this->redirectToRoute('order.index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/edit', name: 'app_book_order_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_book_order_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, BookOrder $bookOrder, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(BookOrderType::class, $bookOrder);
@@ -182,10 +182,10 @@ class OrderController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_book_order_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('orderBook', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('book_order/edit.html.twig', [
+        return $this->render('order/edit.html.twig', [
             'book_order' => $bookOrder,
             'form' => $form,
         ]);

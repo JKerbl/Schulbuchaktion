@@ -195,8 +195,9 @@
                 select.on('change', function() {
                     MapSubject($(this).val(), item);
                     fachbereiche.splice(fachbereiche.indexOf(item), 1);
-                    if (fachbereiche.length === 0) {
-                        $('#submit-upload').show();
+
+                    if (fachbereiche.length === 0 && !$('#submit-upload').data('button-added')) {
+                        $('#submit-upload').show().data('button-added', true);
                         // Append the save button
                         $('<button>')
                             .text('Import bestätigen')
@@ -212,10 +213,10 @@
                                     }
                                 });
                             }).appendTo('#submit-upload');
-                    }
+                        }
+                    });
                 });
-            });
-        }
+            }
 
         function MapSubject($subjectId, $subjectName) {
             $.ajax({

@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} Abteilung Übersicht{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartment.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" />
 {% endblock %}
 
 {% block body %}
@@ -49,11 +49,11 @@
                     </form>
                 </th>
                 <th>Abteilungsleiter</th>
-                <th>Budget</th>
-                <th>Benutztes Budget</th>
-                <th>Prozentuale Budget Nutzung</th>
-                <th>U.M.E.W</th>
                 {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
+                    <th>Budget</th>
+                    <th>Benutztes Budget</th>
+                    <th>Prozentuale Budget Nutzung</th>
+                    <th>U.M.E.W</th>
                     <th></th>
                 {% endif %}
             </tr>
@@ -71,29 +71,31 @@
                 <td>{{ department.name }}</td>
                 <td>{{ department.year }}</td>
                 <td>{{ department.headOfDepartment }}</td>
-                <td>{{ department.budget }}</td>
-                <td>{{ department.usedBudget }}</td>
-                <td>
-                    {% set percentage = (department.usedBudget / department.budget * 100) %}
-                    {% set percentageShown = (department.usedBudget / department.budget * 100) %}
-                    {% if percentage > 100 %}
-                        {% set percentage = 100 %}
-                    {% endif %}
-
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
-                    </div>
-                    {{ percentageShown | number_format(2, '.', ',') }}%
-                </td>
-                <td>{{ department.umew }}</td>
                 {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
-                    <td>
-                        <div class="actionIcons">
-                            <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
-                            <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
-                            <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
-                        </div>
-                    </td>
+                    {% if "all" in showBudgetFor or department.name in showBudgetFor %}
+                        <td>{{ department.budget }}</td>
+                        <td>{{ department.usedBudget }}</td>
+                        <td>
+                            {% set percentage = (department.usedBudget / department.budget * 100) %}
+                            {% set percentageShown = (department.usedBudget / department.budget * 100) %}
+                            {% if percentage > 100 %}
+                                {% set percentage = 100 %}
+                            {% endif %}
+
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
+                            </div>
+                            {{ percentageShown | number_format(2, '.', ',') }}%
+                        </td>
+                        <td>{{ department.umew }}</td>
+                            <td>
+                                <div class="actionIcons">
+                                    <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                                    <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                                    <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                                </div>
+                            </td>
+                    {% endif %}
                 {% endif %}
             </tr>
         {% else %}
