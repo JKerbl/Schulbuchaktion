@@ -34,6 +34,7 @@ class BookController extends AbstractController
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
     public function index(EntityManagerInterface $em, BookRepository $bookRepository, Request $request): Response
     {
+        $user = $this->getUser();
         $limit = $this->getUser()->getPagelimit();
 
         // get requested or current (as default) year and all years
@@ -77,7 +78,8 @@ class BookController extends AbstractController
             'gradeFilter' => $gradeFilter ?? 0,
             'currentYear' => $year,
             'allYears' => $allYears,
-            'subjects' => $subjects
+            'subjects' => $subjects,
+            'user' => $user
         ]);
     }
 }

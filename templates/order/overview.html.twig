@@ -118,7 +118,9 @@
                             {% endif %}
                          alt="sortingArrow">
                 </th>
-                <th style="width: 5%"></th>
+                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                    <th style="width: 5%"></th>
+                {% endif %}
             </tr>
             </thead>
             <tbody id="orderTable">
@@ -140,9 +142,11 @@
                     <td>{{ order.eBook ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.eBookPlus ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
-                    <td>
-                        <a href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
-                    </td>
+                    {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                        <td>
+                            <a href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

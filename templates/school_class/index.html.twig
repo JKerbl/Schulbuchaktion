@@ -35,7 +35,9 @@
                 <th>Repetentenanzahl</th>
                 <th>Benutztes Budget</th>
                 <th>Gesamtes Budget</th>
-                <th>Aktionen</th>
+                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
+                    <th></th>
+                {% endif %}
             </tr>
         </thead>
 
@@ -56,13 +58,15 @@
                 <td>{{ school_class.repAmount }}</td>
                 <td>{{ school_class.usedBudget }}</td>
                 <td>{{ school_class.budget }}</td>
-                <td>
-                    <div class="actionIcons">
-                        <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
-                        <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
-                        <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
-                    </div>
-                </td>
+                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
+                    <td>
+                        <div class="actionIcons">
+                            <a href="{{ path('app_school_class_show', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                            <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                            <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                        </div>
+                    </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

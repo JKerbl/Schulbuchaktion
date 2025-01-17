@@ -80,7 +80,9 @@
                     <th class="px-2 py-2 bg-gray-100">Schulst.</th>
                     <th class="px-2 py-2 bg-gray-100">Preis</th>
                     <th class="px-2 py-2 bg-gray-100">Jahr</th>
-                    <th class="px-2 py-2 bg-gray-100">Bestellen</th>
+                    {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                        <th class="px-2 py-2 bg-gray-100">Bestellen</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -96,10 +98,12 @@
                         <td class="px-4 py-2">{{ book.schoolGrades }}</td>
                         <td class="px-4 py-2">{{ book.price }}</td>
                         <td class="px-4 py-2">{{ book.year }}</td>
-                        <td class="px-4 py-2">
-                            <a href="{{ path('orderBook', {id: book.id}) }}"
-                               class=""><img class="order-img-size" src="{{ asset('images/order.png') }}" alt="Bestellen"></a>
-                        </td>
+                        {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                            <td class="px-4 py-2">
+                                <a href="{{ path('orderBook', {id: book.id}) }}"
+                                   class=""><img class="order-img-size" src="{{ asset('images/order.png') }}" alt="Bestellen"></a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% else %}
                     <tr>

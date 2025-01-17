@@ -18,6 +18,7 @@ class SchoolClassController extends AbstractController
     #[Route('/', name: 'app_school_class_index', methods: ['GET'])]
     public function index(SchoolClassRepository $schoolClassRepository, DepartmentRepository $departmentRepository, Request $request): Response
     {
+        $user = $this->getUser();
         $year = $request->query->get('year', date('Y'));
         $years = $schoolClassRepository->findAllYears();
 
@@ -43,6 +44,7 @@ class SchoolClassController extends AbstractController
             'allYears' => $years,
             'departments' => $departments,
             'currentDepartment' => $department,
+            'user' => $user,
         ]);
     }
 

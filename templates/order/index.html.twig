@@ -258,7 +258,7 @@
 
         console.log(orderData);
 
-        fetch('/order', {
+        fetch('/orderBook/order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -279,7 +279,7 @@
     });
 
     document.getElementById('orderlistButton').addEventListener('click', function() {
-        window.location.href = '/orderbooks/index';
+        window.location.href = '/orderBook/index';
     });
 
 </script>

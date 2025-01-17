@@ -53,7 +53,9 @@
                 <th>Benutztes Budget</th>
                 <th>Prozentuale Budget Nutzung</th>
                 <th>U.M.E.W</th>
-                <th>Aktionen</th>
+                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
+                    <th></th>
+                {% endif %}
             </tr>
         </thead>
 
@@ -84,13 +86,15 @@
                     {{ percentageShown | number_format(2, '.', ',') }}%
                 </td>
                 <td>{{ department.umew }}</td>
-                <td>
-                    <div class="actionIcons">
-                        <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
-                        <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
-                        <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
-                    </div>
-                </td>
+                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
+                    <td>
+                        <div class="actionIcons">
+                            <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
+                            <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                            <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                        </div>
+                    </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>

@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\BookOrder;
 use App\Entity\Department;
 use App\Entity\Subject;
+use App\Form\BookOrderType;
 use App\Repository\BookOrderRepository;
 use App\Repository\BookRepository;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
 use App\Repository\SubjectRepository;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,8 +19,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/orderBook')]
 class OrderController extends AbstractController {
-    #[Route('/orderBook', name: 'orderBook')]
+    #[Route('/', name: 'orderBook')]
     public function order(BookRepository $br, SchoolClassRepository $scr, SubjectRepository $sr, Request $request): Response {
         $id = $request->query->get('id', null);
 
@@ -84,9 +87,10 @@ class OrderController extends AbstractController {
         return min(max($page, 0), $maxPages);
     }
 
-    #[Route('/orderbooks/index', name: 'order.index')]
+    #[Route('/index', name: 'order.index')]
     public function index(EntityManagerInterface $em, Request $request): Response
     {
+        $user = $this->getUser();
         $bookOrderRepository = $em->getRepository(BookOrder::class);
         $limit = $this->getUser()->getPagelimit();
 
@@ -132,11 +136,12 @@ class OrderController extends AbstractController {
             'currentPage' => $currentPage,
             'search' => $search,
             'sortBy' => $sortBy,
-            'sortDirection' => $sortDirection
+            'sortDirection' => $sortDirection,
+            'user' => $user
         ]);
     }
 
-    #[Route('/orderbooks/delete/{id}', name: 'order.delete')]
+    #[Route('/delete/{id}', name: 'order.delete')]
     public function delete($id, EntityManagerInterface $entityManager, BookOrderRepository $bookOrderRepository): Response
     {
         $bookOrder = $bookOrderRepository->findOneBy(['id' => $id]);
@@ -166,6 +171,24 @@ class OrderController extends AbstractController {
         $entityManager->flush();
 
         return $this->redirectToRoute('order.index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/edit', name: 'app_book_order_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, BookOrder $bookOrder, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(BookOrderType::class, $bookOrder);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_book_order_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('book_order/edit.html.twig', [
+            'book_order' => $bookOrder,
+            'form' => $form,
+        ]);
     }
 
     #[Route('/order', name: 'submit_order', methods: ['POST'])]

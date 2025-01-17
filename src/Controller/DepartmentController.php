@@ -17,6 +17,7 @@ class DepartmentController extends AbstractController
     #[Route('/', name: 'app_department_index', methods: ['GET'])]
     public function index(DepartmentRepository $departmentRepository, Request $request): Response
     {
+        $user = $this->getUser();
         $year = $request->query->get('year', date('Y'));
         $years = $departmentRepository->findAllYears();
 
@@ -33,6 +34,7 @@ class DepartmentController extends AbstractController
             'departments' => $departments,
             'currentYear' => $year,
             'allYears' => $years,
+            'user' => $user,
         ]);
     }
 

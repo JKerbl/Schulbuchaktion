@@ -25,38 +25,44 @@
                         <button class="navbar-button">Buch</button>
                     </a>
                 </div>
+            {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_FV' in app.user.roles %}
                 <div class="nav-bar-item">
                     <a href="{{ path('order.index') }}">
                         <button class="navbar-button">Bestellung</button>
                     </a>
                 </div>
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_import') }}">
-                        <button class="navbar-button">Import</button>
+            {% endif %}
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_import') }}">
+                            <button class="navbar-button">Import</button>
+                        </a>
+                    </div>
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_increment') }}">
+                        <button class="navbar-button">Neues Jahr</button>
                     </a>
                 </div>
-                <!--
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_increment') }}">
-                        <button class="navbar-button">Increment</button>
-                    </a>
-                </div>
-                -->
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_school_class_index') }}">
-                        <button class="navbar-button">Klasse</button>
-                    </a>
-                </div>
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_department_index') }}">
-                        <button class="navbar-button">Abteilung</button>
-                    </a>
-                </div>
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_subject_index') }}">
-                        <button class="navbar-button">Schulfach</button>
-                    </a>
-                </div>
+                {% endif %}
+                {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_AV' in app.user.roles or 'ROLE_FV' in app.user.roles %}
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_school_class_index') }}">
+                            <button class="navbar-button">Klasse</button>
+                        </a>
+                    </div>
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_department_index') }}">
+                            <button class="navbar-button">Abteilung</button>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_subject_index') }}">
+                            <button class="navbar-button">Schulfach</button>
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="nav-bar-item">
                     <a href="{{ path('app_budget.index') }}">
                         <button class="navbar-button">Budget</button>

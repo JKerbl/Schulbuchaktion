@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Entity\Subject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -85,8 +86,16 @@ class BookRepository extends ServiceEntityRepository
         if ($subjectId) {
             $queryBuilder
                 ->join('b.importSubjectMap', 'ism')
-                ->andWhere('ism.subject = :subject')
-                ->setParameter('subject', $subjectId);
+                ->join('ism.subject', 's')
+                ->andWhere('s.id = :subjectId')
+                ->setParameter('subjectId', $subjectId);
+
+            $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subjectId);
+            if ($subject && stripos($subject->getFullName(), 'F') === 0) {
+                $queryBuilder
+                    ->andWhere('s.fullName LIKE :subject')
+                    ->setParameter('subject', 'F%');
+            }
         }
 
         if ($grade) {
@@ -115,8 +124,16 @@ class BookRepository extends ServiceEntityRepository
         if ($subjectId) {
             $queryBuilder
                 ->join('b.importSubjectMap', 'ism')
-                ->andWhere('ism.subject = :subject')
-                ->setParameter('subject', $subjectId);
+                ->join('ism.subject', 's')
+                ->andWhere('s.id = :subjectId')
+                ->setParameter('subjectId', $subjectId);
+
+            $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subjectId);
+            if ($subject && stripos($subject->getFullName(), 'F') === 0) {
+                $queryBuilder
+                    ->andWhere('s.fullName LIKE :subject')
+                    ->setParameter('subject', 'F%');
+            }
         }
 
         if ($grade) {
