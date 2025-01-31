@@ -19,6 +19,7 @@ class SchoolClassController extends AbstractController
     public function index(SchoolClassRepository $schoolClassRepository, DepartmentRepository $departmentRepository, Request $request): Response
     {
         $user = $this->getUser();
+        // Gets the year from the query string or the current year if there is no year provided
         $year = $request->query->get('year', date('Y'));
         $years = $schoolClassRepository->findAllYears();
 
@@ -28,6 +29,7 @@ class SchoolClassController extends AbstractController
             sort($years);
         }
 
+        // Gets the department from the query string or 0 which stands for all departments
         $department = $request->query->get('department', 0);
         $departments = $departmentRepository->findAllByYear($year);
 

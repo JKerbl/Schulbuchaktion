@@ -18,6 +18,7 @@ class DepartmentController extends AbstractController
     public function index(DepartmentRepository $departmentRepository, Request $request): Response
     {
         $user = $this->getUser();
+        // Get the year from the query string or set the current year
         $year = $request->query->get('year', date('Y'));
         $years = $departmentRepository->findAllYears();
 
@@ -30,6 +31,7 @@ class DepartmentController extends AbstractController
         // Gets the Classes with the year or the current year if there is no year provided
         $departments = $departmentRepository->findAllByYear($year);
 
+        // AV can only see their own department and the admin can see all
         if (in_array('ROLE_AV', $user->getRoles())){
             foreach ($user->getDepartment() as $dep){
                 $showBudgetFor[] = $dep->getName();

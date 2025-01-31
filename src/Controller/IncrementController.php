@@ -17,6 +17,7 @@ class IncrementController extends AbstractController
     #[Route('/all', name: 'app_increment')]
     public function index(EntityManagerInterface $em, DepartmentRepository $dr, SchoolClassRepository $scr): Response
     {
+        // Get the highest year and all departments of it
         $highestYear = $dr->findHighestYear();
         $departments = $dr->findAllByYear($highestYear);
 
@@ -38,15 +39,18 @@ class IncrementController extends AbstractController
             foreach ($classes as $class) {
                 $newClass = new SchoolClass();
 
+                // Removes the grade from the class name for example 1AHITN --> AHITN
                 $classWithoutGrade = substr($class->getName(), 1 );
 
                 if ($class->getGrade() != 5) {
+                    // Does this for every class that is not in the 5th grade
                     $className = $class->getName();
 
                     $newClass->setName(($class->getGrade() + 1) . $classWithoutGrade);
                     $newClass->setGrade($class->getGrade() + 1);
                     $newClass->setStudentsAmount($class->getStudentsAmount() + $class->getRepAmount());
                 } else {
+                    // Instead of incrementing the 5th grade, it creates a new 1st grade class
                     $newClass->setGrade(1);
 
                     $newClass->setName("1" . $classWithoutGrade);
@@ -65,7 +69,4 @@ class IncrementController extends AbstractController
 
         return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
-
 }

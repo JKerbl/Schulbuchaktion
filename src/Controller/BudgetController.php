@@ -42,16 +42,18 @@ class BudgetController extends AbstractController
         $limit_4100 = 180;
         $limit_3100 = 95;
 
+        // Only calculates the Budget of the Highest Year
         $year = $d->findHighestYear();
         $departments = $d->findAllByYear($year);
 
-
+        // Goes through each department
         foreach ($departments as $dep){
             $classes = $sc->findAllByDepartmentID($dep->getId());
 
             $higherstudents = 0;
             $technicalStudents = 0;
 
+            // Goes through each class in the department and adds the students to the respective category
             foreach ($classes as $class){
                 if ($class->getType() === "h"){
                     $higherstudents += $class->getStudentsAmount();
@@ -60,10 +62,11 @@ class BudgetController extends AbstractController
                 }
             }
 
+            // Calculates the budget for the department
             $budget = $higherstudents * $limit_4100 + $technicalStudents * $limit_3100;
             $dep->setBudget($budget);
-            $manager->persist($dep);
 
+            $manager->persist($dep);
         }
 
         $manager->flush();
