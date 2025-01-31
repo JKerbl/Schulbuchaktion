@@ -126,13 +126,15 @@
                             <label class="text-xs customColorText">J/N</label>
                         </div>
                         <div>
-                            <select id="subjectSelect" class="text-center rounded-sm p-0.5"
-                                {% if 'ROLE_ADMIN' not in user.roles %}
-                                    disabled
-                                {% endif %}
-                            >
+                            <select id="subjectSelect" class="text-center rounded-sm p-0.5">
                             {% if 'ROLE_ADMIN' not in user.roles %}
-                                <option>{{ userSubject[0].fullname }}</option>
+                                {% if userSubject is empty %}
+                                    <option value="0">Kein Fach zugeteilt</option>
+                                {% else %}
+                                    {% for subject in userSubject %}
+                                        <option value="{{ subject.id }}">{{ subject.fullname }}</option>
+                                    {% endfor %}
+                                {% endif %}
                             {% else %}
                                 {% for subject in allSubjects %}
                                     <option value="{{ subject.id }}">{{ subject.fullname }}</option>

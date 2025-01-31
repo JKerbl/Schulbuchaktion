@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use function PHPUnit\Framework\isEmpty;
 
 #[Route('/orderBook')]
 class OrderController extends AbstractController {
@@ -49,8 +50,10 @@ class OrderController extends AbstractController {
         }
 
         return $this->render('order/index.html.twig', [
-            'user' => $user, 'book' => $book,
-            'classes' => $classes,'allSubjects' => $subjects,
+            'user' => $user,
+            'book' => $book,
+            'classes' => $classes,
+            'allSubjects' => $subjects,
             'userSubject' => $userSubject,
         ]);
     }

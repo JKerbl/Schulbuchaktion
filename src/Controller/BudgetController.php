@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Parameter;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,9 +40,6 @@ class BudgetController extends AbstractController
     #[Route('/calc-budget', name: 'calc_budget')]
     public function calcBudget(EntityManagerInterface $manager, DepartmentRepository $d, SchoolClassRepository $sc)
     {
-        $limit_4100 = 180;
-        $limit_3100 = 95;
-
         // Only calculates the Budget of the Highest Year
         $year = $d->findHighestYear();
         $departments = $d->findAllByYear($year);
@@ -62,8 +60,11 @@ class BudgetController extends AbstractController
                 }
             }
 
+            // Gets the parameters for the budget calculation
+            $parameter = $manager->getRepository(Parameter::class)->findByYear($year);
+
             // Calculates the budget for the department
-            $budget = $higherstudents * $limit_4100 + $technicalStudents * $limit_3100;
+            $budget = $higherstudents * $parameter->getLimit4100() + $technicalStudents * $parameter->getLimit3100();
             $dep->setBudget($budget);
 
             $manager->persist($dep);
