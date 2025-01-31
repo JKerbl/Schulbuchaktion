@@ -62,6 +62,12 @@
                             <button class="navbar-button">Schulfach</button>
                         </a>
                     </div>
+
+                    <div class="nav-bar-item">
+                        <a href="{{ path('user.index') }}">
+                            <button class="navbar-button">Benutzer</button>
+                        </a>
+                    </div>
                 {% endif %}
                 <!--
                 <div class="nav-bar-item">
@@ -70,12 +76,6 @@
                     </a>
                 </div>
                 -->
-                <div class="nav-bar-item">
-                    <a href="{{ path('user.index') }}">
-                        <button class="navbar-button">Benutzer</button>
-                    </a>
-                </div>
-
             {% endif %}
             <div class="nav-bar-item">
                 <a href="{{ path('app_team') }}">
