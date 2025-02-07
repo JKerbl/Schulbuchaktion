@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class RegistrationController extends AbstractController
 {
@@ -46,10 +47,14 @@ class RegistrationController extends AbstractController
             $user->setPassword($passwordHasher->hashPassword($user, $input['password']));
             $user->setRoles([$input['roles']]); // Assign the selected role to the user
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($user);
+                $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('app_login'));
+                return $this->redirect($this->generateUrl('app_login'));
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('error', 'Der Benutzername ist bereits vergeben.');
+            }
         }
 
         return $this->render('registration/index.html.twig', [

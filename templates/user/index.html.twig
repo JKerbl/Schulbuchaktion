@@ -3,9 +3,9 @@
 {% block title %}{{ parent() }} Userübersicht{% endblock %}
 
 {% block body %}
-    <h1 class="text-4xl my-8 text-center">Userübersicht</h1>
+    <h1 class="text-4xl my-8 text-center">Benutzerübersicht</h1>
 
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-8">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mx-8">
         {% for user in users %}
             <div class="bg-white rounded-lg shadow-md p-4">
                 <p class="text-xl font-semibold mb-2">{{ user.username }}</p>
@@ -19,8 +19,17 @@
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         Rolle ändern
                     </button>
+                    <a href="{{ path('user.delete', {'id': user.id }) }}" onclick="return confirmDelete('{{ user.username }}')" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ml-auto">
+                        Löschen
+                    </a>
                 </form>
             </div>
         {% endfor %}
     </div>
+
+    <script>
+        function confirmDelete(username) {
+            return confirm('Sind Sie sicher, dass Sie den Benutzer ' + username + ' und alle seine Zuteilungen löschen möchten?');
+        }
+    </script>
 {% endblock %}

@@ -36,4 +36,29 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user.index');
     }
+
+    #[Route('/delete/{id}', name: 'delete')]
+    public function delete($id, EntityManagerInterface $entityManager, UserRepository $ur): Response
+    {
+        $user = $ur->find($id);
+
+        if ($user->getDepartment() != null) {
+            foreach ($user->getDepartment() as $department) {
+                $department->setHeadOfDepartment(null);
+            }
+        }
+
+        if ($user->getSubject() != null) {
+            foreach ($user->getSubject() as $subject) {
+                $subject->setHeadOfSubject(null);
+            }
+        }
+
+        if ($user) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('user.index');
+    }
 }
