@@ -118,7 +118,7 @@
                             {% endif %}
                          alt="sortingArrow">
                 </th>
-                {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                {% if 'ROLE_ADMIN' in user.roles or ('ROLE_FV' in user.roles and currentYear is same as "now"|date('Y')) %}
                     <th style="width: 5%"></th>
                 {% endif %}
             </tr>
@@ -142,7 +142,7 @@
                     <td>{{ order.eBook ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.eBookPlus ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
-                    {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
+                    {% if 'ROLE_ADMIN' in user.roles or ('ROLE_FV' in user.roles and currentYear is same as "now"|date('Y')) %}
                         <td style="width: 8%">
                             <a style="display: inline-block" href="{{ path('app_book_order_edit', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                             <a style="display: inline-block" href="{{ path('order.delete', {'id': order.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
