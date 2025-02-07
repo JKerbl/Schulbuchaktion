@@ -46,7 +46,7 @@ class BudgetController extends AbstractController
         $d = $manager->getRepository(Department::class);
         $sc = $manager->getRepository(SchoolClass::class);
 
-        $year = $d->findHighestYear();
+        $year = date('Y');
         $departments = $d->findAllByYear($year);
 
         // Goes through each department
