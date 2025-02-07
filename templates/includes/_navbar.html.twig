@@ -15,56 +15,56 @@
         </div>
         <div class="nav-bar-elements">
             <div id="home" class="nav-bar-item">
-                <a href="{{ path('landing_page') }}">
+                <a href="{{ path('landing_page') }}" class="{% if app.request.get('_route') == 'landing_page' %}active{% endif %}">
                     <button class="navbar-button">Home</button>
                 </a>
             </div>
             {% if (app.user) %}
                 <div class="nav-bar-item">
-                    <a href="{{ path('app_book_index') }}">
+                    <a href="{{ path('app_book_index') }}" class="{% if app.request.get('_route') == 'app_book_index' %}active{% endif %}">
                         <button class="navbar-button">Buch</button>
                     </a>
                 </div>
             {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_FV' in app.user.roles %}
                 <div class="nav-bar-item">
-                    <a href="{{ path('order.index') }}">
+                    <a href="{{ path('order.index') }}" class="{% if app.request.get('_route') == 'order.index' %}active{% endif %}">
                         <button class="navbar-button">Bestellung</button>
                     </a>
                 </div>
             {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_import') }}" >
+                        <a href="{{ path('app_import') }}" class="{% if app.request.get('_route') == 'app_import' %}active{% endif %}">
                             <button class="navbar-button">Import</button>
                         </a>
                     </div>
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_increment') }}" onclick="return confirmIncrement()">
+                        <a href="{{ path('app_increment') }}" onclick="return confirmIncrement()" class="{% if app.request.get('_route') == 'app_increment' %}active{% endif %}">
                             <button class="navbar-button">Neues Jahr</button>
                         </a>
                     </div>
                 {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_AV' in app.user.roles or 'ROLE_FV' in app.user.roles %}
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_school_class_index') }}">
+                        <a href="{{ path('app_school_class_index') }}" class="{% if app.request.get('_route') == 'app_school_class_index' %}active{% endif %}">
                             <button class="navbar-button">Klasse</button>
                         </a>
                     </div>
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_department_index') }}">
+                        <a href="{{ path('app_department_index') }}" class="{% if app.request.get('_route') == 'app_department_index' %}active{% endif %}">
                             <button class="navbar-button">Abteilung</button>
                         </a>
                     </div>
                 {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_subject_index') }}">
+                        <a href="{{ path('app_subject_index') }}" class="{% if app.request.get('_route') == 'app_subject_index' %}active{% endif %}">
                             <button class="navbar-button">Schulfach</button>
                         </a>
                     </div>
 
                     <div class="nav-bar-item">
-                        <a href="{{ path('user.index') }}">
+                        <a href="{{ path('user.index') }}" class="{% if app.request.get('_route') == 'user.index' %}active{% endif %}">
                             <button class="navbar-button">Benutzer</button>
                         </a>
                     </div>
@@ -78,7 +78,7 @@
                 -->
             {% endif %}
             <div class="nav-bar-item">
-                <a href="{{ path('app_team') }}">
+                <a href="{{ path('app_team') }}" class="{% if app.request.get('_route') == 'app_team' %}active{% endif %}">
                     <button class="navbar-button">Team</button>
                 </a>
             </div>
