@@ -60,11 +60,5 @@
             </div>
             {{ form_end(regform) }}
         </form>
-
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-error">
-                {{ message }}
-            </div>
-        {% endfor %}
     </div>
 {% endblock %}

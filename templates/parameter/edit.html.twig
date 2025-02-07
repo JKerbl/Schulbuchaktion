@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} Abteilung bearbeiten{% endblock %}
+{% block title %}{{ parent }} Parameter bearbeiten{% endblock %}
 
 {% block stylesheets %}
     <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
@@ -8,9 +8,8 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="text-4xl">
-        <h1>Abteilung bearbeiten</h1>
+        <h1>Parameter bearbeiten</h1>
     </div>
 
     <div class="content-form">
@@ -20,12 +19,12 @@
             <div class="btn-links-under-form">
                 <button class="save-update-btn-form" type="submit">{{ button_label|default('Speichern') }}</button>
                 <div class="back-to-list-btn">
-                    <a class="anchor-back-to-list" href="{{ path('app_department_index') }}">Zurück zur Liste</a>
+                    <a class="anchor-back-to-list" href="{{ path('app_parameter_index') }}">Zurück zur Liste</a>
                 </div>
             </div>
             {{ form_end(form) }}
         </form>
 
-        {{ include('department/_delete_form.html.twig') }}
+        {{ include('parameter/_delete_form.html.twig') }}
     </div>
 {% endblock %}

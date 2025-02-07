@@ -62,10 +62,14 @@
                             <button class="navbar-button">Schulfach</button>
                         </a>
                     </div>
-
                     <div class="nav-bar-item">
                         <a href="{{ path('user.index') }}" class="{% if app.request.get('_route') == 'user.index' %}active{% endif %}">
                             <button class="navbar-button">Benutzer</button>
+                        </a>
+                    </div>
+                    <div class="nav-bar-item">
+                        <a href="{{ path('app_parameter_index') }}" class="{% if app.request.get('_route') == 'app_parameter_index' %}active{% endif %}">
+                            <button class="navbar-button">Parameter</button>
                         </a>
                     </div>
                 {% endif %}

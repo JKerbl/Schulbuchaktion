@@ -120,3 +120,22 @@
     height: 40px;
     margin: auto;
 }
+
+.create-new {
+    display: block;
+    margin: 1em auto;
+    text-align: center;
+    width: 15em;
+    padding: 0.7em 0;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+    background-color: #1ec3e0;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.create-new:hover {
+    background-color: #09a3d7;
+}

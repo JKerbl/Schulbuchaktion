@@ -21,6 +21,15 @@ class ParameterRepository extends ServiceEntityRepository
         parent::__construct($registry, Parameter::class);
     }
 
+    public function findHighestYear(): ?int
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MAX(p.year)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     public function findByYear(int $year): ?Parameter
     {
         return $this->createQueryBuilder('p')
