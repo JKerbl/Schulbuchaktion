@@ -79,12 +79,6 @@
     align-items: center;
 }
 
-#home {
-    color: #17A2B8;
-    font-weight: bolder;
-    margin-right: 0.6em;
-}
-
 .nav-bar-company-name-and-icon {
     margin-left: 1em;
     display: flex;
@@ -100,6 +94,11 @@
     padding: 0.3em 0.5em;
     border-radius: 5px;
     /*border: black solid;*/
+}
+
+.active{
+    color: #17A2B8;
+    font-weight: bolder;
 }
 
 /*@media only screen and (max-width: 790px) {*/
@@ -254,6 +253,9 @@
     }
 
 }
+
+
+
 
 
 /*@media (max-width: 760px) {*/

@@ -24,48 +24,35 @@ class IncrementController extends AbstractController
         foreach ($departments as $department){
             $newDepartment = new Department();
 
-            // "Clones" the departments and increments the year
+            // Creates the department for the new year but changes the values to 0
             $newDepartment->setName($department->getName());
             $newDepartment->setYear($highestYear + 1);
-            $newDepartment->setHeadOfDepartment($department->getHeadOfDepartment());
-            $newDepartment->setBudget($department->getBudget());
+            $newDepartment->setHeadOfDepartment(null);
+            $newDepartment->setBudget(0);
             $newDepartment->setUsedBudget(0);
-            $newDepartment->setUmew($department->getUmew());
+            $newDepartment->setUmew(0);
             $em->persist($newDepartment);
 
             $classes = $scr->findAllByDepartmentID($department->getId());
 
-            // Increments all classes in the department
+            // Creates all the classes in the new year and sets the values to 0
             foreach ($classes as $class) {
                 $newClass = new SchoolClass();
 
-                // Removes the grade from the class name for example 1AHITN --> AHITN
-                $classWithoutGrade = substr($class->getName(), 1 );
-
-                if ($class->getGrade() != 5) {
-                    // Does this for every class that is not in the 5th grade
-                    $className = $class->getName();
-
-                    $newClass->setName(($class->getGrade() + 1) . $classWithoutGrade);
-                    $newClass->setGrade($class->getGrade() + 1);
-                    $newClass->setStudentsAmount($class->getStudentsAmount() + $class->getRepAmount());
-                } else {
-                    // Instead of incrementing the 5th grade, it creates a new 1st grade class
-                    $newClass->setGrade(1);
-
-                    $newClass->setName("1" . $classWithoutGrade);
-                    $newClass->setGrade(1);
-                    $newClass->setStudentsAmount(0);
-                }
+                $newClass->setName($class->getName());
+                $newClass->setGrade($class->getGrade());
+                $newClass->setStudentsAmount(0);
                 $newClass->setRepAmount(0);
                 $newClass->setYear($highestYear + 1);
                 $newClass->setDepartment($newDepartment);
-                $newClass->setBudget($class->getBudget());
+                $newClass->setBudget(0);
                 $newClass->setUsedBudget(0);
                 $em->persist($newClass);
             }
         }
         $em->flush();
+
+
 
         return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }

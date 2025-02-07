@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Department;
 use App\Entity\Parameter;
+use App\Entity\SchoolClass;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,9 +40,12 @@ class BudgetController extends AbstractController
     }
 
     #[Route('/calc-budget', name: 'calc_budget')]
-    public function calcBudget(EntityManagerInterface $manager, DepartmentRepository $d, SchoolClassRepository $sc)
+    public function calcBudget(EntityManagerInterface $manager)
     {
         // Only calculates the Budget of the Highest Year
+        $d = $manager->getRepository(Department::class);
+        $sc = $manager->getRepository(SchoolClass::class);
+
         $year = $d->findHighestYear();
         $departments = $d->findAllByYear($year);
 
@@ -48,31 +53,31 @@ class BudgetController extends AbstractController
         foreach ($departments as $dep){
             $classes = $sc->findAllByDepartmentID($dep->getId());
 
-            $higherstudents = 0;
+            $higherStudents = 0;
             $technicalStudents = 0;
-
-            // Goes through each class in the department and adds the students to the respective category
-            foreach ($classes as $class){
-                if ($class->getType() === "h"){
-                    $higherstudents += $class->getStudentsAmount();
-                } else {
-                    $technicalStudents += $class->getStudentsAmount();
-                }
-            }
 
             // Gets the parameters for the budget calculation
             $parameter = $manager->getRepository(Parameter::class)->findByYear($year);
 
+            // Goes through each class in the department and adds the students to the respective category
+            foreach ($classes as $class){
+                if ($class->getType() === "h"){
+                    $class->setBudget($class->getStudentsAmount() * $parameter->getLimit4100());
+                    $higherStudents += $class->getStudentsAmount();
+                } else {
+                    $class->setBudget($class->getStudentsAmount() * $parameter->getLimit3100());
+                    $technicalStudents += $class->getStudentsAmount();
+                }
+            }
+
             // Calculates the budget for the department
-            $budget = $higherstudents * $parameter->getLimit4100() + $technicalStudents * $parameter->getLimit3100();
+            $budget = $higherStudents * $parameter->getLimit4100() + $technicalStudents * $parameter->getLimit3100();
             $dep->setBudget($budget);
 
             $manager->persist($dep);
         }
 
         $manager->flush();
-
-        return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/get-departments/{year}', name: 'get_departments')]

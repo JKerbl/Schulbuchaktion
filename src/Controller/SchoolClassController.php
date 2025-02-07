@@ -15,6 +15,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/school/class')]
 class SchoolClassController extends AbstractController
 {
+    private $budgetController;
+
+    public function __construct(BudgetController $budgetController)
+    {
+        $this->budgetController = $budgetController;
+    }
+
     #[Route('/', name: 'app_school_class_index', methods: ['GET'])]
     public function index(SchoolClassRepository $schoolClassRepository, DepartmentRepository $departmentRepository, Request $request): Response
     {
@@ -69,6 +76,8 @@ class SchoolClassController extends AbstractController
             $entityManager->persist($schoolClass);
             $entityManager->flush();
 
+            $this->budgetController->calcBudget($entityManager);
+
             return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -95,6 +104,8 @@ class SchoolClassController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->budgetController->calcBudget($entityManager);
+
             return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -111,6 +122,8 @@ class SchoolClassController extends AbstractController
             $entityManager->remove($schoolClass);
             $entityManager->flush();
         }
+
+        $this->budgetController->calcBudget($entityManager);
 
         return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -136,6 +149,8 @@ class SchoolClassController extends AbstractController
 
             $entityManager->persist($duplicatedSchoolClass);
             $entityManager->flush();
+
+            $this->budgetController->calcBudget($entityManager);
 
             return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
         }
