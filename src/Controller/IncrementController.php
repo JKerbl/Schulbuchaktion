@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\Parameter;
 use App\Entity\SchoolClass;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
@@ -50,9 +51,21 @@ class IncrementController extends AbstractController
                 $em->persist($newClass);
             }
         }
+
+        $parameterRepo = $em->getRepository(Parameter::class);
+
+        $parameter = $parameterRepo->findOneBy(['year' => $highestYear]);
+
+        if ($parameter){
+            $newParameter = new Parameter();
+            $newParameter->setYear($highestYear + 1);
+            $newParameter->setLimit3100($parameter->getLimit3100());
+            $newParameter->setLimit4100($parameter->getLimit4100());
+            $newParameter->setLimitRK3100($parameter->getLimitRK3100());
+            $newParameter->setLimitRK4100($parameter->getLimitRK4100());
+            $em->persist($newParameter);
+        }
         $em->flush();
-
-
 
         return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
     }

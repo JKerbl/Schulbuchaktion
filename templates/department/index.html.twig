@@ -76,10 +76,12 @@
                         <td>{{ department.budget }}</td>
                         <td>{{ department.usedBudget }}</td>
                         <td>
-                            {% set percentage = (department.usedBudget / department.budget * 100) %}
-                            {% set percentageShown = (department.usedBudget / department.budget * 100) %}
-                            {% if percentage > 100 %}
-                                {% set percentage = 100 %}
+                            {% if department.budget != 0 %}
+                                {% set percentage = (department.usedBudget / department.budget * 100) %}
+                                {% set percentageShown = (department.usedBudget / department.budget * 100) %}
+                            {% else %}
+                                {% set percentage = 0 %}
+                                {% set percentageShown = 0 %}
                             {% endif %}
 
                             <div class="progress-bar-container">
