@@ -30,13 +30,21 @@ class ParameterRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByYear(int $year): ?Parameter
+    public function findWhereYearNotNull()
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.year IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByYear(int $year): array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.year = :year')
             ->setParameter('year', $year)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 

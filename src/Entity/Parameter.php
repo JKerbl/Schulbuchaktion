@@ -6,6 +6,7 @@ use App\Repository\ParameterRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Integer;
+use PhpParser\Node\Expr\Cast\Double;
 
 #[ORM\Entity(repositoryClass: ParameterRepository::class)]
 class Parameter
@@ -15,21 +16,14 @@ class Parameter
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?int $limit4100 = null;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?int $limit3100 = null;
+    #[ORM\Column()]
+    private ?float $value = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?int $limitRK4100 = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?int $limitRK3100 = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $year = null;
-
 
     public function getId(): ?int
     {
@@ -48,43 +42,27 @@ class Parameter
         return $this;
     }
 
-    public function getLimit4100(): ?int
+    public function getName(): ?string
     {
-        return $this->limit4100;
+        return $this->name;
     }
 
-    public function setLimit4100(?int $limit4100): void
+    public function setName(string $name): static
     {
-        $this->limit4100 = $limit4100;
+        $this->name = $name;
+
+        return $this;
     }
 
-    public function getLimit3100(): ?int
+    public function getValue(): ?float
     {
-        return $this->limit3100;
+        return $this->value;
     }
 
-    public function setLimit3100(?int $limit3100): void
+    public function setValue(float $value): static
     {
-        $this->limit3100 = $limit3100;
-    }
+        $this->value = $value;
 
-    public function getLimitRK4100(): ?int
-    {
-        return $this->limitRK4100;
-    }
-
-    public function setLimitRK4100(?int $limitRK4100): void
-    {
-        $this->limitRK4100 = $limitRK4100;
-    }
-
-    public function getLimitRK3100(): ?int
-    {
-        return $this->limitRK3100;
-    }
-
-    public function setLimitRK3100(?int $limitRK3100): void
-    {
-        $this->limitRK3100 = $limitRK3100;
+        return $this;
     }
 }

@@ -11,7 +11,7 @@
 
 
     <div class="text-4xl">
-        <h1>Schulklasse Anlegen</h1>
+        <h1>Schulklasse bearbeiten</h1>
     </div>
 
     <div class="content-form">
@@ -19,7 +19,7 @@
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="btn-links-under-form">
-                <button class="save-update-btn-form" type="submit">{{ button_label|default('Anlegen') }}</button>
+                <button class="save-update-btn-form" type="submit">{{ button_label|default('Speichern') }}</button>
                 <div class="back-to-list-btn">
                     <a class="anchor-back-to-list" href="{{ path('app_school_class_index') }}">Zurück zur Liste</a>
                 </div>

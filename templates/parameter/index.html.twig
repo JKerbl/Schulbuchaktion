@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} Parameter{% endblock %}
+{% block title %}{{ parent() }} Parameterübersicht{% endblock %}
+
 {% block stylesheets %}
+    <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('style/stylingBestellungen.css') }}" type="text/css"/>
 {% endblock %}
 
@@ -9,10 +12,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Limit 4100</th>
-                <th>Limit 3100</th>
-                <th>Limit RK 4100</th>
-                <th>Limit RK 3100</th>
+                <th>Name</th>
+                <th>Wert</th>
                 <th>Jahr</th>
                 <th></th>
             </tr>
@@ -20,22 +21,19 @@
         <tbody>
         {% for parameter in parameters %}
             <tr>
-                <td>{{ parameter.limit4100 }}</td>
-                <td>{{ parameter.limit3100 }}</td>
-                <td>{{ parameter.limitRK4100 }}</td>
-                <td>{{ parameter.limitRK3100 }}</td>
+                <td>{{ parameter.name }}</td>
+                <td>{{ parameter.value }}</td>
                 <td>{{ parameter.year }}</td>
                 <td style="width: 8%">
                     <a style="display: inline-block" href="{{ path('app_parameter_edit', {'id': parameter.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                    <a style="display: inline-block" href="{{ path('app_parameter_delete', {'id': parameter.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="delete"></a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">Keine Parameter gefunden</td>
+                <td colspan="5">Keine Parameter gefunden</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a class="create-new" href="{{ path('app_parameter_new') }}">Neues Jahr erstellen</a>
 {% endblock %}

@@ -49,6 +49,21 @@ class BudgetController extends AbstractController
         $year = date('Y');
         $departments = $d->findAllByYear($year);
 
+        // Gets the parameters for the budget calculation
+        $parameter = $manager->getRepository(Parameter::class)->findAllByYear($year);
+
+        foreach ($parameter as $param){
+            if ($param->getName() === "Limit_3100"){
+                $limit4100 = $param->getValue();
+            } else if ($param->getName() === "Limit_4100"){
+                $limit3100 = $param->getValue();
+            } else if ($param->getName() === "Limit_RK_3100"){
+                $limitRK3100 = $param->getValue();
+            } else if ($param->getName() === "Limit_RK_4100"){
+                $limitRK4100 = $param->getValue();
+            }
+        }
+
         // Goes through each department
         foreach ($departments as $dep){
             $classes = $sc->findAllByDepartmentID($dep->getId());
@@ -56,22 +71,19 @@ class BudgetController extends AbstractController
             $higherStudents = 0;
             $technicalStudents = 0;
 
-            // Gets the parameters for the budget calculation
-            $parameter = $manager->getRepository(Parameter::class)->findByYear($year);
-
             // Goes through each class in the department and adds the students to the respective category
             foreach ($classes as $class){
                 if ($class->getType() === "h"){
-                    $class->setBudget($class->getStudentsAmount() * $parameter->getLimit4100());
+                    $class->setBudget($class->getStudentsAmount() * $limit4100);
                     $higherStudents += $class->getStudentsAmount();
                 } else {
-                    $class->setBudget($class->getStudentsAmount() * $parameter->getLimit3100());
+                    $class->setBudget($class->getStudentsAmount() * $limit3100);
                     $technicalStudents += $class->getStudentsAmount();
                 }
             }
 
             // Calculates the budget for the department
-            $budget = $higherStudents * $parameter->getLimit4100() + $technicalStudents * $parameter->getLimit3100();
+            $budget = $higherStudents * $limit4100 + $technicalStudents * $limit3100;
             $dep->setBudget($budget);
 
             $manager->persist($dep);

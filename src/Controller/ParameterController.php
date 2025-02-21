@@ -18,7 +18,7 @@ class ParameterController extends AbstractController
     public function index(ParameterRepository $parameterRepository): Response
     {
         return $this->render('parameter/index.html.twig', [
-            'parameters' => $parameterRepository->findAll(),
+            'parameters' => $parameterRepository->findWhereYearNotNull(),
         ]);
     }
 
@@ -26,16 +26,7 @@ class ParameterController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $parameter = new Parameter();
-        $pr = $entityManager->getRepository(Parameter::class);
-
-        $year = $pr->findHighestYear();
-
-        // Goes back to the List of Parameters if there is no year
-        if (!$year) {
-            return $this->redirectToRoute('app_parameter_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $form = $this->createForm(ParameterType::class, $parameter, ['year' => (string) $pr->findHighestYear()]);
+        $form = $this->createForm(ParameterType::class, $parameter);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

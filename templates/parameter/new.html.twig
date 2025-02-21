@@ -2,26 +2,10 @@
 
 {% block title %}New Parameter{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" />
-{% endblock %}
-
 {% block body %}
-    <div class="text-4xl">
-        <h1>Neuen Parameter erstellen</h1>
-    </div>
+    <h1>Create new Parameter</h1>
 
-    <div class="content-form">
-        <form class="form" method="post">
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <div class="btn-links-under-form">
-                <button class="save-update-btn-form" type="submit">{{ button_label|default('Anlegen') }}</button>
-                <div class="back-to-list-btn">
-                    <a class="anchor-back-to-list" href="{{ path('app_parameter_index') }}">Zurück zur Liste</a>
-                </div>
-            </div>
-            {{ form_end(form) }}
-        </form>
-    </div>
+    {{ include('parameter/_form.html.twig') }}
+
+    <a href="{{ path('app_parameter_index') }}">back to list</a>
 {% endblock %}

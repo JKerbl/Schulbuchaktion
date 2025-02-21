@@ -54,15 +54,14 @@ class IncrementController extends AbstractController
 
         $parameterRepo = $em->getRepository(Parameter::class);
 
-        $parameter = $parameterRepo->findOneBy(['year' => $highestYear]);
+        $parameters = $parameterRepo->findAllByYear($highestYear);
 
-        if ($parameter){
+        foreach ($parameters as $param){
             $newParameter = new Parameter();
+
             $newParameter->setYear($highestYear + 1);
-            $newParameter->setLimit3100($parameter->getLimit3100());
-            $newParameter->setLimit4100($parameter->getLimit4100());
-            $newParameter->setLimitRK3100($parameter->getLimitRK3100());
-            $newParameter->setLimitRK4100($parameter->getLimitRK4100());
+            $newParameter->setName($param->getName());
+            $newParameter->setValue($param->getValue());
             $em->persist($newParameter);
         }
         $em->flush();
