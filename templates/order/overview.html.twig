@@ -54,13 +54,7 @@
                     {% endfor %}
                 </select>
 
-                <div class="flex items-center">
-                    <input type="text" name="search" value="{{ search }}" placeholder="Suche nach einem Buch..."
-                           class="border px-4 py-2 w-full rounded-md"/>
-                    <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-800 ease-in-out duration-300">Suchen</button>
-                </div>
-
-                <!-- Two filters that are not displayed to include them in the URL when submitting the form -->
+                <!-- Three filters that are not displayed to include them in the URL when submitting the form -->
                 <select id="sortByFilter" name="sortBy" class="order-filter mr-5" style="display: none">
                     <option value="{{ sortBy }}" selected id="sortByValue"></option>
                 </select>
@@ -68,6 +62,15 @@
                 <select id="sortDirectionFilter" name="sortDirection" class="order-filter mr-5" style="display: none">
                     <option value="{{ sortDirection }}" selected id="sortDirectionValue"></option>
                 </select>
+                <select id="sortDirectionFilter" name="page" class="order-filter mr-5" style="display: none">
+                    <option value="{{ currentPage }}" selected id="pageValue"></option>
+                </select>
+
+                <div class="flex items-center">
+                    <input type="text" name="search" value="{{ search }}" placeholder="Suche..."
+                           class="border px-4 py-2 w-full rounded-md"/>
+                    <a href="#" onclick="changePage({{ currentPage }})" class="bg-blue-500 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-800 ease-in-out duration-300">Suchen</a>
+                </div>
             </form>
         </div>
         <table class="table">
@@ -156,7 +159,7 @@
         <nav aria-label="Page navigation" class="my-12 flex justify-center">
             <ul class="inline-flex -space-x-px">
                 <li>
-                    <a href="{{ path('order.index', {page: currentPage-1, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                    <a href="#" onclick="changePage({{ currentPage - 1 }})"
                        class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg
                        hover:bg-gray-100 hover:text-gray-700 {% if currentPage == 0 %}cursor-not-allowed{% endif %}">
                         &laquo; Previous
@@ -164,7 +167,7 @@
                 </li>
                 {% if currentPage > 3 %}
                     <li>
-                        <a href="{{ path('order.index', {page: 0, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                        <a href="#" onclick="changePage(1)"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700">
                             1
@@ -178,7 +181,7 @@
                 {% endif %}
                 {% for page in (currentPage > 2 ? currentPage - 2 : 1) .. (currentPage < maxPages - 1 ? currentPage + 2 : maxPages) %}
                     <li>
-                        <a href="{{ path('order.index', {page: page, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                        <a href="#" onclick="changePage({{ page }})"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700 {% if page == currentPage %}bg-blue-500 text-gray-900{% endif %}">
                             {{ page }}
@@ -192,7 +195,7 @@
                         </span>
                     </li>
                     <li>
-                        <a href="{{ path('order.index', {page: maxPages, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                        <a href="#" onclick="changePage({{ maxPages }})"
                            class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300
                            hover:bg-gray-100 hover:text-gray-700">
                             {{ maxPages }}
@@ -200,7 +203,7 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="{{ path('order.index', {page: currentPage + 1, search: search, year: currentYear, department: departmentFilter, grade: gradeFilter}) }}"
+                    <a href="#" onclick="changePage({{ currentPage + 1 }})"
                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg
                        hover:bg-gray-100 hover:text-gray-700 {% if currentPage == maxPages %}cursor-not-allowed{% endif %}">
                         Next &raquo;
@@ -248,5 +251,10 @@
 
             document.getElementById('bookFilterForm').submit();
         });
+
+        function changePage(page) {
+            document.getElementById('pageValue').value = page;
+            document.getElementById('bookFilterForm').submit();
+        }
     </script>
 {% endblock %}

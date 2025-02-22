@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\BookOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\DocBlock\Tags\Source;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Config\TwigExtra\StringConfig;
 
@@ -33,7 +34,7 @@ class BookOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getTotalEntries(int $year, int $departmentId = null, int $grade = null): int
+    public function getTotalEntries(int $year, int $departmentId = null, int $grade = null, string $search = null): int
     {
         $query = $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
@@ -41,6 +42,14 @@ class BookOrderRepository extends ServiceEntityRepository
             ->innerJoin('c.department', 'd')
             ->andWhere('c.year = :year')
             ->setParameter('year', $year);
+
+        if ($search) {
+            $query->innerJoin('o.book', 'b')
+                ->andWhere('b.title LIKE :search')
+                ->setParameter('search', '%' . $search . '%')
+                ->orWhere('b.bnr LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
 
         if ($departmentId) {
             $query->andWhere('d.id = :departmentId')
@@ -68,12 +77,23 @@ class BookOrderRepository extends ServiceEntityRepository
             ->andWhere('c.year = :year')
             ->setParameter('year', $year);
 
-        if ($search) {
-            $queryBuilder->innerJoin('o.book', 'b')
-                ->andWhere('b.title LIKE :search')
-                ->setParameter('search', '%' . $search . '%')
-                ->orWhere('b.bnr LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+        if ($search || ($sortDirection && $sortBy)) {
+            $queryBuilder->innerJoin('o.book', 'b');
+
+            if ($search != null) {
+                $queryBuilder->andWhere('b.title LIKE :search')
+                    ->setParameter('search', '%' . $search . '%')
+                    ->orWhere('b.bnr LIKE :search')
+                    ->setParameter('search', '%' . $search . '%');
+            }
+
+            if ($sortBy && $sortDirection) {
+                if ($sortBy === 'bnr'){
+                    $queryBuilder->orderBy('b.bnr', $sortDirection);
+                } else if ($sortBy === 'class'){
+                    $queryBuilder->orderBy('c.name', $sortDirection);
+                }
+            }
         }
 
         if ($departmentId) {
@@ -85,15 +105,6 @@ class BookOrderRepository extends ServiceEntityRepository
         if ($grade) {
             $queryBuilder->andWhere('c.grade = :grade')
                 ->setParameter('grade', $grade);
-        }
-
-        if ($sortDirection && $sortBy) {
-            if ($sortBy === 'bnr'){
-                $queryBuilder->innerJoin('o.book', 'b')
-                    ->orderBy('b.bnr', $sortDirection);
-            } else if ($sortBy === 'class'){
-                $queryBuilder->orderBy('c.name', $sortDirection);
-            }
         }
 
         return $queryBuilder->getQuery()->getResult();

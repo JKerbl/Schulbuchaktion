@@ -123,7 +123,7 @@ class OrderController extends AbstractController {
         // get the search query
         $search = $request->query->get('search', '');
 
-        $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter);
+        $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter, $search);
         $currentPage = $this->getCurrentPage($request, $maxPages);
 
         $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $search, $sortDirection, $sortBy);
