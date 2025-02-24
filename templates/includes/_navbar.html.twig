@@ -87,6 +87,11 @@
                 </a>
             </div>
             {% if app.user %}
+                <div class="nav-bar-item">
+                    <a href="{{ path('app_change_password') }}" class="{% if app.request.get('_route') == 'app_change_password' %}active{% endif %}">
+                        <button class="navbar-button">Passwort ändern</button>
+                    </a>
+                </div>
                 <div class="nav-bar-item" id="login-btn">
                     <a href="{{ path('app_logout') }}">
                         <button>Logout</button>
@@ -107,6 +112,11 @@
         </div>
     </div>
 </nav>
+
+    {% for message in app.flashes('error') %}
+        <div class="error-message">{{ message }}</div>
+    {% endfor %}
+
 
 <script>
     function confirmIncrement() {

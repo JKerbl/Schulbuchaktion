@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Passwort ändern{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+        <link href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+{% block body %}
+<div class="text-4xl">
+    <h1>Change Password</h1>
+</div>
+
+<div class="content-form">
+    {{ form_start(changePasswordForm, {'attr': {'data-turbo': 'false'}}) }}
+    {{ form_row(changePasswordForm.currentPassword) }}
+    {{ form_row(changePasswordForm.newPassword) }}
+    {{ form_row(changePasswordForm.confirmNewPassword) }}
+    <div>
+        <input type="checkbox" id="showPasswordCheckbox"> Passwörter anzeigen
+    </div>
+    <button class="save-update-btn-form">Change Password</button>
+    {{ form_end(changePasswordForm) }}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+        showPasswordCheckbox.addEventListener('change', function() {
+            const passwordFields = document.querySelectorAll('input[type="password"], input[type="text"]');
+            passwordFields.forEach(field => {
+                field.type = this.checked ? 'text' : 'password';
+            });
+        });
+    });
+</script>
+{% endblock %}

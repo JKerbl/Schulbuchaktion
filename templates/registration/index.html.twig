@@ -15,7 +15,7 @@
             <div id="line-register"></div>
         </div>
         <form class="form-inner" method="post">
-            {{ form_start(regform) }}
+            {{ form_start(regform, {'attr': {'data-turbo': 'false'}})  }}
             <div class="username">
                 <label class="username-label" for="inputUsername">Benutzername</label>
                 <div class="inputUsername">
