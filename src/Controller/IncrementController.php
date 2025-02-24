@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use App\Entity\BookOrder;
 use App\Entity\Department;
 use App\Entity\Parameter;
 use App\Entity\SchoolClass;
@@ -64,6 +66,34 @@ class IncrementController extends AbstractController
             $newParameter->setValue($param->getValue());
             $em->persist($newParameter);
         }
+
+        // Saves the classes and departments to the db
+        $em->flush();
+
+        $orderRepo = $em->getRepository(BookOrder::class);
+        $bookRepo = $em->getRepository(Book::class);
+
+        $orders = $orderRepo->findOrdersByYear($highestYear);
+
+        foreach ($orders as $order){
+            $book = $bookRepo->findByBNRAndYear($order->getBook()->getBnr(), $highestYear + 1);
+            $class = $scr->findByNameAndYear($order->getSchoolclass()->getName(), $highestYear + 1);
+
+            if ($book != null && $class != null){
+                $newOrder = new BookOrder();
+
+                $newOrder->setBook($book);
+                $newOrder->setSchoolclass($class);
+                $newOrder->setOrderFor($order->getOrderFor());
+                $newOrder->setEBook($order->getEBook());
+                $newOrder->setEBookPlus($order->getEBookPlus());
+                $newOrder->setSubject($order->getSubject());
+                $newOrder->setTeacherCopy($order->getTeacherCopy());
+
+                $em->persist($newOrder);
+            }
+        }
+
         $em->flush();
 
         return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);

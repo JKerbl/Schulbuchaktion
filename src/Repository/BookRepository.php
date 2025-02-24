@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Entity\Subject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -33,6 +34,17 @@ class BookRepository extends ServiceEntityRepository
 
         return array_map('current', $result);
     }
+
+    public function findByBNRAndYear(int $bnr, int $year): ?Book {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.bnr = :bnr')
+            ->setParameter('bnr', $bnr)
+            ->andWhere('b.year = :year')
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     //    /**
     //     * @return Book[] Returns an array of Book objects

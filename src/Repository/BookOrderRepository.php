@@ -27,8 +27,8 @@ class BookOrderRepository extends ServiceEntityRepository
     public function findOrdersByYear(int $year): array
     {
         return $this->createQueryBuilder('o')
-            ->innerJoin('o.book', 'b')
-            ->andWhere('b.year = :year')
+            ->innerJoin('o.schoolclass', 'c')
+            ->andWhere('c.year = :year')
             ->setParameter('year', $year)
             ->getQuery()
             ->getResult();

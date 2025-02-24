@@ -50,7 +50,7 @@ class SchoolClassController extends AbstractController
 
         if ($department == 0) {
             // Gets the Classes with the year or the current year if there is no year provided
-            $schoolClasses = $schoolClassRepository->findAlLByYear($year);
+            $schoolClasses = $schoolClassRepository->findAllByYear($year);
         } else {
             $schoolClasses = $schoolClassRepository->findAllByYearAndDepartment($year, $department);
         }

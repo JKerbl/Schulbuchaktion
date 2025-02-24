@@ -30,20 +30,12 @@ class OrderController extends AbstractController {
             return $this->redirectToRoute('app_book_index');
         }
 
-        $res = array();
-        $books = $br->findAll();
-        foreach ($books as $key => $book) {
-            $res[] = array(
-                'id' => $book->getId(),
-                'shortTitle' => $book->getShortTitle()
-            );
-        }
         $user = $this->getUser();
         $subjects = $sr->findAll();
         $userSubject = $sr->findSubjectsByHeadOfSubjectId($user->getId());
 
         $book = $br->find($id);
-        $classes = $scr->findAlLByYear(date('Y'));
+        $classes = $scr->findAllByYear($book->getYear());
 
         if ($classes === []) {
             return $this->redirectToRoute('app_book_index');
@@ -55,6 +47,7 @@ class OrderController extends AbstractController {
             'classes' => $classes,
             'allSubjects' => $subjects,
             'userSubject' => $userSubject,
+            'year' => $book->getYear()
         ]);
     }
 
@@ -104,6 +97,12 @@ class OrderController extends AbstractController {
         // get requested or current (as default) year and all years
         $year = $request->query->get('year', date('Y'));
         $allYears = $em->getRepository(Department::class)->findAllYears();
+
+        // check if the requested year is in the array
+        if (!in_array($year, $allYears)){
+            $allYears[] = $year;
+            sort($allYears);
+        }
 
         $departmentFilter = $request->query->get('department', null);
         if ($departmentFilter == 0) {

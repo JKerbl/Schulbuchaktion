@@ -30,7 +30,17 @@ class SchoolClassRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findAlLByYear(int $year): array
+    public function findByNameAndYear(string $name, int $year): ?SchoolClass {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.name = :name')
+            ->setParameter('name', $name)
+            ->andWhere('s.year = :year')
+            ->setParameter('year', $year)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findAllByYear(int $year): array
     {
         return $this->createQueryBuilder('d')
             ->andWhere('d.year = :year')
