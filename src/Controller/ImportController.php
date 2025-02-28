@@ -182,7 +182,7 @@ class ImportController extends AbstractController
 
         foreach ($data as $row) {
             $bookRepository = $doctrine->getRepository(Book::class);
-            $existingBook = $bookRepository->findBy(['bnr' => intval($row['bnr']), 'year' => intval($year)]);
+            $existingBook = $bookRepository->findOneBy(['bnr' => intval($row['bnr']), 'year' => intval($year)]);
 
             if ($existingBook) {
                 $book = $existingBook;

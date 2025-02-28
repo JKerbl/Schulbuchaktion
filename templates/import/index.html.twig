@@ -6,8 +6,12 @@
     <link href="{{ asset('style/stylingImportPage.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block body %}
+    <div id="loading"
+         style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999;">
+        <img src="{{ asset('images/buffering.gif') }}" alt="Loading...">
+    </div>
     <div class="import-outside-table">
-        <div class="headline-import">
+        <div class="headline-import" id="fileChooser">
             Bitte wählen Sie ihre Import-Datei
         </div>
         <div class="form-div-outside">
@@ -53,6 +57,10 @@
 
             $('#upload-form').on('submit', function (e) {
                 e.preventDefault();
+
+                $('#loading').show(); // Show the loading GIF
+                $('#upload-excel-btn').prop('disabled', true);
+
                 $.ajax({
                     url: $(this).attr('action'),
                     type: $(this).attr('method'),
@@ -60,6 +68,8 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
+                        $('#loading').hide();
+                        $('#upload-excel-btn').prop('disabled', false);
                         // Clear the old table
                         $('#output-head').empty();
                         $('#output-body').empty();
@@ -82,18 +92,20 @@
                         $('<button>')
                             .text('Import bestätigen')
                             .click(function () {
+                                $('#loading').show();
+                                $('#submit-upload').hide();
+                                $('#output-import').hide();
                                 // Call the map-subjects function when the button is clicked
                                 $.ajax({
                                     url: '/map-subjects',
                                     type: 'POST',
                                     success: function (data) {
                                         showSubjects(data);
-                                    }
+                                    },
                                 });
                             }).appendTo('#submit-upload');
                         // Append the new table
                         let count = 0;
-                        //var table = $('<table class="table">').appendTo('#output');
                         let row;
                         data.forEach(function (item) {
                             if (count === 0) {
@@ -112,6 +124,10 @@
                                 count++;
                             }
                         });
+                    },
+                    error: function () {
+                        $('#loading').hide();
+                        $('button').prop('disabled', false);
                     }
                 });
             });
@@ -134,7 +150,7 @@
                 url: '{{ path('app_subject_get_all') }}',
                 type: 'GET',
                 async: false,
-                success: function(data) {
+                success: function (data) {
                     subjects = data;
                 }
             }).responseJSON;
@@ -147,6 +163,7 @@
                     url: '/save',
                     type: 'POST',
                     success: function (response) {
+                        $('#loading').hide();
                         // Redirect to the returned URL
                         alert('Daten gespeichert!')
                         window.location.href = response.url;
@@ -189,10 +206,10 @@
                     $('<option>').val(subject.id).text(subject.name).appendTo(select);
                 });
                 select.addClass('select-style');
-                select.addClass('select-style').on('change', function() {
+                select.addClass('select-style').on('change', function () {
                     $(this).css('border', '1px solid grey');
                 });
-                select.on('change', function() {
+                select.on('change', function () {
                     MapSubject($(this).val(), item);
                     fachbereiche.splice(fachbereiche.indexOf(item), 1);
 
@@ -213,10 +230,10 @@
                                     }
                                 });
                             }).appendTo('#submit-upload');
-                        }
-                    });
+                    }
                 });
-            }
+            });
+        }
 
         function MapSubject($subjectId, $subjectName) {
             $.ajax({
@@ -227,12 +244,12 @@
                     subjectId: $subjectId,
                     subjectName: $subjectName
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         console.log('Gegenstand hinzugefügt');
                     }
                 },
-                error: function() {
+                error: function () {
                     console.log('Gegenstand konnte nicht hinzugefügt werden');
                 }
             });
