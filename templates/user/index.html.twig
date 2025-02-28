@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} Userübersicht{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/toggle.css') }}" type="text/css"/>
+{% endblock %}
 
 {% block body %}
-    <h1 class="text-4xl my-8 text-center">Benutzerübersicht</h1>
+    <div class="flex justify-between items-center my-8">
+        <h1 class="text-4xl text-center w-full">Benutzerübersicht</h1>
+        <label class="switch mr-8 flex items-center">
+            <span class="ml-2"></span>
+            <input id="toggleRegistration" type="checkbox" class="ml-2" {% if allowRegistrations == 1 %}checked{% endif %}>
+            <span class="slider round"></span>
+        </label>
+    </div>
 
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mx-8">
         {% for user in users %}
@@ -31,5 +41,22 @@
         function confirmDelete(username) {
             return confirm('Sind Sie sicher, dass Sie den Benutzer ' + username + ' und alle seine Zuteilungen löschen möchten?');
         }
+
+        $(document).ready(function (){
+
+            $('#toggleRegistration').change(function () {
+                $.ajax({
+                    url: '{{ path('toggle_registration') }}',
+                    type: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+        })
     </script>
 {% endblock %}

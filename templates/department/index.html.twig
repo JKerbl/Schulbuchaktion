@@ -73,8 +73,8 @@
                 <td>{{ department.headOfDepartment }}</td>
                 {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
                     {% if "all" in showBudgetFor or department.name in showBudgetFor %}
-                        <td>{{ department.budget }}</td>
-                        <td>{{ department.usedBudget }}</td>
+                        <td>{{ department.budget | number_format(2, ',','.') }}</td>
+                        <td>{{ department.usedBudget | number_format(2, ',','.')}}</td>
                         <td>
                             {% if department.budget != 0 %}
                                 {% set percentage = (department.usedBudget / department.budget * 100) %}
@@ -92,7 +92,6 @@
                         <td>{{ department.umew }}</td>
                             <td>
                                 <div class="actionIcons">
-                                    <a href="{{ path('app_department_show', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/show.png') }}" alt="Anzeigen"></a>
                                     <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                                     <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
                                 </div>

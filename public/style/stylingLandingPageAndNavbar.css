@@ -101,6 +101,14 @@
     font-weight: bolder;
 }
 
+.no-registration-info {
+    color: #dc3545;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1em 0;
+    font-weight: bold;
+}
+
 /*@media only screen and (max-width: 790px) {*/
 /*    .nav-bar-elements {*/
 /*        width: 100%;*/

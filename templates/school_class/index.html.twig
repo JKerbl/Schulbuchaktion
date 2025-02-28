@@ -77,8 +77,8 @@
                 <td>{{ school_class.grade }}</td>
                 <td>{{ school_class.studentsAmount }}</td>
                 <td>{{ school_class.repAmount }}</td>
-                <td>{{ school_class.usedBudget }}</td>
-                <td>{{ school_class.budget }}</td>
+                <td>{{ school_class.usedBudget | number_format(2, ',','.')}}</td>
+                <td>{{ school_class.budget | number_format(2, ',','.')}}</td>
                 {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
                     <td>
                         <div class="actionIcons">

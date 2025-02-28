@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schulbuchaktion{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+{% block body %}
+
+    <header class="header-landing-page">
+        <div class="headline-landing-page">
+            Willkommen im Schulbuch Portal.
+        </div>
+    </header>
+
+    <p class="no-registration-info">Leider ist das Registrieren neuer User deaktiviert!</p>
+    <p class="no-registration-info">Bitte wenden Sie sich an einen Admin!</p>
+
+    <div class="logo-div">
+        <img class="landing-page-image" src="/images/lading_page_image_2.jpeg" alt="our-logo">
+    </div>
+
+
+{% endblock %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\ParameterRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +15,21 @@ use Symfony\Component\Routing\Attribute\Route;
 class UserController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(UserRepository $ur): Response
+    public function index(UserRepository $ur, ParameterRepository $pr): Response
     {
         $users = $ur->findAll();
 
+        $allowRegistrations = $pr->findOneBy(['name' => 'allowRegistrations']);
+
+        if ($allowRegistrations == null || $allowRegistrations->getValue() == 0) {
+            $allow = 0;
+        } else {
+            $allow = 1;
+        }
+
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'allowRegistrations' => $allow
         ]);
     }
 
