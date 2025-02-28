@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BookOrder;
 use App\Entity\Department;
 use App\Entity\Parameter;
 use App\Entity\SchoolClass;
@@ -53,14 +54,14 @@ class BudgetController extends AbstractController
         $parameter = $manager->getRepository(Parameter::class)->findAllByYear($year);
 
         foreach ($parameter as $param){
-            if ($param->getName() === "Limit_3100"){
+            if ($param->getName() === "Limit_4100"){
                 $limit4100 = $param->getValue();
-            } else if ($param->getName() === "Limit_4100"){
+            } else if ($param->getName() === "Limit_3100"){
                 $limit3100 = $param->getValue();
-            } else if ($param->getName() === "Limit_RK_3100"){
-                $limitRK3100 = $param->getValue();
             } else if ($param->getName() === "Limit_RK_4100"){
                 $limitRK4100 = $param->getValue();
+            } else if ($param->getName() === "Limit_RK_3100"){
+                $limitRK3100 = $param->getValue();
             }
         }
 
@@ -90,7 +91,80 @@ class BudgetController extends AbstractController
         }
 
         $manager->flush();
+
+        $this->calcUsedBudget($manager);
     }
+
+    #[Route('/calc-usedBudget', name: 'calc_used_budget')]
+    public function calcUsedBudget(EntityManagerInterface $em)
+    {
+        $d = $em->getRepository(Department::class);
+        $sc = $em->getRepository(SchoolClass::class);
+        $or = $em->getRepository(BookOrder::class);
+
+        $year = date('Y');
+        $departments = $d->findAllByYear($year);
+        $orders = $or->findOrdersByYear($year);
+        $classes = $sc->findAllByYear($year);
+
+        foreach ($classes as $class){
+            $class->setUsedBudget(0);
+            $em->persist($class);
+        }
+
+        $em->flush();
+
+        foreach ($orders as $order) {
+            $class = $order->getSchoolclass();
+            $book = $order->getBook();
+
+            if ($order->getOrderFor() == 'Mit Repetenten') {
+                if ($order->getTeacherCopy()) {
+                    $budget = $book->getPrice() * ($class->getStudentsAmount() + $class->getRepAmount() + 1);
+                } else {
+                    $budget = $book->getPrice() * ($class->getStudentsAmount() + $class->getRepAmount());
+                }
+            } elseif ($order->getOrderFor() == 'Ohne Repetenten') {
+                if ($order->getTeacherCopy()) {
+                    $budget = $book->getPrice() * ($class->getStudentsAmount() + 1);
+                } else {
+                    $budget = $book->getPrice() * ($class->getStudentsAmount());
+                }
+            } elseif ($order->getOrderFor() == 'Nur Repetenten') {
+                if ($order->getTeacherCopy()) {
+                    $budget = $book->getPrice() * ($class->getRepAmount() + 1);
+                } else {
+                    $budget = $book->getPrice() * ($class->getRepAmount());
+                }
+            }
+
+            $class->setUsedBudget($budget + $class->getUsedBudget());
+
+            $em->persist($class);
+        }
+
+        $em->flush();
+
+        foreach ($departments as $dep){
+            $classes = $sc->findAllByDepartmentID($dep->getId());
+
+            $usedBudget = 0;
+
+            foreach ($classes as $class){
+                $usedBudget += $class->getUsedBudget();
+            }
+
+            $dep->setUsedBudget($usedBudget);
+
+            $em->persist($dep);
+        }
+
+        $em->flush();
+    }
+
+
+
+
 
     #[Route('/get-departments/{year}', name: 'get_departments')]
     public function getDepartments($year, SchoolClassRepository $scr)

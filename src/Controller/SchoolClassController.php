@@ -73,6 +73,11 @@ class SchoolClassController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $schoolClass->setBudget(0);
+            $schoolClass->setUsedBudget(0);
+
+
+
             $entityManager->persist($schoolClass);
             $entityManager->flush();
 

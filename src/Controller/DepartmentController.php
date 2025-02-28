@@ -36,6 +36,9 @@ class DepartmentController extends AbstractController
             foreach ($user->getDepartment() as $dep){
                 $showBudgetFor[] = $dep->getName();
             }
+            if (empty($showBudgetFor)) {
+                $showBudgetFor[] = "all";
+            }
         } else {
             $showBudgetFor[] = "all";
         }

@@ -22,6 +22,14 @@ use function PHPUnit\Framework\isEmpty;
 
 #[Route('/orderBook')]
 class OrderController extends AbstractController {
+
+    private $budgetController;
+
+    public function __construct(BudgetController $budgetController)
+    {
+        $this->budgetController = $budgetController;
+    }
+
     #[Route('/', name: 'orderBook')]
     public function order(BookRepository $br, SchoolClassRepository $scr, SubjectRepository $sr, Request $request): Response {
         $id = $request->query->get('id', null);
@@ -166,8 +174,7 @@ class OrderController extends AbstractController {
             $bookAmount = 0;
         }
 
-        $schoolClass->setUsedBudget($schoolClass->getUsedBudget() - $bookAmount * $book->getPrice());
-        $department->setUsedBudget($department->getUsedBudget() - $bookAmount * $book->getPrice());
+        $this->budgetController->calcUsedBudget($entityManager);
 
         $entityManager->remove($bookOrder);
         $entityManager->flush();
@@ -183,6 +190,8 @@ class OrderController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $this->budgetController->calcUsedBudget($entityManager);
 
             return $this->redirectToRoute('orderBook', [], Response::HTTP_SEE_OTHER);
         }
@@ -222,9 +231,7 @@ class OrderController extends AbstractController {
                 $bookAmount = 0;
             }
 
-            $class->setUsedBudget($class->getUsedBudget()+ $bookAmount * $book->getPrice());
-            $department->setUsedBudget($department->getUsedBudget()+$bookAmount*$book->getPrice());
-
+            $this->budgetController->calcUsedBudget($em);
 
             if (!$class || !$book) {
                 return new JsonResponse(['success' => false, 'message' => 'Klasse oder Buch nicht gefunden.'], 404);

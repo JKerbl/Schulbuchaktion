@@ -18,24 +18,12 @@ class SchoolClassType extends AbstractType
                 'label' => 'Name',
                 'attr' => ['class' => 'form-input mb-3']
             ])
-            ->add('grade', null, [
-                'label' => 'Schulstufe',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
             ->add('studentsAmount', null, [
                 'label' => 'Schüler Anzahl (Exclusive Repetenten)',
                 'attr' => ['class' => 'form-input mb-3']
             ])
             ->add('repAmount', null, [
                 'label' => 'Repetenten Anzahl',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('usedBudget', null, [
-                'label' => 'Benutztes Budget',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('budget', null, [
-                'label' => 'Gesamt Budget',
                 'attr' => ['class' => 'form-input mb-3']
             ])
             ->add('year', null, [

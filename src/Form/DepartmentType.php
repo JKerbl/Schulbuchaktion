@@ -22,18 +22,6 @@ class DepartmentType extends AbstractType
                 'label' => 'Jahr',
                 'attr' => ['class' => 'form-input mb-3']
             ])
-            ->add('budget', null, [
-                'label' => 'Budget',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('usedBudget', null, [
-                'label' => 'Benutztes Budget',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
-            ->add('umew', null, [
-                'label' => 'Umew',
-                'attr' => ['class' => 'form-input mb-3']
-            ])
             ->add('headOfDepartment', EntityType::class, [
                 'class' => User::class,
                 'label' => 'Abteilungsleiter',
