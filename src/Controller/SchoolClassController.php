@@ -76,7 +76,14 @@ class SchoolClassController extends AbstractController
             $schoolClass->setBudget(0);
             $schoolClass->setUsedBudget(0);
 
+            $grade = intval(substr($schoolClass->getName(), 0, 1));
+            $schoolClass->setGrade($grade);
 
+            if (substr($schoolClass->getName(), 2, 1) === "h") {
+                $schoolClass->setType("h");
+            } else {
+                $schoolClass->setType("fs");
+            }
 
             $entityManager->persist($schoolClass);
             $entityManager->flush();
