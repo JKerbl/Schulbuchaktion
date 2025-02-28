@@ -39,7 +39,7 @@
                 </select>
 
                 <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
-                <select id="gradeFilter" name="grade" class="order-filter mr-5">
+                <select id="gradeFilter" name="grade" class="order-filter">
                     {% if gradeFilter == 0 %}
                         <option value="0" selected>Alle Jahrgänge</option>
                     {% else %}
@@ -50,6 +50,22 @@
                             <option value="{{ i }}" selected>{{ i }}</option>
                         {% else %}
                             <option value="{{ i }}">{{ i }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+                <label id="label-subject-filter" for="subjectFilter" class="order-filter-label">Gegenstand:</label>
+                <select id="subjectFilter" name="subject" class="order-filter mr-5">
+                    {% if subjectFilter == 0 %}
+                        <option value="0" selected>Alle Gegenstände</option>
+                    {% else %}
+                        <option value="0">Alle Gegenstände</option>
+                    {% endif %}
+                    {% for subject in subjects %}
+                        {% if subject.id == subjectFilter %}
+                            <option value="{{ subject.id }}" selected>{{ subject.fullname }}</option>
+                        {% else %}
+                            <option value="{{ subject.id }}">{{ subject.fullname }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -224,6 +240,9 @@
             document.getElementById('bookFilterForm').submit();
         });
         document.getElementById('gradeFilter').addEventListener('change', function () {
+            document.getElementById('bookFilterForm').submit();
+        });
+        document.getElementById('subjectFilter').addEventListener('change', function() {
             document.getElementById('bookFilterForm').submit();
         });
 

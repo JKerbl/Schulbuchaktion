@@ -265,11 +265,11 @@
     updateClassData(document.getElementById('classSelect').value);
 
     document.getElementById('bookListButton').addEventListener('click', function() {
-        window.location.href = '/books?year=' + {{ year }};
+        window.location.href = '/books?year=' + {{ year }} + '&subject=' + {{ subjectFilter }} + '&grade=' + {{ gradeFilter }} + '&search=' + '{{ search }}';
     });
 
     document.getElementById('orderlistButton').addEventListener('click', function() {
-        window.location.href = '/orderBook/index?year=' + {{ year }};
+        window.location.href = '/orderBook/index?year=' + {{ year }} + '&subject=' + {{ subjectFilter }} + '&grade=' + {{ gradeFilter }} + '&search=' + '{{ search }}';
     });
 
 </script>

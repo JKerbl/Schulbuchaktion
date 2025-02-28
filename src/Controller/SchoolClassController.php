@@ -37,18 +37,34 @@ class SchoolClassController extends AbstractController
         }
 
         // Gets the department from the query string or 0 which stands for all departments
-        $department = $request->query->get('department', 0);
+        $department = $request->query->get('department', null);
         $departments = $departmentRepository->findAllByYear($year);
+        $departmentName = "";
 
-        foreach ($departments as $dep){
-            $depIds[] = $dep->getId();
+
+        if ($department == null && in_array('ROLE_AV', $user->getRoles())) {
+            foreach ($user->getDepartments() as $dep) {
+                // gets the name of the department of the user
+                $departmentName = $dep->getName();
+                //gets any id of the department of the user
+                // the right id will be set in the next foreach loop
+                $department = $dep->getId();
+            }
         }
 
-        if (!in_array($department, $depIds)) {
+        // if a department of a different year is selected, the same department of the current year is selected
+        if ($department != 0 || $departmentName != "") {
+            $selectedDepartment = $departmentRepository->find(['id' => $department]);
+
+            foreach ($departments as $dep){
+                if ($selectedDepartment->getName() == $dep->getName() || $departmentName == $dep->getName()) {
+                    $department = $dep->getId();
+                }
+            }
+        }
+
+        if ($department == 0 || $department == null) {
             $department = 0;
-        }
-
-        if ($department == 0) {
             // Gets the Classes with the year or the current year if there is no year provided
             $schoolClasses = $schoolClassRepository->findAllByYear($year);
         } else {

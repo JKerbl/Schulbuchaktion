@@ -33,7 +33,7 @@ class DepartmentController extends AbstractController
 
         // AV can only see their own department and the admin can see all
         if (in_array('ROLE_AV', $user->getRoles())){
-            foreach ($user->getDepartment() as $dep){
+            foreach ($user->getDepartments() as $dep){
                 $showBudgetFor[] = $dep->getName();
             }
             if (empty($showBudgetFor)) {

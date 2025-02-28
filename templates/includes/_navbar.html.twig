@@ -1,6 +1,6 @@
 <nav class="nav-bar-outer">
     <div class="burger-menu" onclick="toggleMenu()">
-            <img style="height: 3em" src="{{ asset('images/hamburger.png') }}" alt="iconMenu">
+        <img style="height: 3em" src="{{ asset('images/hamburger.png') }}" alt="iconMenu">
     </div>
     <div class="nav-bar-inside">
         <div class="nav-bar-company-name-and-icon">
@@ -8,30 +8,28 @@
                 <img class="logo" src="/images/library_logo.png" alt="logo">
             </div>
             <a href="{{ path('landing_page') }}">
-                <div class="company-name">
-                    Schulbuchaktion
-                </div>
+                <div class="company-name">Schulbuchaktion</div>
             </a>
         </div>
         <div class="nav-bar-elements">
             <div id="home" class="nav-bar-item">
-                <a href="{{ path('landing_page') }}" class="{% if app.request.get('_route') == 'landing_page' %}active{% endif %}">
+                <a href="{{ path('landing_page') }}?" class="{% if app.request.get('_route') == 'landing_page' %}active{% endif %}">
                     <button class="navbar-button">Home</button>
                 </a>
             </div>
-            {% if (app.user) %}
+            {% if app.user %}
                 <div class="nav-bar-item">
-                    <a href="{{ path('app_book_index') }}" class="{% if app.request.get('_route') == 'app_book_index' %}active{% endif %}">
+                    <a href="{{ path('app_book_index') }}?{% if currentYear is defined %}year={{ currentYear }}{% endif %}{% if subjectFilter is defined %}&subject={{ subjectFilter }}{% endif %}{% if gradeFilter is defined %}&grade={{ gradeFilter }}{% endif %}{% if search is defined %}&search={{ search }}{% endif %}" class="{% if app.request.get('_route') == 'app_book_index' %}active{% endif %}">
                         <button class="navbar-button">Buch</button>
                     </a>
                 </div>
-            {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_FV' in app.user.roles %}
-                <div class="nav-bar-item">
-                    <a href="{{ path('order.index') }}" class="{% if app.request.get('_route') == 'order.index' %}active{% endif %}">
-                        <button class="navbar-button">Bestellung</button>
-                    </a>
-                </div>
-            {% endif %}
+                {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_FV' in app.user.roles %}
+                    <div class="nav-bar-item">
+                        <a href="{{ path('order.index') }}?{% if currentYear is defined %}year={{ currentYear }}{% endif %}{% if subjectFilter is defined %}&subject={{ subjectFilter }}{% endif %}{% if gradeFilter is defined %}&grade={{ gradeFilter }}{% endif %}{% if departmentFilter is defined %}&department={{ departmentFilter }}{% endif %}{% if search is defined %}&search={{ search }}{% endif %}" class="{% if app.request.get('_route') == 'order.index' %}active{% endif %}">
+                            <button class="navbar-button">Bestellung</button>
+                        </a>
+                    </div>
+                {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles %}
                     <div class="nav-bar-item">
                         <a href="{{ path('app_import') }}" class="{% if app.request.get('_route') == 'app_import' %}active{% endif %}">
@@ -46,12 +44,12 @@
                 {% endif %}
                 {% if 'ROLE_ADMIN' in app.user.roles or 'ROLE_AV' in app.user.roles or 'ROLE_FV' in app.user.roles %}
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_school_class_index') }}" class="{% if app.request.get('_route') == 'app_school_class_index' %}active{% endif %}">
+                        <a href="{{ path('app_school_class_index') }}?{% if currentYear is defined %}year={{ currentYear }}{% endif %}{% if departmentFilter is defined %}&department={{ departmentFilter }}{% endif %}" class="{% if app.request.get('_route') == 'app_school_class_index' %}active{% endif %}">
                             <button class="navbar-button">Klasse</button>
                         </a>
                     </div>
                     <div class="nav-bar-item">
-                        <a href="{{ path('app_department_index') }}" class="{% if app.request.get('_route') == 'app_department_index' %}active{% endif %}">
+                        <a href="{{ path('app_department_index') }}?{% if currentYear is defined %}year={{ currentYear }}{% endif %}" class="{% if app.request.get('_route') == 'app_department_index' %}active{% endif %}">
                             <button class="navbar-button">Abteilung</button>
                         </a>
                     </div>
@@ -73,13 +71,6 @@
                         </a>
                     </div>
                 {% endif %}
-                <!--
-                <div class="nav-bar-item">
-                    <a href="{{ path('app_budget.index') }}">
-                        <button class="navbar-button">Budget</button>
-                    </a>
-                </div>
-                -->
             {% endif %}
             <div class="nav-bar-item">
                 <a href="{{ path('app_team') }}" class="{% if app.request.get('_route') == 'app_team' %}active{% endif %}">
@@ -113,10 +104,9 @@
     </div>
 </nav>
 
-    {% for message in app.flashes('error') %}
-        <div class="error-message">{{ message }}</div>
-    {% endfor %}
-
+{% for message in app.flashes('error') %}
+    <div class="error-message">{{ message }}</div>
+{% endfor %}
 
 <script>
     function confirmIncrement() {

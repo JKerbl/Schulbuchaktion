@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BookOrder;
+use App\Entity\Subject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\DocBlock\Tags\Source;
@@ -34,18 +35,18 @@ class BookOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function getTotalEntries(int $year, int $departmentId = null, int $grade = null, string $search = null): int
+    public function getTotalEntries(int $year, int $departmentId = null, int $grade = null, int $subject = null, string $search = null): int
     {
         $query = $this->createQueryBuilder('o')
             ->select('COUNT(o.id)')
             ->innerJoin('o.schoolclass', 'c')
             ->innerJoin('c.department', 'd')
+            ->innerJoin('o.book', 'b')
             ->andWhere('c.year = :year')
             ->setParameter('year', $year);
 
         if ($search) {
-            $query->innerJoin('o.book', 'b')
-                ->andWhere('b.title LIKE :search')
+            $query->andWhere('b.title LIKE :search')
                 ->setParameter('search', '%' . $search . '%')
                 ->orWhere('b.bnr LIKE :search')
                 ->setParameter('search', '%' . $search . '%');
@@ -61,10 +62,25 @@ class BookOrderRepository extends ServiceEntityRepository
                 ->setParameter('grade', $grade);
         }
 
+        if ($subject) {
+            $query
+                ->join('b.importSubjectMap', 'ism')
+                ->join('ism.subject', 's')
+                ->andWhere('s.id = :subjectId')
+                ->setParameter('subjectId', $subject);
+
+            $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subject);
+            if ($subject && stripos($subject->getFullName(), 'F') === 0) {
+                $query
+                    ->andWhere('s.fullName LIKE :subject')
+                    ->setParameter('subject', 'F%');
+            }
+        }
+
         return $query->getQuery()->getSingleScalarResult();
     }
 
-    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $departmentId = null, int $grade = null, String $search = null, String $sortDirection = null, String $sortBy = null): array
+    public function getPaginatedEntries(int $limit, int $currentPage, string $year, int $departmentId = null, int $grade = null, int $subject = null, String $search = null, String $sortDirection = null, String $sortBy = null): array
     {
         $offset = ($currentPage - 1) * $limit;
 
@@ -92,6 +108,21 @@ class BookOrderRepository extends ServiceEntityRepository
                     $queryBuilder->orderBy('b.bnr', $sortDirection);
                 } else if ($sortBy === 'class'){
                     $queryBuilder->orderBy('c.name', $sortDirection);
+                }
+            }
+
+            if ($subject) {
+                $queryBuilder
+                    ->join('b.importSubjectMap', 'ism')
+                    ->join('ism.subject', 's')
+                    ->andWhere('s.id = :subjectId')
+                    ->setParameter('subjectId', $subject);
+
+                $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subject);
+                if ($subject && stripos($subject->getFullName(), 'F') === 0) {
+                    $queryBuilder
+                        ->andWhere('s.fullName LIKE :subject')
+                        ->setParameter('subject', 'F%');
                 }
             }
         }

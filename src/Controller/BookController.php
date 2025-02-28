@@ -49,6 +49,11 @@ class BookController extends AbstractController
 
         // get the subject and grade filters
         $subjectFilter = $request->query->get('subject', null);
+        // if nothing is selected and the user is a FV, the subject filter is set to to the users
+        if ($subjectFilter == null && in_array('ROLE_FV', $user->getRoles())) {
+            $subjectFilter = $user->getSubject()->first()->getId();
+        }
+
         if ($subjectFilter == 0){
             // 0 is the value for the "all" option
             $subjectFilter = null;

@@ -55,7 +55,10 @@ class OrderController extends AbstractController {
             'classes' => $classes,
             'allSubjects' => $subjects,
             'userSubject' => $userSubject,
-            'year' => $book->getYear()
+            'year' => $book->getYear(),
+            'subjectFilter' => $request->query->get('subject', null),
+            'gradeFilter' => $request->query->get('grade', null),
+            'search' => $request->query->get('search', null),
         ]);
     }
 
@@ -79,9 +82,9 @@ class OrderController extends AbstractController {
         return new JsonResponse($data);
     }
 
-    private function getMaxPages(BookOrderRepository $bookOrderRepository, int $limit, int $year, int $department = null, int $grade = null, string $search = null): int
+    private function getMaxPages(BookOrderRepository $bookOrderRepository, int $limit, int $year, int $department = null, int $grade = null, int $subject = null, string $search = null): int
     {
-        $totalEntries = $bookOrderRepository->getTotalEntries($year, $department, $grade, $search);
+        $totalEntries = $bookOrderRepository->getTotalEntries($year, $department, $grade, $subject, $search);
         return ceil($totalEntries / $limit);
     }
 
@@ -124,16 +127,31 @@ class OrderController extends AbstractController {
             $gradeFilter = null;
         }
 
+        // get the subject and grade filters
+        $subjectFilter = $request->query->get('subject', null);
+        // if nothing is selected and the user is a FV, the subject filter is set to the users
+        if ($subjectFilter == null && in_array('ROLE_FV', $user->getRoles())) {
+            $subjectFilter = $user->getSubject()->first()->getId();
+        }
+
+        if ($subjectFilter == 0){
+            // 0 is the value for the "all" option
+            $subjectFilter = null;
+        }
+
+        // get all subjects for the filter
+        $subjects = $em->getRepository(Subject::class)->findAll();
+
         // get all departments and orders of the current year
         $departments = $em->getRepository(Department::class)->findAllByYear($year);
 
         // get the search query
         $search = $request->query->get('search', '');
 
-        $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter, $search);
+        $maxPages = $this->getMaxPages($bookOrderRepository, $limit, $year, $departmentFilter, $gradeFilter, $subjectFilter, $search);
         $currentPage = $this->getCurrentPage($request, $maxPages);
 
-        $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $search, $sortDirection, $sortBy);
+        $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $subjectFilter, $search, $sortDirection, $sortBy);
 
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
@@ -147,7 +165,9 @@ class OrderController extends AbstractController {
             'search' => $search,
             'sortBy' => $sortBy,
             'sortDirection' => $sortDirection,
-            'user' => $user
+            'user' => $user,
+            'subjectFilter' => $subjectFilter ?? 0,
+            'subjects' => $subjects,
         ]);
     }
 

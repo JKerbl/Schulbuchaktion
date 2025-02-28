@@ -42,8 +42,8 @@ class UserController extends AbstractController
     {
         $user = $ur->find($id);
 
-        if ($user->getDepartment() != null) {
-            foreach ($user->getDepartment() as $department) {
+        if ($user->getDepartments() != null) {
+            foreach ($user->getDepartments() as $department) {
                 $department->setHeadOfDepartment(null);
             }
         }

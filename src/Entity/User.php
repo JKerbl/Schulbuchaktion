@@ -173,12 +173,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->subject = $subject;
     }
 
-    public function getDepartment(): ?Collection
+    public function getDepartments(): ?Collection
     {
         return $this->department;
     }
 
-    public function setDepartment(?Collection $department): void
+    public function setDepartments(?Collection $department): void
     {
         $this->department = $department;
     }
