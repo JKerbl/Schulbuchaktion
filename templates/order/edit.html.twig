@@ -18,12 +18,16 @@
             {{ form_widget(form) }}
             <div class="btn-links-under-form">
                 <button class="save-update-btn-form" type="submit">{{ button_label|default('Speichern') }}</button>
-                <div class="back-to-list-btn">
+                <div class="back-to-list-btn" id="orderListBtn">
                     <a class="anchor-back-to-list" href="{{ path('orderBook') }}">Zurück zur Liste</a>
                 </div>
             </div>
             {{ form_end(form) }}
         </form>
     </div>
+ <script>    document.getElementById('orderListBtn').addEventListener('click', function() {
+         window.location.href = '/orderBook/index';
+     });
 
+ </script>
 {% endblock %}

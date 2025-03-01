@@ -10,7 +10,7 @@
 
         <div class="book-filters flex flex-wrap justify-between items-center">
     <div class="flex items-center">
-        <form id="bookFilterForm" method="get" action="{{ path('app_book_index') }}" class="flex items-center">
+        <form id="bookFilterForm" method="get" action="{{ path('app_book_index') }}" class="flex justify-between items-center">
             <div class="flex items-center mr-5" >
                 <label id="label-year-filter" for="yearFilter" class="book-filter-label">Jahr:  </label>
                 <select id="yearFilter" name="year" class="book-filter">
@@ -27,9 +27,9 @@
                 <label id="label-subject-filter" for="subjectFilter" class="book-filter-label">Gegenstand:  </label>
                 <select id="subjectFilter" name="subject" class="book-filter">
                     {% if subjectFilter == 0 %}
-                        <option value="0" selected>Alle Gegenstände</option>
+                        <option value="0" selected>Alle</option>
                     {% else %}
-                        <option value="0">Alle Gegenstände</option>
+                        <option value="0">Alle</option>
                     {% endif %}
                     {% for subject in subjects %}
                         {% if subject.id == subjectFilter %}
@@ -44,9 +44,9 @@
                 <label id="label-grade-filter" for="gradeFilter" class="book-filter-label">Jahrgang:  </label>
                 <select id="gradeFilter" name="grade" class="book-filter">
                     {% if gradeFilter == 0 %}
-                        <option value="0" selected>Alle Jahrgänge</option>
+                        <option value="0" selected>Alle</option>
                     {% else %}
-                        <option value="0">Alle Jahrgänge</option>
+                        <option value="0">Alle</option>
                     {% endif %}
                     {% for i in 1..5 %}
                         {% if i == gradeFilter %}

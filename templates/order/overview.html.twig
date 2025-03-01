@@ -10,7 +10,7 @@
 
     <div>
         <div class="order-filters">
-            <form id="bookFilterForm" method="get" action="{{ path('order.index') }}" class="flex items-center">
+            <form id="bookFilterForm" method="get" action="{{ path('order.index') }}" class="flex justify-between items-center">
                 <label id="label-year-filter" for="yearFilter" class="order-filter-label">Jahr:</label>
                 <select id="yearFilter" name="year" class="order-filter">
                     {% for year in allYears %}
@@ -25,9 +25,9 @@
                 <label id="label-department-filter" for="departmentFilter" class="order-filter-label">Abteilung:</label>
                 <select id="departmentFilter" name="department" class="order-filter">
                     {% if departmentFilter == 0 %}
-                        <option value="0" selected>Alle Abteilungen</option>
+                        <option value="0" selected>Alle</option>
                     {% else %}
-                        <option value="0">Alle Abteilungen</option>
+                        <option value="0">Alle</option>
                     {% endif %}
                     {% for department in departments %}
                         {% if department.id == departmentFilter %}
@@ -41,9 +41,9 @@
                 <label id="label-grade-filter" for="gradeFilter" class="order-filter-label">Jahrgang:</label>
                 <select id="gradeFilter" name="grade" class="order-filter">
                     {% if gradeFilter == 0 %}
-                        <option value="0" selected>Alle Jahrgänge</option>
+                        <option value="0" selected>Alle</option>
                     {% else %}
-                        <option value="0">Alle Jahrgänge</option>
+                        <option value="0">Alle</option>
                     {% endif %}
                     {% for i in 1..5 %}
                         {% if i == gradeFilter %}
@@ -57,9 +57,9 @@
                 <label id="label-subject-filter" for="subjectFilter" class="order-filter-label">Gegenstand:</label>
                 <select id="subjectFilter" name="subject" class="order-filter mr-5">
                     {% if subjectFilter == 0 %}
-                        <option value="0" selected>Alle Gegenstände</option>
+                        <option value="0" selected>Alle</option>
                     {% else %}
-                        <option value="0">Alle Gegenstände</option>
+                        <option value="0">Alle</option>
                     {% endif %}
                     {% for subject in subjects %}
                         {% if subject.id == subjectFilter %}

@@ -31,9 +31,9 @@
                     <label id="label-subject-filter" for="departmentFilter" class="class-filter-label">Abteilungen:  </label>
                     <select id="departmentFilter" name="department" class="class-filter">
                         {% if currentDepartment == 0 %}
-                            <option value="0" selected>Alle Abteilungen</option>
+                            <option value="0" selected>Alle</option>
                         {% else %}
-                            <option value="0">Alle Abteilungen</option>
+                            <option value="0">Alle</option>
                         {% endif %}
                         {% for department in departments %}
                             {% if department.id == currentDepartment %}
