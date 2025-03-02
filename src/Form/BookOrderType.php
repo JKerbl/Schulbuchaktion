@@ -10,6 +10,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+
 
 class BookOrderType extends AbstractType
 {
@@ -22,11 +24,10 @@ class BookOrderType extends AbstractType
                 ],
                 'label' => 'Bestellen für',
             ])
-            ->add('teachercopy', null, [
+            ->add('teachercopy', HiddenType::class, [
                 'attr' => [
-                    'class' => 'form-input mb-3',
+                    'class' => 'd-none form-input mb-3',
                 ],
-                'label' => 'Lehrerexemplar',
             ])
             ->add('eBook', null, [
                 'attr' => [
