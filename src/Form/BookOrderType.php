@@ -43,7 +43,7 @@ class BookOrderType extends AbstractType
             ])
             ->add('schoolclass', EntityType::class, [
                 'class' => SchoolClass::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
                 'attr' => [
                     'class' => 'form-input mb-3',
                 ],

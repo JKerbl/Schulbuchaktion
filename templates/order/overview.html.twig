@@ -113,6 +113,7 @@
                          alt="sortingArrow">
                 </th>
                 <th>Buch</th>
+                <th>mit Rep.</th>
                 <th>Anzahl nicht Repetenten</th>
                 <th>Anzahl Repetenten</th>
                 <th hidden>Lehrerexemplar</th>
@@ -147,6 +148,7 @@
                 <tr>
                     <td>{{ order.book ? order.book.bnr : 'Nicht zugewiesen' }}</td>
                     <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
+                    <td>{{ order.orderFor == 'Mit Repetenten' ? 'Ja' : 'Nein' }}</td>
                     {% if order.orderFor == 'Mit Repetenten' %}
                         <td>{{ order.schoolclass.studentsAmount }}</td>
                         <td>{{ order.schoolclass.repAmount }}</td>

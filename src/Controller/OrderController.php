@@ -213,7 +213,7 @@ class OrderController extends AbstractController {
 
             $this->budgetController->calcUsedBudget($entityManager);
 
-            return $this->redirectToRoute('orderBook', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('order.index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('order/edit.html.twig', [

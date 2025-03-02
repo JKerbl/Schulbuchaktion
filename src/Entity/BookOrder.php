@@ -33,7 +33,8 @@ class BookOrder
     #[ORM\ManyToOne(targetEntity: Book::class, inversedBy: "bookOrder")]
     private ?Book $book = null;
 
-    #[ORM\ManyToOne(inversedBy: 'bookOrders')]
+    #[ORM\ManyToOne(targetEntity: Subject::class, inversedBy: 'bookOrders')]
+    #[ORM\JoinColumn(name: "subject_id", referencedColumnName: "id", nullable: false)]
     private ?Subject $subject = null;
 
     public function __construct()

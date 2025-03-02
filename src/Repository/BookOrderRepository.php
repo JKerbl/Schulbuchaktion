@@ -46,10 +46,9 @@ class BookOrderRepository extends ServiceEntityRepository
             ->setParameter('year', $year);
 
         if ($search) {
-            $query->andWhere('b.title LIKE :search')
+            $query->andWhere('(b.title LIKE :search OR b.bnr LIKE :search2)')
                 ->setParameter('search', '%' . $search . '%')
-                ->orWhere('b.bnr LIKE :search')
-                ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search2', '%' . $search . '%');
         }
 
         if ($departmentId) {
@@ -63,7 +62,12 @@ class BookOrderRepository extends ServiceEntityRepository
         }
 
         if ($subject) {
+
             $query
+                ->join('o.subject', 's')  // ✅ Direkt `book_order.subject_id` mit `subject.id` verbinden
+                ->andWhere('s.id = :subjectId')
+                ->setParameter('subjectId', $subject);
+            /* $query
                 ->join('b.importSubjectMap', 'ism')
                 ->join('ism.subject', 's')
                 ->andWhere('s.id = :subjectId')
@@ -74,7 +78,7 @@ class BookOrderRepository extends ServiceEntityRepository
                 $query
                     ->andWhere('s.fullName LIKE :subject')
                     ->setParameter('subject', 'F%');
-            }
+            }*/
         }
 
         return $query->getQuery()->getSingleScalarResult();
@@ -97,10 +101,9 @@ class BookOrderRepository extends ServiceEntityRepository
             $queryBuilder->innerJoin('o.book', 'b');
 
             if ($search != null) {
-                $queryBuilder->andWhere('b.title LIKE :search')
+                $queryBuilder->andWhere('(b.title LIKE :search OR b.bnr LIKE :search2)')
                     ->setParameter('search', '%' . $search . '%')
-                    ->orWhere('b.bnr LIKE :search')
-                    ->setParameter('search', '%' . $search . '%');
+                    ->setParameter('search2', '%' . $search . '%');
             }
 
             if ($sortBy && $sortDirection) {
@@ -113,17 +116,21 @@ class BookOrderRepository extends ServiceEntityRepository
 
             if ($subject) {
                 $queryBuilder
+                    ->join('o.subject', 's')  // ✅ Direkt `book_order.subject_id` mit `subject.id` verbinden
+                    ->andWhere('s.id = :subjectId')
+                    ->setParameter('subjectId', $subject);
+                /*$queryBuilder
                     ->join('b.importSubjectMap', 'ism')
                     ->join('ism.subject', 's')
                     ->andWhere('s.id = :subjectId')
                     ->setParameter('subjectId', $subject);
 
-                $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subject);
+               $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subject);
                 if ($subject && stripos($subject->getFullName(), 'F') === 0) {
                     $queryBuilder
                         ->andWhere('s.fullName LIKE :subject')
                         ->setParameter('subject', 'F%');
-                }
+                }*/
             }
         }
 
