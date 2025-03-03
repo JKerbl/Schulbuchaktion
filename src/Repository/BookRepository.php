@@ -82,10 +82,8 @@ class BookRepository extends ServiceEntityRepository
             ->setMaxResults($limit);
 
         if ($search) {
-            $queryBuilder
-                ->where('b.title LIKE :search')
-                ->orWhere('b.bnr LIKE :search')
-                ->orWhere('b.shortTitle LIKE :search')
+
+            $queryBuilder->andWhere('(b.title LIKE :search OR b.bnr LIKE :search)')
                 ->setParameter('search', '%' . $search . '%');
         }
 
@@ -98,15 +96,18 @@ class BookRepository extends ServiceEntityRepository
         if ($subjectId) {
             $queryBuilder
                 ->join('b.importSubjectMap', 'ism')
-                ->join('ism.subject', 's')
-                ->andWhere('s.id = :subjectId')
-                ->setParameter('subjectId', $subjectId);
+                ->join('ism.subject', 's');
 
-            $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subjectId);
-            if ($subject && stripos($subject->getFullName(), 'F') === 0) {
-                $queryBuilder
-                    ->andWhere('s.fullName LIKE :subject')
-                    ->setParameter('subject', 'F%');
+
+
+            if (($subjectId === 11) or ($subjectId === 9))  {
+                // Korrekte OR-Gruppierung
+                $queryBuilder->andWhere('s.id IN (:allowedSubjects)')
+                    ->setParameter('allowedSubjects', [11, 9]);
+            } else {
+                // Standardfall ohne OR
+                $queryBuilder->andWhere('s.id = :subjectId')
+                    ->setParameter('subjectId', $subjectId);
             }
         }
 
@@ -127,26 +128,28 @@ class BookRepository extends ServiceEntityRepository
             ->setParameter('year', $year);
 
         if ($search) {
-            $queryBuilder->andWhere('b.title LIKE :search')
-                ->setParameter('search', '%' . $search . '%')
-                ->orWhere('b.bnr LIKE :search')
+            $queryBuilder->andWhere('(b.title LIKE :search OR b.bnr LIKE :search)')
                 ->setParameter('search', '%' . $search . '%');
         }
 
         if ($subjectId) {
             $queryBuilder
                 ->join('b.importSubjectMap', 'ism')
-                ->join('ism.subject', 's')
-                ->andWhere('s.id = :subjectId')
-                ->setParameter('subjectId', $subjectId);
+                ->join('ism.subject', 's');
 
-            $subject = $this->getEntityManager()->getRepository(Subject::class)->find($subjectId);
-            if ($subject && stripos($subject->getFullName(), 'F') === 0) {
-                $queryBuilder
-                    ->andWhere('s.fullName LIKE :subject')
-                    ->setParameter('subject', 'F%');
+
+
+            if (($subjectId === 11) or ($subjectId === 9))  {
+                // Korrekte OR-Gruppierung
+                $queryBuilder->andWhere('s.id IN (:allowedSubjects)')
+                    ->setParameter('allowedSubjects', [11, 9]);
+            } else {
+                // Standardfall ohne OR
+                $queryBuilder->andWhere('s.id = :subjectId')
+                    ->setParameter('subjectId', $subjectId);
             }
         }
+
 
         if ($grade) {
             $queryBuilder
