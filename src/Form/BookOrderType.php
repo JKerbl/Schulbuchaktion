@@ -35,12 +35,7 @@ class BookOrderType extends AbstractType
                 ],
                 'label' => 'eBook',
             ])
-            ->add('eBookPlus', null, [
-                'attr' => [
-                    'class' => 'form-input-checkbox mb-3',
-                ],
-                'label' => 'eBookPlus',
-            ])
+
             ->add('schoolclass', EntityType::class, [
                 'class' => SchoolClass::class,
                 'choice_label' => 'name',

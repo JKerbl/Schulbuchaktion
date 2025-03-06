@@ -118,7 +118,7 @@
                 <th>Anzahl Repetenten</th>
                 <th hidden>Lehrerexemplar</th>
                 <th>eBook</th>
-                <th>eBook Plus</th>
+                <!--<th>eBook Plus</th> -->
                 <th style="width: 15%" id="classHeader">
                     Schulklasse
                     <img style="display: inline-block; height: 20px; transform:
@@ -147,7 +147,7 @@
             {% for order in orders %}
                 <tr>
                     <td>{{ order.book ? order.book.bnr : 'Nicht zugewiesen' }}</td>
-                    <td>{{ order.book ? order.book.title : 'Nicht zugewiesen' }}</td>
+                    <td>{{ order.book ? order.book.shortTitle : 'Nicht zugewiesen' }}</td>
                     <td>{{ order.orderFor == 'Mit Repetenten' ? 'Ja' : 'Nein' }}</td>
                     {% if order.orderFor == 'Mit Repetenten' %}
                         <td>{{ order.schoolclass.studentsAmount }}</td>
@@ -161,7 +161,6 @@
                     {% endif %}
                     <td hidden>{{ order.teacherCopy ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.eBook ? 'Ja' : 'Nein' }}</td>
-                    <td>{{ order.eBookPlus ? 'Ja' : 'Nein' }}</td>
                     <td>{{ order.schoolclass ? order.schoolclass.name : 'Nicht zugewiesen' }}</td>
                     {% if 'ROLE_ADMIN' in user.roles or ('ROLE_FV' in user.roles and currentYear is same as "now"|date('Y')) %}
                         <td style="width: 8%">
