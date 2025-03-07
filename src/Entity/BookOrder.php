@@ -19,9 +19,6 @@ class BookOrder
     private ?String $orderFor = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $teacherCopy = null;
-
-    #[ORM\Column(nullable: true)]
     private ?bool $eBook = null;
 
     #[ORM\Column(nullable: true)]
@@ -62,16 +59,6 @@ class BookOrder
         $this->orderFor = $orderFor;
     }
 
-    public function getTeacherCopy(): ?bool
-    {
-        return $this->teacherCopy;
-    }
-
-    public function setTeacherCopy(?bool $teacherCopy): void
-    {
-        $this->teacherCopy = $teacherCopy;
-    }
-
     public function getEBook(): ?bool
     {
         return $this->eBook;
@@ -110,11 +97,6 @@ class BookOrder
     public function setBook(?Book $book): void
     {
         $this->book = $book;
-    }
-
-    public function isTeacherCopy(): ?bool
-    {
-        return $this->teacherCopy;
     }
 
     public function isEBook(): ?bool

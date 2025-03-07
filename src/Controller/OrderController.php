@@ -233,7 +233,6 @@ class OrderController extends AbstractController {
             $classId = $data['classId'];
             $bookId = $data['bookId'];
             $orderFor = $data['orderFor'];
-            $teacherCopy = $data['teacherCopy'];
             $ebookPlus = $data['ebookPlus'];
             $ebook = $data['ebook'];
             $subjectId = $data['subject'];
@@ -264,7 +263,6 @@ class OrderController extends AbstractController {
             $bookOrder->setSchoolClass($class);
             $bookOrder->setBook($book);
             $bookOrder->setOrderFor($orderFor);
-            $bookOrder->setTeacherCopy($teacherCopy);
             $bookOrder->setEBook($ebook);
             $bookOrder->setEBookPlus($ebookPlus);
 
