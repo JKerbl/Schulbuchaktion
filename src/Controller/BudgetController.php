@@ -120,9 +120,9 @@ class BudgetController extends AbstractController
 
             if ($order->getOrderFor() == 'Mit Repetenten') {
                 if ($order->getTeacherCopy()) {
-                    $budget = $book->getPrice() * ($class->getStudentsAmount() + $class->getRepAmount() + 1);
+                    $budget = $book->getPrice() * ($class->getStudentsAmount() + 1);
                 } else {
-                    $budget = $book->getPrice() * ($class->getStudentsAmount() + $class->getRepAmount());
+                    $budget = $book->getPrice() * ($class->getStudentsAmount());
                 }
             } elseif ($order->getOrderFor() == 'Ohne Repetenten') {
                 if ($order->getTeacherCopy()) {
@@ -130,15 +130,11 @@ class BudgetController extends AbstractController
                 } else {
                     $budget = $book->getPrice() * ($class->getStudentsAmount());
                 }
-            } elseif ($order->getOrderFor() == 'Nur Repetenten') {
-                if ($order->getTeacherCopy()) {
-                    $budget = $book->getPrice() * ($class->getRepAmount() + 1);
-                } else {
-                    $budget = $book->getPrice() * ($class->getRepAmount());
-                }
             }
 
-            $class->setUsedBudget($budget + $class->getUsedBudget());
+            $usedBudget = $class->getUsedBudget();
+
+            $class->setUsedBudget($usedBudget + $budget);
 
             $em->persist($class);
         }
@@ -148,7 +144,7 @@ class BudgetController extends AbstractController
         foreach ($departments as $dep){
             $classes = $sc->findAllByDepartmentID($dep->getId());
 
-            $usedBudget = 0;
+            $usedBudget = $dep->getUmew();
 
             foreach ($classes as $class){
                 $usedBudget += $class->getUsedBudget();

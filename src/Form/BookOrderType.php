@@ -18,6 +18,23 @@ class BookOrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('book', EntityType::class, [
+                'class' => Book::class,
+                'choice_label' => 'shortTitle',
+                'disabled' => true,
+                'attr' => [
+                    'class' => 'form-input mb-3',
+                ],
+                'label' => 'Buch',
+            ])
+            ->add('schoolclass', EntityType::class, [
+                'class' => SchoolClass::class,
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'form-input mb-3',
+                ],
+                'label' => 'Klasse',
+            ])
             ->add('orderFor', null, [
                 'attr' => [
                     'class' => 'form-input mb-3',
@@ -29,30 +46,6 @@ class BookOrderType extends AbstractType
                     'class' => 'd-none form-input mb-3',
                 ],
             ])
-            ->add('eBook', null, [
-                'attr' => [
-                    'class' => 'form-input-checkbox mb-3',
-                ],
-                'label' => 'eBook',
-            ])
-
-            ->add('schoolclass', EntityType::class, [
-                'class' => SchoolClass::class,
-                'choice_label' => 'name',
-                'attr' => [
-                    'class' => 'form-input mb-3',
-                ],
-                'label' => 'Klasse',
-            ])
-            ->add('book', EntityType::class, [
-                'class' => Book::class,
-                'choice_label' => 'shortTitle',
-                'disabled' => true,
-                'attr' => [
-                    'class' => 'form-input mb-3',
-                ],
-                'label' => 'Buch',
-            ])
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,
                 'choice_label' => 'fullName',
@@ -60,6 +53,13 @@ class BookOrderType extends AbstractType
                     'class' => 'form-input mb-3',
                 ],
                 'label' => 'Gegenstand',
+            ])
+            ->add('eBook', null, [
+                'attr' => [
+                    'class' => 'form-input-checkbox mb-3',
+                ],
+                'label' => 'eBook',
+                'disabled' => true,
             ])
         ;
     }

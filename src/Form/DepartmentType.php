@@ -18,6 +18,10 @@ class DepartmentType extends AbstractType
                 'label' => 'Name',
                 'attr' => ['class' => 'form-input mb-3']
             ])
+            ->add('umew', null, [
+                'label' => 'U.M.E.W',
+                'attr' => ['class' => 'form-input mb-3']
+            ])
             ->add('year', null, [
                 'label' => 'Jahr',
                 'attr' => ['class' => 'form-input mb-3']

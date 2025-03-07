@@ -14,6 +14,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/department')]
 class DepartmentController extends AbstractController
 {
+
+    private $budgetController;
+
+    public function __construct(BudgetController $budgetController)
+    {
+        $this->budgetController = $budgetController;
+    }
+
     #[Route('/', name: 'app_department_index', methods: ['GET'])]
     public function index(DepartmentRepository $departmentRepository, Request $request): Response
     {
@@ -36,11 +44,25 @@ class DepartmentController extends AbstractController
             foreach ($user->getDepartments() as $dep){
                 $showBudgetFor[] = $dep->getName();
             }
-            if (empty($showBudgetFor)) {
-                $showBudgetFor[] = "all";
-            }
+            $showBudgetFor[] = 'Gesamt';
         } else {
             $showBudgetFor[] = "all";
+        }
+
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || in_array('ROLE_AV', $user->getRoles())) {
+            $sumDep = new Department();
+            $sumDep->setName('Gesamt');
+            $sumDep->setBudget(0);
+            $sumDep->setUsedBudget(0);
+            $sumDep->setUmew(0);
+            $sumDep->setYear($year);
+            foreach ($departments as $dep) {
+                $sumDep->setBudget($dep->getBudget() + $sumDep->getBudget());
+                $sumDep->setUsedBudget($dep->getUsedBudget() + $sumDep->getUsedBudget());
+                $sumDep->setUmew($dep->getUmew() + $sumDep->getUmew());
+            }
+
+            $departments[] = $sumDep;
         }
 
         return $this->render('department/index.html.twig', [
@@ -70,6 +92,8 @@ class DepartmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($department);
             $entityManager->flush();
+
+            $this->budgetController->calcBudget($entityManager);
 
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -123,6 +147,8 @@ class DepartmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $this->budgetController->calcBudget($entityManager);
 
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
