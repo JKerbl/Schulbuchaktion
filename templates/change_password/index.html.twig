@@ -8,13 +8,20 @@
     {% endblock %}
 
 {% block body %}
+
+    <style>
+        li {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
 <div class="text-4xl">
     <h1>Passwort ändern</h1>
 </div>
 
 <div class="content-form">
     {{ form_start(changePasswordForm, {'attr': {'data-turbo': 'false'}}) }}
-    {{ form_row(changePasswordForm.currentPassword) }}
     {{ form_row(changePasswordForm.newPassword) }}
     {{ form_row(changePasswordForm.confirmNewPassword) }}
     <div>
@@ -25,14 +32,11 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
-        showPasswordCheckbox.addEventListener('change', function() {
+    document.getElementById('showPasswordCheckbox').addEventListener('change', function() {
             const passwordFields = document.querySelectorAll('input[type="password"], input[type="text"]');
             passwordFields.forEach(field => {
                 field.type = this.checked ? 'text' : 'password';
             });
-        });
     });
 </script>
 {% endblock %}

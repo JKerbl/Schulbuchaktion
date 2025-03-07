@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Passwort ändern{% endblock %}
+
+    {% block stylesheets %}
+        <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+        <link href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" rel="stylesheet"/>
+    {% endblock %}
+
+{% block body %}
+<div class="text-4xl">
+    <h1>Passwort zurückgesetzt</h1>
+</div>
+
+<div class="content-form">
+    <p class="normalText">Das neue Passwort für den Benutzer "{{ username }}" lautet:</p>
+    <p class="passwordText">{{ password }}</p>
+    <p class="normalText">Bitte geben Sie es dem Benutzer bekannt.</p>
+</div>
+
+<script>
+</script>
+{% endblock %}

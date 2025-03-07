@@ -38,6 +38,18 @@ class ParameterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllYears(): ?array
+    {
+        $result = $this->createQueryBuilder('s')
+            ->select('s.year')
+            ->where('s.year IS NOT NULL')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        return array_map('current', $result);
+    }
+
     public function findAllByYear(int $year): array
     {
         return $this->createQueryBuilder('p')

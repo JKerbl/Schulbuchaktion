@@ -15,10 +15,21 @@ use Symfony\Component\Routing\Attribute\Route;
 class ParameterController extends AbstractController
 {
     #[Route('/', name: 'app_parameter_index', methods: ['GET'])]
-    public function index(ParameterRepository $parameterRepository): Response
+    public function index(ParameterRepository $parameterRepository, Request $request): Response
     {
+        $year = $request->get('year', date('Y'));
+        $years = $parameterRepository->findAllYears();
+
+        // check if the year is in the array of years
+        if (!in_array($year, $years)) {
+            $years[] = $year;
+            sort($years);
+        }
+
         return $this->render('parameter/index.html.twig', [
-            'parameters' => $parameterRepository->findWhereYearNotNull(),
+            'parameters' => $parameterRepository->findAllByYear($year),
+            'allYears' => $parameterRepository->findAllYears(),
+            'currentYear' => $year,
         ]);
     }
 

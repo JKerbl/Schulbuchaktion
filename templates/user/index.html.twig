@@ -15,7 +15,7 @@
         </label>
     </div>
 
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mx-8">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mx-8">
         {% for user in users %}
             <div class="bg-white rounded-lg shadow-md p-4">
                 <p class="text-xl font-semibold mb-2">{{ user.username }}</p>
@@ -27,8 +27,13 @@
                         <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Admin</option>
                     </select>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                        Rolle ändern
+                        Speichern
                     </button>
+                    {% if thisUser.username != user.username %}
+                        <a href="{{ path('app_reset_password', {'id': user.id }) }}" onclick="return confirmResetPassword('{{ user.username }}')" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ml-auto">
+                            PW zurücksetzen
+                        </a>
+                    {% endif %}
                     <a href="{{ path('user.delete', {'id': user.id }) }}" onclick="return confirmDelete('{{ user.username }}')" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ml-auto">
                         Löschen
                     </a>
@@ -40,6 +45,10 @@
     <script>
         function confirmDelete(username) {
             return confirm('Sind Sie sicher, dass Sie den Benutzer ' + username + ' und alle seine Zuteilungen löschen möchten?');
+        }
+
+        function confirmResetPassword(username) {
+            return confirm('Sind Sie sicher, dass Sie das Passwort von ' + username + ' zurücksetzen möchten?');
         }
 
         $(document).ready(function (){

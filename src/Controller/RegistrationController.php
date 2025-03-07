@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationController extends AbstractController
 {
@@ -34,7 +36,13 @@ class RegistrationController extends AbstractController
                 'type' => PasswordType::class,
                 'required' => true,
                 'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password']
+                'second_options' => ['label' => 'Repeat Password'],
+                'constraints' => [
+                    new Length([
+                        'min' => 12,
+                        'minMessage' => 'Ihr Passwort muss mindestens {{ limit }} Zeichen lang sein',
+                    ]),
+                ],
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [

@@ -18,6 +18,7 @@ class UserController extends AbstractController
     public function index(UserRepository $ur, ParameterRepository $pr): Response
     {
         $users = $ur->findAll();
+        $thisUser = $this->getUser();
 
         $allowRegistrations = $pr->findOneBy(['name' => 'allowRegistrations']);
 
@@ -29,6 +30,7 @@ class UserController extends AbstractController
 
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'thisUser' => $thisUser,
             'allowRegistrations' => $allow
         ]);
     }

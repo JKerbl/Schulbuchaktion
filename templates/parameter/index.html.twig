@@ -18,7 +18,19 @@
             <tr>
                 <th>Name</th>
                 <th>Wert</th>
-                <th>Jahr</th>
+                <th>
+                    <form id="yearForm" method="get" action="{{ path('app_parameter_index') }}">
+                        <select id="yearFilter" name="year" class="year-filter">
+                            {% for year in allYears %}
+                                {% if year == currentYear %}
+                                    <option value="{{ year }}" selected>{{ year }}</option>
+                                {% else %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -40,4 +52,10 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        document.getElementById('yearFilter').addEventListener('change', function () {
+            document.getElementById('yearForm').submit();
+        });
+    </script>
 {% endblock %}

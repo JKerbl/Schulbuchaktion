@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\ChangePasswordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,35 +40,53 @@ class ChangePasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $currentPassword = $form->get('currentPassword')->getData();
             $newPassword = $form->get('newPassword')->getData();
             $confirmNewPassword = $form->get('confirmNewPassword')->getData();
+            if ($newPassword === $confirmNewPassword) {
+                $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                $user->setPassword($encodedPassword);
 
-            if ($passwordHasher->isPasswordValid($user, $currentPassword)) {
-                if ($newPassword === $confirmNewPassword) {
-                    $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
-                    $user->setPassword($encodedPassword);
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
 
-                    $this->entityManager->persist($user);
-                    $this->entityManager->flush();
+                // Log out the user
+                $this->tokenStorage->setToken(null);
+                $request->getSession()->invalidate();
 
-                    // Log out the user
-                    $this->tokenStorage->setToken(null);
-                    $request->getSession()->invalidate();
-
-                    return $this->redirectToRoute('app_login');
-                } else {
-                    $this->addFlash('error', 'TDie neuen Passwörter stimmen nicht überein.');
-                }
+                return $this->redirectToRoute('app_login');
             } else {
-                $this->addFlash('error', 'Das derzeitige Passwort ist nicht korrekt.');
+                $this->addFlash('error', 'Die Passwörter stimmen nicht überein.');
             }
+
         } elseif ($form->isSubmitted()) {
             $this->addFlash('error', 'Das Formular wurde nicht korrekt ausgefüllt.');
         }
 
         return $this->render('change_password/index.html.twig', [
             'changePasswordForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/reset-password', name: 'app_reset_password')]
+    public function resetPassword(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        // Generate a random 12 character long password
+        $randomPassword = substr(bin2hex(random_bytes(12)), 0, 12);
+
+        $userId = $request->query->get('id');
+
+        $user = $this->entityManager->getRepository(User::class)->find($userId);
+
+        $hashedPassword = $passwordHasher->hashPassword($user, $randomPassword);
+
+        $user->setPassword($hashedPassword);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $this->render('change_password/admin_change.html.twig', [
+            'username' => $user->getUsername(),
+            'password' => $randomPassword,
         ]);
     }
 }

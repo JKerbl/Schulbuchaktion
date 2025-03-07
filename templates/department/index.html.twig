@@ -59,12 +59,6 @@
             </tr>
         </thead>
 
-        <script>
-            document.getElementById('yearFilter').addEventListener('change', function () {
-                document.getElementById('yearForm').submit();
-            });
-        </script>
-
         <tbody>
         {% for department in departments %}
             <tr {% if department.name == 'Gesamt' %} style="background: #B2FFFF" {% endif %}>
@@ -110,4 +104,10 @@
     </table>
 
     <a class="create-new" href="{{ path('app_department_new') }}">Neu Anlegen</a>
+
+    <script>
+        document.getElementById('yearFilter').addEventListener('change', function () {
+            document.getElementById('yearForm').submit();
+        });
+    </script>
 {% endblock %}

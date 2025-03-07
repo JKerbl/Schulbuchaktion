@@ -15,16 +15,6 @@
                         public function buildForm(FormBuilderInterface $builder, array $options)
                         {
                             $builder
-                                ->add('currentPassword', PasswordType::class, [
-                                    'label' => 'Derzeitiges Passwort',
-                                    'attr' => ['class' => 'form-input mb-3'],
-                                    'mapped' => false,
-                                    'constraints' => [
-                                        new NotBlank([
-                                            'message' => 'Bitte geben Sie Ihr derzeitiges Passwort ein',
-                                        ]),
-                                    ],
-                                ])
                                 ->add('newPassword', PasswordType::class, [
                                     'label' => 'Neues Passwort',
                                     'attr' => ['class' => 'form-input mb-3'],
@@ -32,7 +22,12 @@
                                         new NotBlank([
                                             'message' => 'Bitte geben Sie ein neues Passwort ein',
                                         ]),
+                                        new Length([
+                                            'min' => 12,
+                                            'minMessage' => 'Ihr Passwort muss mindestens {{ limit }} Zeichen lang sein',
+                                        ]),
                                     ],
+
                                 ])
                                 ->add('confirmNewPassword', PasswordType::class, [
                                     'label' => 'Neues Passwort bestätigen',
