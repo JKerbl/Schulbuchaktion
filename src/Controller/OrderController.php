@@ -153,6 +153,8 @@ class OrderController extends AbstractController {
 
         $orders = $bookOrderRepository->getPaginatedEntries($limit, $currentPage, $year, $departmentFilter, $gradeFilter, $subjectFilter, $search, $sortDirection, $sortBy);
 
+        $teacherCopies = $bookOrderRepository->findBnrCountsByYear($year);
+
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
             'orders' => $orders,
@@ -168,6 +170,7 @@ class OrderController extends AbstractController {
             'user' => $user,
             'subjectFilter' => $subjectFilter ?? 0,
             'subjects' => $subjects,
+            'teacherCopies' => $teacherCopies
         ]);
     }
 

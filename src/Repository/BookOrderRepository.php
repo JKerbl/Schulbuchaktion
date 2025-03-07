@@ -35,6 +35,18 @@ class BookOrderRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findBnrCountsByYear(int $year): array
+    {
+        return $this->createQueryBuilder('o')
+            ->select('b.bnr, COUNT(o.id) as orderCount')
+            ->innerJoin('o.book', 'b')
+            ->andWhere('b.year = :year')
+            ->setParameter('year', $year)
+            ->groupBy('b.bnr')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getTotalEntries(int $year, int $departmentId = null, int $grade = null, int $subject = null, string $search = null): int
     {
         $query = $this->createQueryBuilder('o')
