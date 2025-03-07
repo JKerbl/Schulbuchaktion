@@ -67,7 +67,7 @@
 
         <tbody>
         {% for department in departments %}
-            <tr>
+            <tr {% if department.name == 'Gesamt' %} style="background: #B2FFFF" {% endif %}>
                 <td>{{ department.name }}</td>
                 <td>{{ department.year }}</td>
                 <td>{{ department.headOfDepartment }}</td>
@@ -89,13 +89,15 @@
                             </div>
                             {{ percentageShown | number_format(2, '.', ',') }}%
                         </td>
-                        <td>{{ department.umew }}</td>
-                            <td>
+                        <td>{{ department.umew | number_format(2, '.', ',') }}</td>
+                        <td>
+                            {% if department.name != 'Gesamt' %}
                                 <div class="actionIcons">
                                     <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                                     <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
                                 </div>
-                            </td>
+                            {% endif %}
+                        </td>
                     {% endif %}
                 {% endif %}
             </tr>
