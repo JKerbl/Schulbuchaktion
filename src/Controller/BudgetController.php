@@ -118,6 +118,8 @@ class BudgetController extends AbstractController
             $class = $order->getSchoolclass();
             $book = $order->getBook();
 
+            $budget = 0;
+
             if ($order->getOrderFor() != 'Nur Repetenten') {
                 $budget = $book->getPrice() * ($class->getStudentsAmount());
             }

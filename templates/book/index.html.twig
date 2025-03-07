@@ -75,8 +75,6 @@
                     <th class="px-2 py-2 bg-gray-100">Titel</th>
                     <th class="px-2 py-2 bg-gray-100">Schulform</th>
                     <th class="px-2 py-2 bg-gray-100">Info</th>
-                    <th class="px-2 py-2 bg-gray-100">E-Book</th>
-                   <!-- <th class="px-2 py-2 bg-gray-100">E-Book+</th> -->
                     <th class="px-2 py-2 bg-gray-100">Schulst.</th>
                     <th class="px-2 py-2 bg-gray-100">Preis</th>
                     <th class="px-2 py-2 bg-gray-100">Jahr</th>
@@ -93,9 +91,8 @@
                         <td class="px-4 py-2">{{ book.title }}</td>
                         <td class="px-4 py-2">{{ book.schoolForm }}</td>
                         <td class="px-4 py-2">{{ book.info }}</td>
-                        <td class="px-4 py-2">{{ book.eBook ? 'Ja' : 'Nein' }}</td>
                         <td class="px-4 py-2">{{ book.schoolGrades }}</td>
-                        <td class="px-4 py-2">{{ book.price | number_format(2, ',','.')}}</td>
+                        <td class="px-4 py-2">{{ book.price | number_format(2, ',','.') }}</td>
                         <td class="px-4 py-2">{{ book.year }}</td>
                         {% if 'ROLE_ADMIN' in user.roles or 'ROLE_FV' in user.roles %}
                             <td class="px-4 py-2">

@@ -8,6 +8,7 @@ use App\Entity\SchoolClass;
 use App\Entity\Subject;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -35,16 +36,16 @@ class BookOrderType extends AbstractType
                 ],
                 'label' => 'Klasse',
             ])
-            ->add('orderFor', null, [
+            ->add('orderFor', ChoiceType::class, [
+                'choices' => [
+                    'Mit Repetenten' => 'Mit Repetenten',
+                    'Nur Repetenten' => 'Nur Repetenten',
+                    'Ohne Repetenten' => 'Ohne Repetenten',
+                ],
                 'attr' => [
                     'class' => 'form-input mb-3',
                 ],
                 'label' => 'Bestellen für',
-            ])
-            ->add('teachercopy', HiddenType::class, [
-                'attr' => [
-                    'class' => 'd-none form-input mb-3',
-                ],
             ])
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,

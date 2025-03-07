@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Department;
 use App\Form\DepartmentType;
 use App\Repository\DepartmentRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,8 +164,13 @@ class DepartmentController extends AbstractController
     public function delete(Request $request, Department $department, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$department->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($department);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($department);
+                $entityManager->flush();
+            } catch (ForeignKeyConstraintViolationException $e) {
+                $this->addFlash('error', 'Abteilung kann nicht gelöscht werden, da Klassen dieser zugeteilt sind. Bei Bedarf bitte diese zuerst löschen.');
+                return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);

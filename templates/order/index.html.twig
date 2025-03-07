@@ -57,7 +57,7 @@
             <p class="font-semibold">Titel: {{ book.shortTitle }}</p>
             <p class="w-1/2 mx-auto">Info: {{ book.info }}</p>
             <p>Buchnummer: {{ book.bnr }}</p>
-            <p>Preis: {{ book.price }}€</p>
+            <p>Preis: {{ book.price| number_format(2, ',','.') }}€</p>
         </div>
         <div class="w-1/2">
             <div>
@@ -161,7 +161,6 @@
         </div>
     </div>
 
-
 <script>
     function updateClassData(classId) {
         document.getElementById('studentAmount').textContent = 'Warten...';
@@ -173,7 +172,7 @@
             .then(data => {
                 document.getElementById('studentAmount').textContent = data.studentAmount;
                 document.getElementById('repeaterAmount').textContent = data.repeaterAmount;
-                document.getElementById('budgetAmount').textContent = (data.budgetAmount - data.usedBudgetAmount) + '€ / ' + data.budgetAmount + '€';
+                document.getElementById('budgetAmount').textContent = Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(data.budgetAmount - data.usedBudgetAmount) + ' / '  + Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(data.budgetAmount);
             });
     }
 

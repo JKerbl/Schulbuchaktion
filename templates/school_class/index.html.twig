@@ -84,6 +84,9 @@
                         <div class="actionIcons">
                             <a href="{{ path('app_school_class_edit', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                             <a href="{{ path('app_school_class_duplicate', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                <a href="{{ path('app_school_class_delete', {'id': school_class.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="Löschen"></a>
+                            {% endif %}
                         </div>
                     </td>
                 {% endif %}

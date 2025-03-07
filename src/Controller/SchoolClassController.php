@@ -6,6 +6,7 @@ use App\Entity\SchoolClass;
 use App\Form\SchoolClassType;
 use App\Repository\DepartmentRepository;
 use App\Repository\SchoolClassRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -147,8 +148,13 @@ class SchoolClassController extends AbstractController
     public function delete(Request $request, SchoolClass $schoolClass, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$schoolClass->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($schoolClass);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($schoolClass);
+                $entityManager->flush();
+            } catch (ForeignKeyConstraintViolationException $e){
+                $this->addFlash('error', 'Klasse kann nicht gelöscht werden, da für diese Bestellungen vorhanden sind. Bei Bedarf bitte diese zuerst löschen.');
+                return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         $this->budgetController->calcBudget($entityManager);

@@ -81,14 +81,17 @@
                             <div class="progress-bar-container">
                                 <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
                             </div>
-                            {{ percentageShown | number_format(2, '.', ',') }}%
+                            {{ percentageShown | number_format(2, ',', '.') }}%
                         </td>
-                        <td>{{ department.umew | number_format(2, '.', ',') }}</td>
+                        <td>{{ department.umew | number_format(2, ',', '.') }}</td>
                         <td>
                             {% if department.name != 'Gesamt' %}
                                 <div class="actionIcons">
                                     <a href="{{ path('app_department_edit', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                                     <a href="{{ path('app_department_duplicate', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/duplicate.png') }}" alt="Duplizieren"></a>
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <a href="{{ path('app_department_delete', {'id': department.id}) }}"><img class="img-size" src="{{ asset('images/delete.png') }}" alt="Löschen"></a>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                         </td>
