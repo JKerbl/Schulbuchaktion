@@ -110,9 +110,9 @@
 }
 
 .img-size {
-    width: 32px;
-    height: 32px;
-    margin: auto;
+    width: 22px!important;
+    height: 22px!important;
+    margin: 5px!important;
 }
 
 .order-img-size {

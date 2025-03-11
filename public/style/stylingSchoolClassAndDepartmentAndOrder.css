@@ -153,9 +153,9 @@
 }
 
 .img-size {
-    margin: auto;
-    height: 28px;
-    width: 28px;
+    margin: 5px!important;
+    height: 22px!important;
+    width: 22px!important;
 }
 
 .year-filter {
