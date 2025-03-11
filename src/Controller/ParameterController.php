@@ -14,6 +14,13 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/parameter')]
 class ParameterController extends AbstractController
 {
+
+    private $budgetController;
+
+    public function __construct(BudgetController $budgetController)
+    {
+        $this->budgetController = $budgetController;
+    }
     #[Route('/', name: 'app_parameter_index', methods: ['GET'])]
     public function index(ParameterRepository $parameterRepository, Request $request): Response
     {
@@ -70,7 +77,10 @@ class ParameterController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->budgetController->calcBudget($entityManager);
+
             return $this->redirectToRoute('app_parameter_index', [], Response::HTTP_SEE_OTHER);
+
         }
 
         return $this->render('parameter/edit.html.twig', [

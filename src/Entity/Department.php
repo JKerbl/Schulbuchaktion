@@ -25,7 +25,7 @@ class Department
     private ?float $usedBudget = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $umew = null;
+    private ?float $umew = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "department")]
     private ?User $headOfDepartment = null;
@@ -81,12 +81,12 @@ class Department
         $this->usedBudget = $usedBudget;
     }
 
-    public function getUmew(): ?int
+    public function getUmew(): ?float
     {
         return $this->umew;
     }
 
-    public function setUmew(?int $umew): void
+    public function setUmew(?float $umew): void
     {
         $this->umew = $umew;
     }
