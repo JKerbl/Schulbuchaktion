@@ -26,6 +26,7 @@ class SchoolClassRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('s')
             ->andWhere('s.department = :departmentId')
             ->setParameter('departmentId', $departmentId)
+            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -45,6 +46,7 @@ class SchoolClassRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->andWhere('d.year = :year')
             ->setParameter('year', $year)
+            ->orderBy('d.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -56,6 +58,7 @@ class SchoolClassRepository extends ServiceEntityRepository
             ->andWhere('s.department = :department')
             ->setParameter('year', $year)
             ->setParameter('department', $department)
+            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
