@@ -155,6 +155,8 @@ class OrderController extends AbstractController {
 
         $teacherCopies = $bookOrderRepository->findBnrCountsByYear($year);
 
+        $sumOfBudget = $bookOrderRepository->getBudgetForFilters($year, $departmentFilter, $gradeFilter, $subjectFilter, $search);
+
         return $this->render('order/overview.html.twig', [
             'departments' => $departments,
             'orders' => $orders,
@@ -170,7 +172,8 @@ class OrderController extends AbstractController {
             'user' => $user,
             'subjectFilter' => $subjectFilter ?? 0,
             'subjects' => $subjects,
-            'teacherCopies' => $teacherCopies
+            'teacherCopies' => $teacherCopies,
+            'sumOfBudget' => $sumOfBudget
         ]);
     }
 

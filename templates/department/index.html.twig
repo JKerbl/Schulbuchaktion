@@ -9,7 +9,7 @@
 {% block body %}
     <style>
         .progress-bar-container {
-            width: 100%;
+            width: 80%;
             background-color: #f3f3f3;
             border-radius: 5px;
         }
@@ -21,9 +21,9 @@
         }
 
         .img-size {
-            margin: auto;
-            height: 32px;
-            width: 32px;
+            height: 25px;
+            width: 25px;
+            margin: 0.8rem;
         }
     </style>
 
@@ -79,7 +79,7 @@
                             {% endif %}
 
                             <div class="progress-bar-container">
-                                <div class="progress-bar" style="width: {{ percentage }}%; {% if percentage == 100 %}background-color: red;{% endif %}"></div>
+                                <div class="progress-bar" style="width: {% if percentage >= 100 %} {% if percentage >= 130 %} 130% {% else %} {{ percentage }}% {% endif %}; background-color: red; {% else %} {{ percentage }}% {% endif %}"></div>
                             </div>
                             {{ percentageShown | number_format(2, ',', '.') }}%
                         </td>

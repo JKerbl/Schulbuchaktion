@@ -177,6 +177,15 @@
                     {% endif %}
                 </tr>
             {% endfor %}
+            {% if 'ROLE_ADMIN' in user.roles %}
+                <tr style="background: #B2FFFF">
+                    <td colspan="4" style="text-align: right">Gesamtbetrag (nach Filterauswahl):</td>
+                    <td>{{ sumOfBudget | number_format(2, ',', '.') }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
             </tbody>
         </table>
 

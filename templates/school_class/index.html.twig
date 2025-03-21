@@ -54,8 +54,9 @@
             <tr>
                 <th>Name</th>
                 <th>JG</th>
-                <th>Schüleranzahl</th>
-                <th>Repetentenanzahl</th>
+                <th>Schüleranzahl gesamt</th>
+                <th>Schüleranzahl ohne R.</th>
+                <th>Repetenten</th>
                 <th>Benutztes Budget</th>
                 <th>Budget der Klasse</th>
                 {% if 'ROLE_ADMIN' in user.roles or 'ROLE_AV' in user.roles %}
@@ -75,6 +76,7 @@
             <tr>
                 <td>{{ school_class.name }}</td>
                 <td>{{ school_class.grade }}</td>
+                <td>{{ school_class.studentsAmount + school_class.repAmount }}</td>
                 <td>{{ school_class.studentsAmount }}</td>
                 <td>{{ school_class.repAmount }}</td>
                 <td>{{ school_class.usedBudget | number_format(2, ',','.')}}</td>

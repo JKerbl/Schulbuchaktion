@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\DocBlock\Tags\Source;
 use phpDocumentor\Reflection\Types\Integer;
+use PhpParser\Node\Expr\Cast\Double;
 use Symfony\Config\TwigExtra\StringConfig;
 
 /**
@@ -120,7 +121,8 @@ class BookOrderRepository extends ServiceEntityRepository
 
             if ($sortBy && $sortDirection) {
                 if ($sortBy === 'bnr'){
-                    $queryBuilder->orderBy('b.bnr', $sortDirection);
+                    $queryBuilder->addOrderBy('b.bnr', $sortDirection);
+                    $queryBuilder->addOrderBy('c.name', "ASC");
                 } else if ($sortBy === 'class'){
                     $queryBuilder->orderBy('c.name', $sortDirection);
                 }
@@ -195,4 +197,40 @@ class BookOrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getBudgetForFilters(string $year, int $departmentId = null, int $grade = null, int $subject = null, string $search = null): float
+        {
+            $queryBuilder = $this->createQueryBuilder('bo')
+                ->select('SUM(b.price * sc.studentsAmount)')
+                ->join('bo.schoolclass', 'sc')
+                ->innerJoin('bo.book', 'b')
+                ->andWhere('sc.year = :year')
+                ->setParameter('year', $year);
+
+            if ($search) {
+                $queryBuilder->andWhere('(b.title LIKE :search OR b.bnr LIKE :search2)')
+                    ->setParameter('search', '%' . $search . '%')
+                    ->setParameter('search2', '%' . $search . '%');
+            }
+
+            if ($subject) {
+                $queryBuilder
+                    ->join('bo.subject', 's')
+                    ->andWhere('s.id = :subjectId')
+                    ->setParameter('subjectId', $subject);
+            }
+
+            if ($departmentId) {
+                $queryBuilder->innerJoin('sc.department', 'd')
+                    ->andWhere('d.id = :departmentId')
+                    ->setParameter('departmentId', $departmentId);
+            }
+
+            if ($grade) {
+                $queryBuilder->andWhere('sc.grade = :grade')
+                    ->setParameter('grade', $grade);
+            }
+
+            return (float) $queryBuilder->getQuery()->getSingleScalarResult();
+        }
 }
