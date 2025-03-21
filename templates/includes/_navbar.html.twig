@@ -72,15 +72,10 @@
                     </div>
                 {% endif %}
             {% endif %}
-            <div class="nav-bar-item">
-                <a href="{{ path('app_team') }}" class="{% if app.request.get('_route') == 'app_team' %}active{% endif %}">
-                    <button class="navbar-button">Team</button>
-                </a>
-            </div>
             {% if app.user %}
                 <div class="nav-bar-item">
-                    <a href="{{ path('app_change_password') }}" class="{% if app.request.get('_route') == 'app_change_password' %}active{% endif %}">
-                        <button class="navbar-button">Passwort ändern</button>
+                    <a href="{{ path('user.app_my_user') }}" class="{% if app.request.get('_route') == 'user.app_my_user' %}active{% endif %}">
+                        <button class="navbar-button">Mein Benutzer</button>
                     </a>
                 </div>
                 <div class="nav-bar-item" id="login-btn">

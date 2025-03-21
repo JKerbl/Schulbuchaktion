@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Impressum{% endblock %}
+
+{% block body %}
+    <style>
+        .impressum {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 75%;
+            margin: auto;
+        }
+        .impressum h1 {
+            font-size: 34px;
+            font-weight: bold;
+            text-align: center;
+            color: #222;
+            margin-top: 2%;
+        }
+
+        .impressum h2 {
+            font-size: 22px;
+            font-weight: bold;
+            color: #444;
+            margin-top: 2%;
+        }
+
+        .impressum p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+    </style>
+
+    <div class="impressum">
+        <h1>Impressum</h1>
+        <p><strong>Informationspflicht laut §5 E-Commerce Gesetz und Offenlegungspflicht laut §25 Mediengesetz.</strong></p>
+
+        <p><strong>HTBLA Steyr</strong><br>
+            Schlüsselhofgasse 63,<br>
+            4400 Steyr,<br>
+            Österreich</p>
+
+        <p><strong>UID-Nummer:</strong> ATU38179902</p>
+
+        <p><strong>Tel.:</strong> 07252/72914-0<br>
+            <strong>Fax:</strong> 07252/72914-23<br>
+            <strong>E-Mail:</strong> <a href="mailto:office@htl-steyr.ac.at">office@htl-steyr.ac.at</a><br>
+            <strong>Schulkennzahl:</strong> 402417</p>
+
+        <h2>Haftung für Inhalte dieser Webseite</h2>
+        <p>Wir entwickeln die Inhalte dieser Webseite ständig weiter und bemühen uns korrekte und aktuelle Informationen bereitzustellen. Leider können wir keine Haftung für die Korrektheit aller Inhalte auf dieser Webseite übernehmen, speziell für jene die seitens Dritter bereitgestellt wurden.</p>
+        <p>Sollten Ihnen problematische oder rechtswidrige Inhalte auffallen, bitten wir Sie uns umgehend zu kontaktieren, Sie finden die Kontaktdaten im Impressum.</p>
+
+        <h2>Haftung für Links auf dieser Webseite</h2>
+        <p>Unsere Webseite enthält Links zu anderen Webseiten für deren Inhalt wir nicht verantwortlich sind. Haftung für verlinkte Websites besteht laut § 17 ECG für uns nicht, da wir keine Kenntnis rechtswidriger Tätigkeiten hatten und haben, uns solche Rechtswidrigkeiten auch bisher nicht aufgefallen sind und wir Links sofort entfernen würden, wenn uns Rechtswidrigkeiten bekannt werden.</p>
+        <p>Wenn Ihnen rechtswidrige Links auf unserer Website auffallen, bitten wir Sie uns zu kontaktieren, Sie finden die Kontaktdaten im Impressum.</p>
+
+        <h2>Urheberrechtshinweis</h2>
+        <p>Alle Inhalte dieser Webseite (Bilder, Fotos, Texte, Videos) unterliegen dem Urheberrecht. Falls notwendig, werden wir die unerlaubte Nutzung von Teilen der Inhalte unserer Seite rechtlich verfolgen.</p>
+
+        <h2>Bildernachweis</h2>
+        <p>Die Bilder, Fotos und Grafiken auf dieser Webseite sind urheberrechtlich geschützt.</p>
+        <p>Die Bilderrechte liegen bei der HTL Steyr, sofern nicht explizit angegeben.</p>
+    </div>
+{% endblock %}

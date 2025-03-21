@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+        {% block title %}{{ parent() }} Datenschutzerklärung{% endblock %}
+
+        {% block body %}
+            <style>
+                .privacy-policy {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    padding: 20px;
+                    max-width: 75%;
+                    margin: auto;
+                }
+                .privacy-policy h1 {
+                    font-size: 34px;
+                    font-weight: bold;
+                    text-align: center;
+                    color: #222;
+                    margin-top: 2%;
+                }
+
+                .privacy-policy h2 {
+                    font-size: 22px;
+                    font-weight: bold;
+                    color: #444;
+                    margin-top: 2%;
+                }
+
+                .privacy-policy h3 {
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: #444;
+                    margin-top: 2%;
+                }
+
+                .privacy-policy p {
+                    font-size: 16px;
+                    line-height: 1.8;
+                }
+
+                .privacy-policy ul {
+                    list-style-type: disc;
+                    margin-left: 20px;
+                }
+            </style>
+
+            <div class="privacy-policy">
+                <h1>Datenschutzerklärung</h1>
+                <h2>Datenschutz</h2>
+                <p>Wir haben diese Datenschutzerklärung (Fassung 26.09.2019-221102836) verfasst, um Ihnen gemäß der Vorgaben der Datenschutz-Grundverordnung (EU) 2016/679 und dem Datenschutzgesetz (DSG) zu erklären, welche Informationen wir sammeln, wie wir Daten verwenden und welche Entscheidungsmöglichkeiten Sie als Besucher dieser Webseite haben.</p>
+                <br>
+                <p>Leider liegt es in der Natur der Sache, dass diese Erklärungen sehr technisch klingen. Wir haben uns bei der Erstellung jedoch bemüht die wichtigsten Dinge so einfach und klar wie möglich zu beschreiben.</p>
+
+                <h2>Automatische Datenspeicherung</h2>
+                <p>Wenn Sie heutzutage Webseiten besuchen, werden gewisse Informationen automatisch erstellt und gespeichert, so auch auf dieser Webseite.</p>
+                <br>
+                <p>Wenn Sie unsere Webseite so wie jetzt gerade besuchen, speichert unser Webserver (Computer auf dem diese Webseite gespeichert ist) automatisch Daten wie</p>
+                <ul>
+                    <li>die Adresse (URL) der aufgerufenen Webseite</li>
+                    <li>Browser und Browserversion</li>
+                    <li>das verwendete Betriebssystem</li>
+                    <li>die Adresse (URL) der zuvor besuchten Seite (Referrer URL)</li>
+                    <li>den Hostname und die IP-Adresse des Geräts von welchem aus zugegriffen wird</li>
+                    <li>Datum und Uhrzeit</li>
+                </ul>
+                <br>
+                <p>in Dateien (Webserver-Logfiles).</p>
+                <br>
+                <p>In der Regel werden Webserver-Logfiles zwei Wochen gespeichert und danach automatisch gelöscht. Wir geben diese Daten nicht weiter, können jedoch nicht ausschließen, dass diese Daten beim Vorliegen von rechtswidrigem Verhalten eingesehen werden.</p>
+
+                <h2>Rechte laut Datenschutzgrundverordnung</h2>
+                <p>Ihnen stehen laut den Bestimmungen der DSGVO und des österreichischen Datenschutzgesetzes (DSG) grundsätzlich die folgende Rechte zu:</p>
+                <ul>
+                    <li>Recht auf Berichtigung (Artikel 16 DSGVO)</li>
+                    <li>Recht auf Löschung („Recht auf Vergessenwerden“) (Artikel 17 DSGVO)</li>
+                    <li>Recht auf Einschränkung der Verarbeitung (Artikel 18 DSGVO)</li>
+                    <li>Recht auf Benachrichtigung – Mitteilungspflicht im Zusammenhang mit der Berichtigung oder Löschung personenbezogener Daten oder der Einschränkung der Verarbeitung (Artikel 19 DSGVO)</li>
+                    <li>Recht auf Datenübertragbarkeit (Artikel 20 DSGVO)</li>
+                    <li>Widerspruchsrecht (Artikel 21 DSGVO)</li>
+                    <li>Recht, nicht einer ausschließlich auf einer automatisierten Verarbeitung — einschließlich Profiling — beruhenden Entscheidung unterworfen zu werden (Artikel 22 DSGVO)</li>
+                </ul>
+                <br>
+                <p>Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht verstößt oder Ihre datenschutzrechtlichen Ansprüche sonst in einer Weise verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren, welche in Österreich die Datenschutzbehörde ist, deren Webseite Sie unter <a href="https://www.dsb.gv.at/">https://www.dsb.gv.at/</a> finden.</p>
+
+                <h2>Auswertung des Besucherverhaltens</h2>
+                <p>In der folgenden Datenschutzerklärung informieren wir Sie darüber, ob und wie wir Daten Ihres Besuchs dieser Website auswerten. Die Auswertung der gesammelten Daten erfolgt in der Regel anonym und wir können von Ihrem Verhalten auf dieser Website nicht auf Ihre Person schließen.</p>
+                <br>
+                <p>Mehr über Möglichkeiten dieser Auswertung der Besuchsdaten zu widersprechen erfahren Sie in der folgenden Datenschutzerklärung.</p>
+
+                <h2>TLS-Verschlüsselung mit https</h2>
+                <p>Wir verwenden https um Daten abhörsicher im Internet zu übertragen (Datenschutz durch Technikgestaltung Artikel 25 Absatz 1 DSGVO). Durch den Einsatz von TLS (Transport Layer Security), einem Verschlüsselungsprotokoll zur sicheren Datenübertragung im Internet können wir den Schutz vertraulicher Daten sicherstellen. Sie erkennen die Benutzung dieser Absicherung der Datenübertragung am kleinen Schlosssymbol links oben im Browser und der Verwendung des Schemas https (anstatt http) als Teil unserer Internetadresse.</p>
+
+                <h2>Cookies</h2>
+                <p>Unsere Website verwendet HTTP-Cookies um nutzerspezifische Daten zu speichern. Im Folgenden erklären wir, was Cookies sind und warum Sie genutzt werden, damit Sie die folgende Datenschutzerklärung besser verstehen.</p>
+                <h3>Was genau sind Cookies?</h3>
+                <p>Immer wenn Sie durch das Internet surfen, verwenden Sie einen Browser. Bekannte Browser sind beispielsweise Chrome, Safari, Firefox, Internet Explorer und Microsoft Edge. Die meisten Webseiten speichern kleine Text-Dateien in Ihrem Browser. Diese Dateien nennt man Cookies.</p>
+                <br>
+                <p>Eines ist nicht von der Hand zu weisen: Cookies sind echt nützliche Helferlein. Fast alle Webseiten verwenden Cookies. Genauer gesprochen sind es HTTP-Cookies, da es auch noch anderer Cookies für andere Anwendungsbereiche gibt. HTTP-Cookies sind kleine Dateien, die von unserer Website auf Ihrem Computer gespeichert werden. Diese Cookie-Dateien werden automatisch im Cookie-Ordner, quasi dem „Hirn“ Ihres Browsers, untergebracht. Ein Cookie besteht aus einem Namen und einem Wert. Bei der Definition eines Cookies müssen zusätzlich ein oder mehrere Attribute angegeben werden.</p>
+                <br>
+                <p>Cookies speichern gewisse Nutzerdaten von Ihnen, wie beispielsweise Sprache oder persönliche Seiteneinstellungen. Wenn Sie unsere Seite wieder aufrufen, übermittelt Ihr Browser die „userbezogenen“ Informationen an unsere Seite zurück. Dank der Cookies weiß unsere Website, wer Sie sind und bietet Ihnen Ihre gewohnte Standardeinstellung. In einigen Browsern hat jedes Cookie eine eigene Datei, in anderen wie beispielsweise Firefox sind alle Cookies in einer einzigen Datei gespeichert.</p>
+                <br>
+                <p>Es gibt sowohl Erstanbieter Cookies als auch Drittanbieter-Cookies. Erstanbieter-Cookies werden direkt von unserer Seite erstellt, Drittanbieter-Cookies werden von Partner-Webseiten (z.B. Google Analytics) erstellt. Jedes Cookie ist individuell zu bewerten, da jedes Cookie andere Daten speichert. Auch die Ablaufzeit eines Cookies variiert von ein paar Minuten bis hin zu ein paar Jahren. Cookies sind keine Software-Programme und enthalten keine Viren, Trojaner oder andere „Schädlinge“. Cookies können auch nicht auf Informationen Ihres PCs zugreifen.</p>
+                <br>
+                <p>So können zum Beispiel Cookie-Daten aussehen:</p>
+                <ul>
+                    <li>Name: _ga</li>
+                    <li>Wert: GA1.2.1326744211.152221102836</li>
+                    <li>Verwendungszweck: Unterscheidung der Webseitenbesucher</li>
+                    <li>Ablaufdatum: nach 2 Jahren</li>
+                </ul>
+                <br>
+                <p>Diese Mindestgrößen sollte ein Browser unterstützen können:</p>
+                <ul>
+                    <li>Mindestens 4096 Bytes pro Cookie</li>
+                    <li>Mindestens 50 Cookies pro Domain</li>
+                    <li>Mindestens 3000 Cookies insgesamt</li>
+                </ul>
+
+                <h3>Welche Arten von Cookies gibt es?</h3>
+                <p>Die Frage welche Cookies wir im Speziellen verwenden, hängt von den verwendeten Diensten ab und wird in der folgenden Abschnitten der Datenschutzerklärung geklärt. An dieser Stelle möchten wir kurz auf die verschiedenen Arten von HTTP-Cookies eingehen.</p>
+                <br>
+                <p>Man kann 4 Arten von Cookies unterscheiden:</p>
+                <ul>
+                    <li><strong>Unbedingt notwendige Cookies</strong>: Diese Cookies sind nötig, um grundlegende Funktionen der Website sicherzustellen. Zum Beispiel braucht es diese Cookies, wenn ein User ein Produkt in den Warenkorb legt, dann auf anderen Seiten weitersurft und später erst zur Kasse geht. Durch diese Cookies wird der Warenkorb nicht gelöscht, selbst wenn der User sein Browserfenster schließt.</li>
+                    <li><strong>Funktionelle Cookies</strong>: Diese Cookies sammeln Infos über das Userverhalten und ob der User etwaige Fehlermeldungen bekommt. Zudem werden mithilfe dieser Cookies auch die Ladezeit und das Verhalten der Website bei verschiedenen Browsern gemessen.</li>
+                    <li><strong>Zielorientierte Cookies</strong>: Diese Cookies sorgen für eine bessere Nutzerfreundlichkeit. Beispielsweise werden eingegebene Standorte, Schriftgrößen oder Formulardaten gespeichert.</li>
+                    <li><strong>Werbe-Cookies</strong>: Diese Cookies werden auch Targeting-Cookies genannt. Sie dienen dazu dem User individuell angepasste Werbung zu liefern. Das kann sehr praktisch, aber auch sehr nervig sein.</li>
+                </ul>
+                <br>
+                <p>Üblicherweise werden Sie beim erstmaligen Besuch einer Webseite gefragt, welche dieser Cookiearten Sie zulassen möchten. Und natürlich wird diese Entscheidung auch in einem Cookie gespeichert.</p>
+
+                <h3>Wie kann ich Cookies löschen?</h3>
+                <p>Wie und ob Sie Cookies verwenden wollen, entscheiden Sie selbst. Unabhängig von welchem Service oder welcher Website die Cookies stammen, haben Sie immer die Möglichkeit Cookies zu löschen, nur teilweise zuzulassen oder zu deaktivieren. Zum Beispiel können Sie Cookies von Drittanbietern blockieren, aber alle anderen Cookies zulassen.</p>
+                <br>
+                <p>Wenn Sie feststellen möchten, welche Cookies in Ihrem Browser gespeichert wurden, wenn Sie Cookie-Einstellungen ändern oder löschen wollen, können Sie dies in Ihren Browser-Einstellungen finden:</p>
+                <ul>
+                    <li>Chrome: Cookies in Chrome löschen, aktivieren und verwalten</li>
+                    <li>Safari: Verwalten von Cookies und Websitedaten mit Safari</li>
+                    <li>Firefox: Cookies löschen, um Daten zu entfernen, die Websites auf Ihrem Computer abgelegt haben</li>
+                    <li>Internet Explorer: Löschen und Verwalten von Cookies</li>
+                    <li>Microsoft Edge: Löschen und Verwalten von Cookies</li>
+                </ul>
+                <br>
+                <p>Falls Sie grundsätzlich keine Cookies haben wollen, können Sie Ihren Browser so einrichten, dass er Sie immer informiert, wenn ein Cookie gesetzt werden soll. So können Sie bei jedem einzelnen Cookie entscheiden, ob Sie das Cookie erlauben oder nicht. Die Vorgangsweise ist je nach Browser verschieden. Am besten ist es Sie suchen die Anleitung in Google mit dem Suchbegriff „Cookies löschen Chrome“ oder „Cookies deaktivieren Chrome“ im Falle eines Chrome Browsers oder tauschen das Wort „Chrome“ gegen den Namen Ihres Browsers, z.B. Edge, Firefox, Safari aus.</p>
+
+                <h3>Wie sieht es mit meinem Datenschutz aus?</h3>
+                <p>Seit 2009 gibt es die sogenannten „Cookie-Richtlinien“. Darin ist festgehalten, dass das Speichern von Cookies eine Einwilligung des Website-Besuchers (also von Ihnen) verlangt. Innerhalb der EU-Länder gibt es allerdings noch sehr unterschiedliche Reaktionen auf diese Richtlinien. In Österreich erfolgte aber die Umsetzung dieser Richtlinie in § 96 Abs. 3 des Telekommunikationsgesetzes (TKG).</p>
+                <br>
+                <p>Wenn Sie mehr über Cookies wissen möchten und vor technischen Dokumentationen nicht zurückscheuen, empfehlen wir <a href="https://tools.ietf.org/html/rfc6265">https://tools.ietf.org/html/rfc6265</a>, dem Request for Comments der Internet Engineering Task Force (IETF) namens „HTTP State Management Mechanism“.</p>
+
+                <br><br>
+                <p><em>Quelle: Erstellt mit dem Datenschutz Generator von firmenwebseiten.at in Kooperation mit augenlaserinfo.com</em></p>
+            </div>
+        {% endblock %}

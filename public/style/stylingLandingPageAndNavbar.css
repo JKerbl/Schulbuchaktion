@@ -109,6 +109,23 @@
     font-weight: bold;
 }
 
+.footer {
+    background-color: #17A2B8; /* Optional: Change footer color to match navbar */
+    text-align: center;
+    padding: 1em 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
+
 /*@media only screen and (max-width: 790px) {*/
 /*    .nav-bar-elements {*/
 /*        width: 100%;*/
