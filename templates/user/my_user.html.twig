@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Mein Benutzer{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/toggle.css') }}" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+    <style>
+        .user-actions input[type="number"] {
+            width: 60%
+        }
+    </style>
+
+    <div class="bg-white rounded-lg shadow-md p-4 w-1/4 mx-auto mt-4">
+        <div class="user-header text-xl font-semibold mb-2">
+            <h1>Mein Benutzer</h1>
+        </div>
+        <p class="text-xxl font-semibold mb-2">Anzahl Einträge pro Seite:</p>
+        <div class="user-actions mb-5">
+            <form action="{{ path('user.change_pagelimit') }}" method="post">
+                <input type="hidden" name="id" value="{{ thisUser.id }}">
+                <input type="number" value="{{ thisUser.pagelimit }}" name="pageLimit" id="pageLimit" class="mr-2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ml-auto">Speichern</button>
+            </form>
+        </div>
+        <p class="text-xxl font-semibold mb-2">Passwort ändern:</p>
+        <a href="{{ path('app_change_password') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ml-auto">Zum Ändern</a>
+    </div>
+
+    <script>
+    </script>
+{% endblock %}

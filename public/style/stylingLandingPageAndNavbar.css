@@ -16,6 +16,7 @@
     box-shadow: 0 5px 10px rgb(138, 146, 147);
     background-clip: padding-box;
     align-content: center;
+    box-sizing: border-box;
 }
 
 .company-name {
