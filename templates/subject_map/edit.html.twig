@@ -21,7 +21,7 @@
             <div class="btn-links-under-form">
                 <button class="save-update-btn-form" type="submit">{{ button_label|default('Speichern') }}</button>
                 <div class="back-to-list-btn">
-                    <a class="anchor-back-to-list" href="{{ path('app_subject_map_index') }}">Zurück zur Liste</a>
+                    <a class="anchor-back-to-list" href="{{ path('app_subject_map_index') }}?subject={{ currentSubject }}&search={{ search }}">Zurück zur Liste</a>
                 </div>
             </div>
             {{ form_end(form) }}

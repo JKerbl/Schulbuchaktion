@@ -72,18 +72,23 @@ class ImportSubjectMapController extends AbstractController
     #[Route('/{id}/edit', name: 'app_subject_map_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, ImportSubjectMap $importSubjectMap, EntityManagerInterface $entityManager): Response
     {
+        $subject = $request->query->get('subject', null);
+        $search = $request->query->get('search', null);
+
         $form = $this->createForm(ImportSubjectMapType::class, $importSubjectMap);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_subject_map_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_subject_map_index',  ['subject' => $subject, 'search' => $search], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('subject_map/edit.html.twig', [
             'subject_map' => $importSubjectMap,
             'form' => $form,
+            'currentSubject' => $subject,
+            'search' => $search,
         ]);
     }
 
