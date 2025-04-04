@@ -55,10 +55,16 @@
                 {% for subject_map in subject_maps %}
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ subject_map.name }}</td>
+                        {% if subject_map.subject != null %}
                         <td class="px-4 py-2">{{ subject_map.subject.fullName }}</td>
                         <td class="px-4 py-0">
                             <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}"><img style="width: 32px; height: 32px" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                         </td>
+                        {% else %}
+                            <td class="px-4 py-2">Nicht zugewiesen</td>
+                            <td class="px-4 py-0">
+                            </td>
+                            {% endif %}
                     </tr>
                 {% else %}
                     <tr>
