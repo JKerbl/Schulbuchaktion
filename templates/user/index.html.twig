@@ -6,8 +6,9 @@
 {% endblock %}
 
 {% block body %}
-    <div class="flex justify-between items-center my-8">
-        <h1 class="text-4xl text-center w-full">Benutzerübersicht</h1>
+    <h1 class="text-4xl font-bold my-8 text-center">Benutzerübersicht</h1>
+    <div class="flex justify-end items-center mb-4">
+        <p class="mr-2" style="font-weight: bold;">Registrierungen erlauben: </p>
         <label class="switch mr-8 flex items-center">
             <span class="ml-2"></span>
             <input id="toggleRegistration" type="checkbox" class="ml-2" {% if allowRegistrations == 1 %}checked{% endif %}>

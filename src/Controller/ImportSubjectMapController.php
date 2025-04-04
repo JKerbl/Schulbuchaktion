@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ImportSubjectMap;
+use App\Entity\Subject;
 use App\Form\ImportSubjectMapType;
 use App\Repository\ImportSubjectMapRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,10 +16,28 @@ use Symfony\Component\Routing\Attribute\Route;
 class ImportSubjectMapController extends AbstractController
 {
     #[Route('/', name: 'app_subject_map_index', methods: ['GET'])]
-    public function index(ImportSubjectMapRepository $importSubjectMapRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $subject = $request->query->get('subject', null);
+        $search = $request->query->get('search', null);
+
+        if ($subject == 0) {
+            $subject = null;
+        }
+
+        $allSubjects = $entityManager->getRepository(Subject::class)->findAll();
+
+        if ($subject == null && $search == null) {
+            $allMaps = $entityManager->getRepository(ImportSubjectMap::class)->findAll();
+        } else {
+            $allMaps = $entityManager->getRepository(ImportSubjectMap::class)->findForSubjectOrSearch($subject, $search);
+        }
+
         return $this->render('subject_map/index.html.twig', [
-            'subject_maps' => $importSubjectMapRepository->findAll(),
+            'currentSubject' => $subject,
+            'allSubjects' => $allSubjects,
+            'subject_maps' => $allMaps,
+            'search' => $search,
         ]);
     }
 

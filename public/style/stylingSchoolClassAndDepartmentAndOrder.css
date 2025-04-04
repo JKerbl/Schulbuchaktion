@@ -172,6 +172,24 @@
     align-items: center;
 }
 
+.subject-filters {
+    width: 40%;
+    text-align: center;
+    margin: 2em auto;
+    padding: 1em;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    box-shadow: 0 0 19px 0 rgba(0,0,0,0.1);
+}
+
+.subject-filter {
+    background-color: #f3f3f3;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
 .class-filters {
     width: 26%;
     text-align: center;

@@ -151,6 +151,8 @@ class SchoolClassController extends AbstractController
             try {
                 $entityManager->remove($schoolClass);
                 $entityManager->flush();
+
+                $this->budgetController->calcBudget($entityManager);
             } catch (ForeignKeyConstraintViolationException $e){
                 $this->addFlash('error', 'Klasse kann nicht gelöscht werden, da für diese Bestellungen vorhanden sind. Bei Bedarf bitte diese zuerst löschen.');
                 return $this->redirectToRoute('app_school_class_index', [], Response::HTTP_SEE_OTHER);

@@ -2,9 +2,45 @@
 
 {% block title %}Gegenstand-Mapping{% endblock %}
 
+{% block stylesheets %}
+    <link href="{{ asset('style/stylingLandingPageAndNavbar.css') }}" type="text/css" rel="stylesheet"/>
+    <link href="{{ asset('/style/stylingSchoolClassAndDepartmentAndOrder.css') }}" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('style/stylingBestellungen.css') }}" type="text/css"/>
+{% endblock %}
+
 {% block body %}
-    <div class="container mx-auto p-4">
+    <div class="container mx-auto">
         <h1 class="text-4xl font-bold my-8 text-center">Gegenstand-Mappings</h1>
+
+        <div class="subject-filters flex flex-wrap justify-between items-center">
+            <div class="flex items-center">
+                <form id="subjectFilterForm" method="get" action="{{ path('app_subject_map_index') }}" class="flex items-center">
+                    <div class="flex items-center mr-5" >
+                        <label id="label-subject-filter" for="subjectFilter" class="book-filter-label">Gegenstand:  </label>
+                        <select id="subjectFilter" name="subject" class="book-filter">
+                            {% if currentSubject == 0 %}
+                                <option value="0" selected>Alle</option>
+                            {% else %}
+                                <option value="0">Alle</option>
+                            {% endif %}
+                            {% for subject in allSubjects %}
+                                {% if subject.id == currentSubject %}
+                                    <option value="{{ currentSubject }}" selected>{{ subject.fullname }}</option>
+                                {% else %}
+                                    <option value="{{ subject.id }}">{{ subject.fullname }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="text" name="search" value="{{ search }}" placeholder="Gegenstand"
+                               class="border px-4 py-2 w-full rounded-md"/>
+                        <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 ml-2 hover:bg-blue-800 ease-in-out duration-300">Suchen</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -21,7 +57,7 @@
                         <td class="px-4 py-2">{{ subject_map.name }}</td>
                         <td class="px-4 py-2">{{ subject_map.subject.fullName }}</td>
                         <td class="px-4 py-0">
-                            <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}"><img style="width: 50%; height: 50%" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
+                            <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}"><img style="width: 32px; height: 32px" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                         </td>
                     </tr>
                 {% else %}
@@ -33,5 +69,11 @@
             </table>
         </div>
     </div>
+
+    <script>
+        document.getElementById('subjectFilter').addEventListener('change', function() {
+            document.getElementById('subjectFilterForm').submit();
+        });
+    </script>
 
 {% endblock %}

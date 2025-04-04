@@ -4,6 +4,9 @@
 
 {% block body %}
     <h1 class="text-4xl font-bold my-8 text-center">Schulfächer</h1>
+    <div class="flex justify-end items-center">
+        <a href="{{ path('app_subject_map_index') }}" style="margin-right: 1.5%; margin-bottom: 1%" class="ml-4 bg-green-500 hover:bg-green-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Gegenstand-Mapping</a>
+    </div>
 
     <div class="overflow-x-auto mx-8">
         <table class="table-auto min-w-full bg-white border border-gray-200">

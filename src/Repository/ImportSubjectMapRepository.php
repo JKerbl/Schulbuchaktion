@@ -21,12 +21,21 @@ class ImportSubjectMapRepository extends ServiceEntityRepository
         parent::__construct($registry, ImportSubjectMap::class);
     }
 
-    public function findWhereSubjectIdIsNull()
+    public function findForSubjectOrSearch(String $subject = null, String $search = null): array
     {
-        return $this->createQueryBuilder('i')
-            ->where('i.subject_id IS NULL')
-            ->getQuery()
-            ->getResult();
+        $qb = $this->createQueryBuilder('i');
+
+        if ($subject) {
+            $qb->andWhere('i.subject = :subject')
+                ->setParameter('subject', $subject);
+        }
+
+        if ($search) {
+            $qb->andWhere('i.name LIKE :search')
+                ->setParameter('search', '%' . $search . '%');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     //    /**

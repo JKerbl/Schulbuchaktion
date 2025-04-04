@@ -200,10 +200,10 @@ class OrderController extends AbstractController {
             $bookAmount = 0;
         }
 
-        $this->budgetController->calcUsedBudget($entityManager);
-
         $entityManager->remove($bookOrder);
         $entityManager->flush();
+
+        $this->budgetController->calcUsedBudget($entityManager);
 
         return $this->redirectToRoute('order.index', [], Response::HTTP_SEE_OTHER);
     }
@@ -256,8 +256,6 @@ class OrderController extends AbstractController {
                 $bookAmount = 0;
             }
 
-            $this->budgetController->calcUsedBudget($em);
-
             if (!$class || !$book) {
                 return new JsonResponse(['success' => false, 'message' => 'Klasse oder Buch nicht gefunden.'], 404);
             }
@@ -274,6 +272,8 @@ class OrderController extends AbstractController {
 
             $em->persist($bookOrder);
             $em->flush();
+
+            $this->budgetController->calcUsedBudget($em);
 
             return new JsonResponse(['success' => true]);
         } catch (\Exception $e) {
