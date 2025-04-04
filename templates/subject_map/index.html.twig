@@ -30,6 +30,11 @@
                                     <option value="{{ subject.id }}">{{ subject.fullname }}</option>
                                 {% endif %}
                             {% endfor %}
+                            {% if currentSubject == 'n' %}
+                                <option value="n" selected>Nicht zugewiesen</option>
+                            {% else %}
+                                <option value="n">Nicht zugewiesen</option>
+                            {% endif %}
                         </select>
                     </div>
 
@@ -63,6 +68,7 @@
                         {% else %}
                             <td class="px-4 py-2">Nicht zugewiesen</td>
                             <td class="px-4 py-0">
+                                <a href="{{ path('app_subject_map_edit', {'id': subject_map.id}) }}"><img style="width: 32px; height: 32px" src="{{ asset('images/edit.png') }}" alt="Bearbeiten"></a>
                             </td>
                             {% endif %}
                     </tr>

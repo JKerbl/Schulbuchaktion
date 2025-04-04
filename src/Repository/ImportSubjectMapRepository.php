@@ -26,8 +26,12 @@ class ImportSubjectMapRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i');
 
         if ($subject) {
-            $qb->andWhere('i.subject = :subject')
-                ->setParameter('subject', $subject);
+            if ($subject == 'n'){
+                $qb->andWhere('i.subject is NULL');
+            } else {
+                $qb->andWhere('i.subject = :subject')
+                    ->setParameter('subject', $subject);
+            }
         }
 
         if ($search) {
